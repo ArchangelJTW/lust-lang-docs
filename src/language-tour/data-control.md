@@ -50,6 +50,25 @@ end
 - Combine logical operators for more precise guards. `and` short-circuits, so the right-hand side only runs after the left succeeds, borrowing any variables it introduces.
 - Use `or` for fallbacks: `local name = config:get("name"):unwrap_or("anonymous")`.
 
+## Short-circuit evaluation
+
+```lust
+local age = 28 -- age is an 'int'
+local status = age >= 30 and "old" or "young" -- status is inferred as a 'string' type
+println(status) -- Result: "young"
+
+function computation(): bool
+    println("Some computation")
+    return true
+end
+
+local check = false -- check is a 'bool'
+local result = check and computation() or "fallback" -- result is inferred as a 'bool | string' type
+println(result) -- Result: "fallback"
+```
+
+Lust doesn't have ternaries, but it uses short-circuit evaluation similar to Lua.  
+
 ## Working with Option and Result
 
 ```lust
@@ -158,33 +177,30 @@ println(add10(5))
 - Anonymous functions capture surrounding variables (upvalues) without ceremony.
 - Return lambdas to build factories or configure higher-order helpers.
 
-## Tables and Dynamic Data
+## Maps and Dynamic Data
 
 ```lust
-local record: Table = {}
-record:set("name", "Ada")
-record:set("age", 32)
-record:set("active", true)
+local tags: Map<unknown, unknown> = { ["io"] = "123ABC", ["os"] = "second", ["age"] = 56 }
+println(tags:keys():len())
 
-if record:get("name") is Some(name) and name is string then
-    println("name = " .. name)
+if tags:get("age") is Some(val) and val is int then
+    println("Value is int: " .. val)
+else
+    println("Value is string")
 end
 
-local maybe_age = record:get("age")
-local age = -1
-if maybe_age:is_some() then
-    local raw_age = maybe_age:unwrap()
-    local cast = raw_age:as<int>()
-    if cast:is_some() then
-        age = cast:unwrap()
+local maybe_io = tags:get("io")
+if maybe_io:is_some() then
+    local raw = maybe_io:unwrap()
+    if raw is string then
+        println(raw)
     end
 end
-println("age = " .. tostring(age))
 ```
 
-- `Table` mimics Lua's dynamic tables but still forces you to narrow `unknown` values.
-- Indexing (`record["name"]`) returns an `unknown` directly. Cast or run it through `is` before using type-specific methods.
-- Mix numeric, string, and boolean keys without sacrificing safety.
+- `Map` can be made to mimic Lua's dynamic tables with `Map<unknown, unknown>` but still forces you to narrow `unknown` values.
+- Directly calling `get()` on the `Map` keys will return an `Option<unknown>` directly. Run it through `is` before using type-specific methods.
+- Mix numeric, string, and boolean types without sacrificing safety.
 
 ## Numeric and String Utilities
 
