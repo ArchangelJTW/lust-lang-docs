@@ -1,0 +1,10 @@
+[book]
+authors = ["Lust Language Team"]
+language = "en"
+src = "src"
+title = "The Lust Book"
+
+[output.html]
+additional-js = ["src/lust-highlight.js"]
+default-theme = "ayu"
+preferred-dark-theme = "ayu"
