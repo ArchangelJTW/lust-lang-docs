@@ -69,18 +69,14 @@ Learn how generics, trait bounds, union types, and the `is` operator tie into th
 ```lust
 local scores: Array<int> = [10, 20, 30]
 local tags: Map<string, int> = { ["core"] = 1, ["jit"] = 2 }
-local profile: Table = { name = "Ada", age = 32 }
 
 scores:push(40)
 println(tags:keys():len())
 
-if profile:get("name") is Some(name) and name is string then
-    println("Hello, " .. name)
-end
 ```
 
 - `Array<T>` and `Map<K, V>` provide typed collections with familiar helper methods.
-- `Table` remains dynamic when you need heterogeneous data, but you can narrow values safely via the `is` operator or casts.
+- `Map<unknown, unknown>` remains dynamic when you need heterogeneous data, but you can narrow values safely via the `is` operator.
 - Standard methods such as `:map`, `:filter`, and `:reduce` let you write fluent, functional-style pipelines.
 
 ## Modules and Imports

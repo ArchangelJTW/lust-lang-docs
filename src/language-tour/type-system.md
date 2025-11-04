@@ -183,19 +183,18 @@ end
 
 ## Working with `unknown`
 
-`unknown` values appear when dealing with dynamic structures (`Table`, foreign data, or trait objects). You must narrow or cast before using them.
+`unknown` values appear when dealing with dynamic structures (`Map<unknown, unknown>`, foreign data, or trait objects).
+You must narrow to a specific type before using them.
 
 ```lust
-local data: Table = { name = "Ada", age = 32, verified = true }
+local tags: Map<unknown, unknown> = { ["io"] = "123ABC", ["os"] = "second", ["age"] = 56 }
 
-if data:get("age") is Some(raw_age) then
-    local age = raw_age:as<int>()
-    println("age = " .. tostring(age:unwrap_or(-1)))
+if tags:get("age") is Some(val) and val is int then
+    println("Value is int: " .. val)
+else
+    println("Value is string")
 end
 ```
-
-- `value:as<T>()` returns `Option<T>`, giving you an explicit fallback path.
-- Try casting to multiple types in sequence until one succeeds. If none succeed, handle the default case gracefully.
 
 ## Traits and Trait Bounds
 

@@ -11,7 +11,7 @@ This appendix collects extra resources, glossary entries, and references to the 
 - **`Option<T>`** &mdash; Optional values with `Some`/`None` helpers for branching, unwrapping, and defaults.
 - **`Result<T, E>`** &mdash; Fallible operations that distinguish success (`Ok`) from failure (`Err`) without exceptions.
 - **`Task` / `TaskStatus`** &mdash; Handles returned by `task.create` and their scheduler state (`Ready`, `Running`, `Completed`, etc.).
-- **`Table`** &mdash; Dynamic key/value container that surfaces `unknown` values until narrowed or cast.
+- **`Map<unknown, unknown>`** &mdash; Dynamic key/value container that surfaces `unknown` values until narrowed.
 - **`unknown`** &mdash; Type used for dynamic data that must be narrowed via `is` or `:as<T>()` before use.
 - **`ref` field** &mdash; Weak reference slots on structs that prevent ownership cycles while still linking related data.
 - **`impl` block** &mdash; Method definitions attached to existing structs, enums, or traits.
