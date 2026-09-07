@@ -1,270 +1,126 @@
-# Type System
+# Pattern Matching & Types
 
-Lust's type system brings predictability to a Lua-like surface. Static checking, inference, generics, and trait bounds work together with runtime-friendly ergonomics. This chapter walks through the features you will use most often.
+Lust provides a sound, static type system with powerful runtime inspection tools: the `is` pattern matching operator, union types (`A | B`), the `unknown` type, and the safe `as` casting operator.
 
-## Bindings and Inference
+---
 
-```lust
-local count: int = 42
-local name = "Lust"            -- inferred string
-local active = true            -- inferred bool
+## The `is` Operator
 
-function add(a: int, b: int): int
-    return a + b
-end
+The `is` operator serves two essential purposes in Lust:
+1. **Testing types** on primitive and union values.
+2. **Matching and destructuring** enum variants.
 
-local total = add(count, 8)    -- inferred as int
-```
+### Type Testing
 
-- Bindings are `local` and mutable by default. Reassigning `count` later is perfectly legal.
-- Omit annotations when the compiler can infer the type; add them for clarity or to catch unintended conversions.
-- Functions use `:` to annotate arguments and return types. You can skip the return type when it is obvious, but explicit annotations make intent clearer on public APIs.
-
-Multiple return values work like tuples:
+You can test whether a value is of a particular concrete type:
 
 ```lust
-function checkpoint(label: string, value: int): (string, bool, int)
-    local positive = value > 0
-    return label, positive, value
+local x: int = 42
+local s: string = "hello"
+
+if x is int then
+    println("x is an integer")
 end
 
-local tag: string, ok: bool, score: int = checkpoint("quests", 5)
-println(tag .. " -> " .. tostring(score) .. " (positive=" .. tostring(ok) .. ")")
-```
-
-Each variable on the left can be annotated or inferred independently.
-
-## Structs, Impl Blocks, and Reference Fields
-
-```lust
-struct Node
-    name: string,
-    parent: ref Node,
-    children: Array<Node>
-end
-
-impl Node
-    function new(name: string): Node
-        return Node { name = name, parent = Option.None, children = [] }
-    end
-
-    function attach_child(self, child: Node): Node
-        child.parent = self          -- assigning to a ref sets a weak link
-        self.children:push(child)
-        return child
-    end
+-- Negative checks use 'not (...)'
+if not (s is int) then
+    println("s is not an integer")
 end
 ```
 
-- Struct fields require explicit types. Separating fields with commas inside the literal is optional but improves readability.
-- `impl` blocks attach methods to existing types. Instance methods must take `self` as the first parameter; omit it entirely when defining a static helper on the type.
-- `ref` fields hold weak references; they accept either `Node` or `Option<Node>` and prevent ownership cycles. Use them when you need parent links or caches that should not keep objects alive forever.
+---
 
-## Enums and Pattern Binding
+## Union Types and Type Narrowing
+
+Union types represent values that can belong to one of multiple distinct types, written with the pipe (`|`) operator:
 
 ```lust
-enum Status
-    Pending,
-    Running,
-    Complete(int)
-end
-
-function describe_status(s: Status): string
-    if s is Pending then
-        return "Waiting"
-    elseif s is Running then
-        return "In progress"
-    elseif s is Complete(code) then
-        if code == 0 then
-            return "Success"
-        end
-        return "Finished with exit code"
-    end
-    return "Unknown status"
-end
+local id: string | int = 101
 ```
 
-- Variants can carry payloads, making enums perfect for error reporting, state machines, or optional metadata.
-- The `is` operator introduces new bindings (`code` above) and narrows the type inside the branch.
-
-Generics extend enums naturally:
+Inside conditionals, testing a union value with `is` **narrows** its type within that branch. The compiler guarantees that you can safely invoke type-specific operations:
 
 ```lust
-enum Result<T, E>
-    Ok(T),
-    Err(E)
-end
-```
-
-`Result` and `Option` ship with the standard library. Variant constructors (`Ok`, `Err`, `Some`, `None`) are automatically in scope.
-
-## Generics and Collections
-
-```lust
-function sum<T: ToString>(items: Array<T>): string
-    return items:reduce("", function(acc, value)
-        if acc:is_empty() then
-            return value:to_string()
-        end
-        return acc .. ", " .. value:to_string()
-    end)
-end
-
-local numbers: Array<int> = [1, 2, 3]
-println(sum(numbers))
-
-local directory: Map<string, int> = { ["alpha"] = 1, ["beta"] = 2 }
-println(directory:get("alpha"):unwrap_or(-1))
-```
-
-- Angle brackets declare type parameters (`Array<T>`, `Map<K, V>`). Concrete types can be inferred from literals or specified explicitly.
-- Generic functions may restrict parameters with trait bounds (`T: ToString` above).
-- Collection helpers - `map`, `filter`, `reduce`, `push`, `pop`, `slice`, `pairs`, etc. - preserve types, so inference flows through functional pipelines.
-
-## Option and Result Workflows
-
-```lust
-function find_even(value: int): Option<int>
-    if value % 2 == 0 then
-        return Option.Some(value)
-    end
-    return Option.None
-end
-
-function divide(a: int, b: int): Result<int, string>
-    if b == 0 then
-        return Result.Err("division by zero")
-    end
-    return Result.Ok(a / b)
-end
-```
-
-Both enums include convenience methods:
-
-```lust
-if find_even(42) is Some(n) then
-    println("even: " .. tostring(n))
-end
-
-local result = divide(10, 0)
-if result:is_err() then
-    println(result:unwrap_err())
-end
-```
-
-- `Option<T>` models data that may or may not exist.
-- `Result<T, E>` models fallible operations. Combine `is` checks, `unwrap`, `unwrap_or`, `unwrap_err`, and `is_ok` / `is_err` to handle outcomes ergonomically.
-
-## Union Types and the `is` Operator
-
-```lust
-function print_id(id: string | int)
+function format_identifier(id: string | int): string
     if id is string then
-        println("String ID: " .. id)
+        -- Within this branch, 'id' is guaranteed to be a string
+        return "ID: " .. string.upper(id)
     elseif id is int then
-        println("Numeric ID: " .. tostring(id))
+        -- Within this branch, 'id' is guaranteed to be an int
+        return "ID #" .. tostring(id * 2)
     end
+    return "Unknown ID"
 end
 
-local response: string | int | bool = true
-if response is bool and response then
-    println("response is confirmed")
-end
+println(format_identifier("usr_alpha")) -- Outputs: ID: USR_ALPHA
+println(format_identifier(50))          -- Outputs: ID #100
 ```
 
-- `|` forms union types. Lust narrows them with `is`, so you gain compile-time guarantees before calling type-specific methods.
-- Combine `is` with `and` to create linear destructuring flows. When the left side succeeds, any variables it introduces are visible to the right:
+---
+
+## Dynamic Data with `unknown`
+
+When interfacing with dynamic dictionaries, external data, or generic host payloads, types may not be statically known at compile time. In Lust, these values are typed as `unknown`:
 
 ```lust
-if task_state is Ok(data) and data.user is Some(user) and user.is_admin then
-    println("admin: " .. user.name)
-end
+local config: Map<string, unknown> = {}
+map.set(config, "port", 8080)
+map.set(config, "hostname", "localhost")
+map.set(config, "debug", true)
 ```
 
-## Working with `unknown`
+Values of type `unknown` **cannot** be used directly in operations or passed to typed functions. You must first narrow or safely extract them.
 
-`unknown` values appear when dealing with dynamic structures (`Map<unknown, unknown>`, foreign data, or trait objects).
-You must narrow to a specific type before using them.
+---
+
+## Safe Casting with `as`
+
+To safely downcast a value from `unknown` to a concrete type, use the `as` operator.
+
+**In Lust, `value as Type` returns `Option<Type>`:**
+- If the value matches the requested type, it returns `Some(concrete_value)`.
+- If the value does not match, it returns `None`.
+
+Because it returns `Option`, casting in Lust **never crashes at runtime**:
 
 ```lust
-local tags: Map<unknown, unknown> = { ["io"] = "123ABC", ["os"] = "second", ["age"] = 56 }
+local raw_port = map.get(config, "port"):unwrap()
 
-if tags:get("age") is Some(val) and val is int then
-    println("Value is int: " .. val)
-else
-    println("Value is string")
+local maybe_int = raw_port as int -- Returns Option<int>
+if maybe_int is Some(port) then
+    println("Server listening on port: " .. port)
+end
+
+-- Attempting an invalid cast safely returns None
+local maybe_str = raw_port as string -- Returns Option.None
+if maybe_str is None then
+    println("Port is not a string!")
 end
 ```
 
-## Traits and Trait Bounds
+### Left-to-Right Chaining (No Parentheses Needed)
+
+Casts and pattern checks associate left-to-right. You can combine `as` and `is` directly in an `if` statement without extra parentheses:
 
 ```lust
-trait Drawable
-    function draw(self)
-end
-
-trait Printable
-    function print(self)
-end
-
-struct Circle
-    radius: float
-end
-
-impl Drawable for Circle
-    function draw(self)
-        println("Drawing circle with radius " .. tostring(self.radius))
-    end
-end
-
-function render<T: Drawable>(shape: T)
-    shape:draw()
+if raw_port as int is Some(port) and port > 1024 then
+    println("Unprivileged port: " .. port)
 end
 ```
 
-- Traits define required methods. Implement them with `impl TraitName for Type`.
-- Trait bounds (`T: Drawable`) give you static dispatch with full inference.
-- Traits participate in narrowing and casting:
+### Linear Pattern Chaining with `and`
+
+Conditions chained with `and` evaluate from left to right. Any variables bound by earlier patterns are immediately visible to later expressions in the chain:
 
 ```lust
-function inspect(value: unknown)
-    if value is Drawable then
-        value:draw()
-        return
-    end
-
-    local printable = value:as<Printable>()
-    if printable:is_some() then
-        printable:unwrap():print()
-    end
+-- If the first check succeeds, 'user' is in scope for the second check:
+if fetch_result is Ok(user) and user.age is Some(age) and age >= 21 then
+    println("Verified adult: " .. user.name .. " (age " .. age .. ")")
 end
 ```
 
-Once a value is narrowed to a trait, the corresponding trait methods become available.
+---
 
-## Numeric and String Helpers
+## Next Steps
 
-Primitive types expose a rich helper set directly:
-
-```lust
-local x: float = 3.75
-println(x:floor())
-println(x:clamp(0.0, 2.0))
-
-local greeting = "Hello, Lust!"
-println(greeting:find("Lust"):unwrap_or(-1))
-println(greeting:to_upper())
-```
-
-- Numeric methods include `abs`, `floor`, `ceil`, `round`, `sqrt`, and `clamp`.
-- Strings offer `len`, `is_empty`, `find`, `contains`, `split`, `trim`, and case conversion methods.
-
-These helpers compose cleanly with Option/Result flows and higher-order array methods.
-
-## Recap
-
-- Prefer inference for concise code, but annotate shared interfaces and public APIs.
-- Combine enums, traits, and union types to model domain logic precisely.
-- Lean on `is` and `:as<T>()` to safely traverse dynamic data.
-
-Continue to [Data & Control Flow](./data-control.md) to see how these types interact with branching, iteration, closures, and functional pipelines.
+Now learn how to write reusable, generic code and specify dynamic contracts in [Generics & Traits](./generics-and-traits.md).

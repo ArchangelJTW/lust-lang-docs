@@ -1,27 +1,95 @@
 # Appendix
 
-This appendix collects extra resources, glossary entries, and references to the official examples.
+This appendix collects reference tables, comparison cheat sheets, and the standard library index.
 
-## Key Terms
+---
 
-- **Trace-based JIT** &mdash; Lust records hot loops and compiles them to native x64 via dynasm-rs.
-- **`is` operator** &mdash; Unified type test and variant binding mechanism.
-- **Task runtime** &mdash; Cooperative coroutine system with explicit yielding.
-- **FFI boundary** &mdash; Points where Lust interacts with Rust or C.
-- **`Option<T>`** &mdash; Optional values with `Some`/`None` helpers for branching, unwrapping, and defaults.
-- **`Result<T, E>`** &mdash; Fallible operations that distinguish success (`Ok`) from failure (`Err`) without exceptions.
-- **`Task` / `TaskStatus`** &mdash; Handles returned by `task.create` and their scheduler state (`Ready`, `Running`, `Completed`, etc.).
-- **`Map<unknown, unknown>`** &mdash; Dynamic key/value container that surfaces `unknown` values until narrowed.
-- **`unknown`** &mdash; Type used for dynamic data that must be narrowed via `is` or `:as<T>()` before use.
-- **`ref` field** &mdash; Weak reference slots on structs that prevent ownership cycles while still linking related data.
-- **`impl` block** &mdash; Method definitions attached to existing structs, enums, or traits.
-- **`trait` / trait bound** &mdash; Interface-style contracts that types implement and generics require (`T: Drawable`).
-- **`use` import** &mdash; Module and symbol importer supporting aliases, grouped paths, and deep lookups.
+## Lust vs. Lua Comparison Cheat Sheet
 
-## Further Reading
+| Feature | Lua | Lust |
+|---|---|---|
+| **Type Checking** | Dynamic runtime | Static compile-time with inference |
+| **Missing Values** | `nil` | `Option<T>` (`Some` or `None`) |
+| **Error Handling** | `error()`, `pcall()` strings | `Result<T, E>` (`Ok` or `Err`) |
+| **Array Indexing** | **1-based** | **0-based** (`arr[0]`) |
+| **Bracket Access** | `t[i]` returns `nil` if missing | `arr[i]` returns `Result<T, IndexError>` |
+| **Collections** | Single `table` type | Distinct `Array<T>` and `Map<K, V>` |
+| **Collection Methods**| Metatable method calls | Module functions (`array.*`, `map.*`) |
+| **Classes / Records** | Tables with metatable prototypes | `struct` definitions with `impl` blocks |
+| **Variant Data** | Tables with tag fields | Tagged `enum` with payload variants |
+| **Pattern Matching** | Manual `type()` / field checks | Unified `is` operator with destructuring |
+| **Dynamic Casting** | Unchecked table access | Safe `as` operator returning `Option<T>` |
+| **String Concat** | `..` | `..` (auto-converts types implementing `ToString`) |
+| **Inequality** | `~=` | Both `!=` and `~=` supported |
+| **Imports** | Dynamic `require("mod")` | Static `use path as alias` or `use path.{item}` |
+| **Multitasking** | `coroutine.create / resume` | `task.create / resume / yield` with diagnostics |
 
-- [Language Tour](./language-tour/overview.md) for conceptual grounding.
-- [Embedding](./embedding.md) for Rust and C integration notes.
-- [Roadmap](./roadmap.md) to follow upcoming features.
+---
 
-Feedback is welcome at `hello@lust-lang.dev`. Help shape the book by filing issues or contributing examples once the docs repository opens for collaboration.
+## Keywords
+
+```text
+as          break       continue    do          else
+elseif      end         enum        extern      for
+function    if          impl        in          is
+local       not         or          ref         return
+struct      task        then        trait       use
+while
+```
+
+---
+
+## Operators
+
+| Operator | Category | Description |
+|---|---|---|
+| `+`, `-`, `*`, `/`, `%` | Arithmetic | Addition, subtraction, multiplication, division, modulo |
+| `+=`, `-=`, `*=`, `/=` | Assignment | In-place compound arithmetic |
+| `..` | String | String concatenation |
+| `==`, `!=`, `~=` | Comparison | Equality and inequality |
+| `<`, `<=`, `>`, `>=` | Comparison | Relational comparisons |
+| `and`, `or`, `not` | Logical | Short-circuit boolean logic |
+| `is` | Pattern | Type testing and enum variant binding |
+| `as` | Casting | Fallible downcast returning `Option<T>` |
+| `|` | Type | Union type constructor (`string | int`) |
+| `:` | Annotation / Call | Type annotation (`x: int`) or method invocation (`obj:method()`) |
+| `.` | Access | Struct field access (`pt.x`) or module access (`array.len()`) |
+
+---
+
+## Standard Library Quick Reference
+
+### Core Functions (Always Available)
+
+- `print(...)` &mdash; Prints arguments separated by tabs.
+- `println(...)` &mdash; Prints arguments followed by a newline.
+- `tostring(val)` &mdash; Converts any value to its string representation.
+- `type(val)` &mdash; Returns the type name string of a value.
+
+### `array` Module
+
+`len`, `is_empty`, `get`, `first`, `last`, `push`, `pop`, `insert`, `remove`, `clear`, `slice`, `concat`, `sort`, `reverse`, `contains`, `map`, `filter`, `reduce`, `iter`
+
+### `map` Module
+
+`len`, `is_empty`, `get`, `set`, `has`, `delete`, `clear`, `keys`, `values`, `iter`
+
+### `string` Module
+
+`len`, `is_empty`, `starts_with`, `ends_with`, `contains`, `sub`, `upper`, `lower`, `trim`, `trim_start`, `trim_end`, `replace`, `split`, `byte`, `char`, `chars`, `lines`
+
+### `math` Module
+
+`floor`, `ceil`, `round`, `abs`, `sqrt`, `sin`, `cos`, `tan`, `asin`, `acos`, `atan`, `atan2`, `min`, `max`, `clamp`, `random`, `randomseed`, `pi`, `huge`, `maxinteger`, `mininteger`
+
+### `task` Module
+
+`create`, `run`, `resume`, `yield`, `status`, `info`, `stop`, `restart`, `current`
+
+### `io` Module *(Opt-in via `lust-config.toml`)*
+
+`read_file`, `read_file_bytes`, `write_file`, `read_stdin`, `read_line`, `write_stdout`
+
+### `os` Module *(Opt-in via `lust-config.toml`)*
+
+`time`, `sleep`, `create_file`, `create_dir`, `remove_file`, `remove_dir`, `rename`

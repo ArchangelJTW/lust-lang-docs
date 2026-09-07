@@ -1,10 +1,10 @@
 (function () {
   function registerLustLanguage(hljs) {
     var KEYWORDS =
-      "function local return struct enum impl if then elseif else for while do break continue and or not is extern unsafe task end in";
+      "function local return struct enum impl trait if then elseif else for while do break continue and or not is as extern unsafe task end in use ref";
     var LITERALS = "true false nil";
     var TYPES =
-      "int float bool string usize unknown Array Map Table Result Option Some None Ok Err";
+      "int float bool string usize unknown Array Map Table Result Option Some None Ok Err Task TaskInfo TaskStatus IndexError ToString";
 
     return {
       name: "Lust",
@@ -13,7 +13,7 @@
         keyword: KEYWORDS,
         literal: LITERALS,
         type: TYPES,
-        built_in: "println tostring task math",
+        built_in: "print println tostring tonumber task math array map string io os",
       },
       contains: [
         hljs.COMMENT("--\\[\\[", "\\]\\]", { contains: [] }),

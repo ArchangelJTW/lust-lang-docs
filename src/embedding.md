@@ -1,104 +1,238 @@
 # Embedding Lust
 
-Lust was built with embedding top of mind. The runtime is implemented in Rust, with clean APIs for Rust hosts and a stable C ABI for everything else.
+Lust was built from the ground up for embedding. Whether you are embedding scripts inside a game engine, scripting an HTTP server, or extending a CLI tool, Lust provides high-level typed bindings for Rust and a stable C ABI.
 
-## Rust Integration
+---
 
-The Rust crate exposes a high-level builder:
+## 1. Rust Integration (`lust-rs`)
 
-```rust,ignore
-use lust_rs::{EmbeddedProgram, StructInstance};
+Add the crate to your project's `Cargo.toml`:
 
-fn main() -> lust_rs::Result<()> {
-    let module_source = r#"
-        struct Point
-            x: int
-            y: int
-        end
+```bash
+cargo add lust-rs --rename lust
+```
 
-        extern {
-            function host_scale(int): int
-        }
+### Basic Example: Compiling and Calling Scripts
 
-        pub function amplify(value: int): int
-            return host_scale(value) * 3
+Use `EmbeddedProgram::builder()` to assemble and compile modules in memory:
+
+```rust
+use lust::EmbeddedProgram;
+
+fn main() -> lust::Result<()> {
+    let script = r#"
+        function greet(name: string): string
+            return "Hello, " .. name .. "!"
         end
     "#;
 
     let mut program = EmbeddedProgram::builder()
-        .module("main", module_source)
+        .module("main", script)
         .entry_module("main")
         .compile()?;
 
-    // Module-level statements run once so globals are initialized.
+    // Execute top-level statements to initialize globals
     program.run_entry_script()?;
 
-    program.register_typed_native("host_scale", |value: i64| Ok(value * 10))?;
-
-    let amplified: i64 = program.call_typed("main.amplify", 7_i64)?;
-    println!("Amplify(7) -> {amplified}");
-
-    let point: StructInstance =
-        program.struct_instance("main.Point", vec![("x", 1_i64), ("y", 2_i64)])?;
-    println!("Point.x = {}", point.field::<i64>("x")?);
+    // Call a typed Lust function directly from Rust
+    let message: String = program.call_typed("main.greet", "Rust Host")?;
+    println!("{message}");
 
     Ok(())
 }
 ```
 
-- `EmbeddedProgram::builder()` compiles an in-memory module graph and tracks the entry module.
-- Helpers such as `call_typed`, `get_typed_global`, and `struct_instance` keep Rust and Lust types aligned without unsafe code.
-- Native functions surface as regular Rust closures that can return `Result<T, E>` to propagate host-side errors into Lust.
+### Registering Host Functions
 
-## C FFI
+You can expose Rust closures as native functions in Lust:
 
-The C ABI mirrors the same workflow:
+```rust
+use lust::{NativeExport, NativeExportParam};
 
-```c
-EmbeddedBuilder *builder = lust_builder_new();
-lust_builder_add_module(builder, "main", module_source);
-lust_builder_set_entry_module(builder, "main");
+program.register_typed_native("host_scale", |value: i64| -> Result<i64, String> {
+    Ok(value * 10)
+})?;
 
-EmbeddedProgram *program = lust_builder_compile(builder);
-if (!lust_program_run_entry(program)) {
-    die_with_last_error("lust_program_run_entry");
-}
+// Record export metadata so Lust stubs can be generated
+program.vm_mut().record_exported_native(NativeExport::new(
+    "main.host_scale",
+    vec![NativeExportParam::new("value", "int")],
+    "int",
+));
 
-LustFfiValue args[2] = {
-    {.tag = LUST_FFI_VALUE_INT, .int_value = 20},
-    {.tag = LUST_FFI_VALUE_INT, .int_value = 22},
-};
-
-LustFfiValue result = {0};
-if (!lust_program_call(program, "main.add", args, 2, &result)) {
-    die_with_last_error("lust_program_call");
-}
-
-printf("20 + 22 = %lld\n", (long long)result.int_value);
-
-lust_value_dispose(&result);
-lust_program_free(program);
+// Dump generated stubs to disk
+program.dump_externs_to_dir("externs")?;
 ```
 
-- Always check the boolean return values and call `lust_last_error_message()` for diagnostics.
-- Dispose every `LustFfiValue` you receive (results, globals, struct fields, etc.) with `lust_value_dispose` so reference counts stay balanced.
-- `lust_program_run_entry` is optional if your entry module has no top-level statements, but required when globals need initialization.
+### Interacting with Structs & Fields
 
-## Memory Management
+Instantiate and inspect Lust structs safely from Rust:
 
-Lust uses deterministic reference counting for every heap-allocated value. Any handle you pass across the FFI boundary bumps the underlying count, and values are reclaimed immediately when the last reference drops.
+```rust
+use lust::{struct_field, StructInstance};
 
-When embedding:
+// Construct a Lust struct instance
+let point: StructInstance = program.struct_instance(
+    "main.Point",
+    [
+        struct_field("x", 10_i64),
+        struct_field("y", 20_i64),
+    ],
+)?;
 
-- Keep Rust-side handles short lived when possible so counts fall to zero promptly.
-- If you store Lust values in host-side caches, release or dispose them explicitly once you are done to avoid keeping data alive longer than expected.
-- Prefer the typed helpers (`StructInstance`, `EnumInstance`, `LustFfiValue`, etc.) instead of raw pointers so increments and decrements stay balanced automatically.
+// Read fields
+let x: i64 = point.field::<i64>("x")?;
 
-Choose the strategy that matches your host’s lifecycle and performance budget.
+// Mutate fields
+point.set_field("x", 42_i64)?;
+```
 
-## Diagnostics in the Host
+### Zero-Copy Struct Views with `LustStructView`
 
-- Stack traces include function names and source spans.
-- You can configure color output or request machine-readable diagnostics for tooling.
+Lust provides a derive macro `LustStructView` for zero-overhead, type-safe views into Lust structs:
 
-Proceed to [CLI & Tooling](./tooling.md) to explore the developer ergonomics around the core VM.
+```rust
+use lust::{LustStructView, StringRef, StructHandle};
+
+#[derive(LustStructView)]
+#[lust(type = "main.Point")]
+struct PointView<'a> {
+    #[lust(field = "x")]
+    x: lust::LustInt,
+    #[lust(field = "y")]
+    y: lust::LustInt,
+    #[lust(field = "name")]
+    name: StringRef<'a>,
+}
+
+if let Some(handle) = program.get_typed_global::<StructHandle>("main.my_point")? {
+    let view = PointView::from_handle(&handle)?;
+    println!("Point: x={}, y={}, name={}", view.x, view.y, view.name.as_str());
+}
+```
+
+### Inspecting JIT Performance from Host
+
+Embedders can query tracing JIT counters at runtime:
+
+```rust
+let stats = program.jit_stats();
+println!("Root traces compiled: {}", stats.root_traces_compiled);
+println!("Native entries:       {}", stats.native_trace_entries);
+println!("Recursive calls:      {}", stats.recursive_calls);
+```
+
+---
+
+## 2. Embedding in C (FFI)
+
+Lust exports a clean C ABI via `include/lust_ffi.h`. Compile your C program and link against `liblust`:
+
+```bash
+cc main.c -I/path/to/include -L/path/to/target/release -llust -o ffi_example
+```
+
+### Complete C Host Example
+
+```c
+#include "lust_ffi.h"
+#include <stdio.h>
+#include <stdlib.h>
+
+int main(void) {
+    const char *source =
+        "function add(a: int, b: int): int\n"
+        "    return a + b\n"
+        "end\n";
+
+    EmbeddedBuilder *builder = lust_builder_new();
+    lust_builder_add_module(builder, "main", source);
+    lust_builder_set_entry_module(builder, "main");
+
+    EmbeddedProgram *program = lust_builder_compile(builder);
+    if (!program) {
+        fprintf(stderr, "Compile error: %s\n", lust_last_error_message());
+        return EXIT_FAILURE;
+    }
+
+    // Prepare arguments
+    LustFfiValue args[2] = {
+        {.tag = LUST_FFI_VALUE_INT, .int_value = 20},
+        {.tag = LUST_FFI_VALUE_INT, .int_value = 22},
+    };
+
+    // Call the function
+    LustFfiValue result = {0};
+    if (lust_program_call(program, "main.add", args, 2, &result)) {
+        printf("Result: %lld\n", (long long)result.int_value);
+    } else {
+        fprintf(stderr, "Call failed: %s\n", lust_last_error_message());
+    }
+
+    // Balance reference counts and free memory
+    lust_value_dispose(&result);
+    lust_program_free(program);
+    return EXIT_SUCCESS;
+}
+```
+
+---
+
+## 3. Native Rust Extensions
+
+Lust supports compiling standalone Rust crates into shared libraries (`cdylib`) that scripts can load dynamically.
+
+### Step 1: Configure `Cargo.toml` in your extension crate
+
+```toml
+[lib]
+crate-type = ["cdylib"]
+
+[dependencies]
+lust-rs = { version = "*", features = ["packages"] }
+```
+
+### Step 2: Implement the Registration Hook
+
+```rust
+use lust::packages::ModuleStub;
+use lust::VM;
+
+#[no_mangle]
+pub extern "C" fn lust_extension_register(vm: *mut VM) -> *mut ModuleStub {
+    // Register native functions and types into the VM
+    // ...
+}
+```
+
+### Step 3: Configure in `lust-config.toml`
+
+Declare the extension in your project's `lust-config.toml`:
+
+```toml
+[dependencies]
+my_extension = { path = "extensions/my_extension", kind = "rust" }
+```
+
+### Step 4: Generate Extern Stubs
+
+Run the CLI with `--dump-externs`:
+
+```bash
+lust --dump-externs main.lust
+```
+
+The CLI inspects your extension, builds extern stubs under `externs/my_extension/`, and allows your Lust scripts to import and typecheck against native bindings.
+
+---
+
+## 4. Lua 5.1 C Libraries
+
+Lust can load standard Lua 5.1 C API dynamic libraries (such as `luasocket`):
+
+```toml
+[dependencies]
+socket = { path = "/path/to/socket/core.so", kind = "lua" }
+```
+
+Running `lust --dump-externs main.lust` generates type-safe Lust extern declarations for the library's exported functions.

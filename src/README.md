@@ -1,18 +1,47 @@
 # Welcome to Lust
 
-Lust is a Lua-inspired language that aims to deliver Rust-grade guarantees. It offers a production-ready toolchain built in Rust with a trace-based JIT, strict static typing, and an ergonomic runtime designed for embedding. This book walks through the core ideas, language features, and embedding workflows so you can ship Lust scripts safely and confidently.
+Lust is a strongly typed, Lua-inspired scripting language implemented in Rust. It combines Lua's approachable syntax and expressive scripting feel with Rust-grade static safety, an ergonomic embedding API, and a high-performance trace-based JIT compiler.
 
-Lust by no means aims to fully replace the safety of Rust, but offers layers of protection in the type checker and compiler that the majority of scripting languages lack. Even languages like TypeScript often suffer from ambiguity due to the prolific use of `any`, `null`, and `undefined` types, which notably do not exist in Lust. The only ambiguous type Lust has is `unknown`, which is a type that necessitates narrowing at the typechecking level. A null type is also notably absent, preferring Rust's approach of handling nullability explcitly via an `Option` wrapper type.
+Many scripting languages suffer from silent bugs due to pervasive dynamic typing, unexpected `nil`/`null`/`undefined` errors, or unchecked dictionary lookups. Lust addresses these challenges directly:
 
-## What to Expect
+- **No `null` or `nil` values**: Optional values are explicitly represented with `Option<T>` (`Some` or `None`).
+- **No unchecked `any`**: Dynamic values must use the `unknown` type and be narrowed via `is` or safely cast via `as` before use.
+- **Safe array access**: Bracket reads (`values[i]`) return `Result<T, IndexError>` instead of causing unhandled bounds errors or returning a silent `nil`.
+- **Nominal traits & generics**: Static generics are inferred and checked at compile time with zero runtime dispatch overhead.
 
-- **Approachable syntax** &mdash; Lua-like structure with modern conveniences: structs, enums with data, inference, and multiple return values.
-- **Safety first** &mdash; The `is` operator drives type narrowing and variant binding, unifying how you check and destructure data.
-- **Performance focus** &mdash; A bytecode VM backed by dynasm-rs promotes hot loops to native x64 code and includes cooperative multitasking.
-- **Embedding friendly** &mdash; First-class Rust bindings and a stable C ABI make Lust a natural choice for extending engines, tools, and services.
+---
 
-## Project Status
+## Language Highlights
 
-The core language is complete: lexer, parser, type checker, bytecode VM, trace JIT, and an ergonomic CLI with stack traces and disassembly. Preliminary module support has landed (see the examples), with ongoing work aimed at richer diagnostics and full package tooling.
+| Feature | Description |
+|---|---|
+| **Static Types & Inference** | Declare types with `:` or let the typechecker infer them from context. |
+| **Unified `is` Operator** | Check types, narrow union types, and destructure enum variants cleanly in conditionals. |
+| **Safe `as` Casting** | Fallible downcasting from `unknown` returns `Option<T>` without runtime crashes. |
+| **Trace-Based JIT** | Hot loops compile into native x64 machine code via `dynasm-rs`. |
+| **Deterministic Memory** | Reference counting frees resources immediately; a fallback cycle collector cleans up graphs. |
+| **Cooperative Multitasking** | Built-in `task` module provides coroutine scheduling with structured diagnostics. |
+| **First-Class Embedding** | Rich Rust embedding bindings (`EmbeddedProgram`), C FFI (`lust_ffi.h`), and native extension loading. |
 
-This book is a WIP, but will eventually document every aspect of the language. Start with the [Quick Start](./quick-start.md) to install the CLI, explore the [Language Tour](./language-tour/overview.md) for core syntax, then dive into [Embedding](./embedding.md) when you are ready to integrate Lust into your host runtime.
+---
+
+## Casing Conventions
+
+Lust follows an explicit casing convention that makes code roles immediately recognizable:
+
+- **`lowercase`** &mdash; Primitive types and keywords: `int`, `float`, `string`, `bool`, `unknown`, `local`, `function`, `struct`, `enum`.
+- **`PascalCase`** &mdash; Nominal types and enum variants: `Option`, `Result`, `Array`, `Map`, `Some`, `None`, `Ok`, `Err`, `Task`, and user-defined types.
+- **`snake_case`** &mdash; Variables, functions, methods, fields, and module namespaces: `max_retries`, `calculate_total`, `math.floor`, `array.len`.
+
+---
+
+## How to Use This Book
+
+This guide is structured to take you from your first script to advanced language concepts and embedding:
+
+1. **[Quick Start](./quick-start.md)** &mdash; Install the CLI, configure your project, and run your first program.
+2. **[Language Guide](./language-tour/overview.md)** &mdash; Learn language features step-by-step: variables, control flow, collections, structs, enums, pattern matching, generics, modules, I/O, and concurrency.
+3. **[Embedding Lust](./embedding.md)** &mdash; Integrate the Lust runtime into Rust or C applications, build Rust extensions, and link native libraries.
+4. **[CLI & Tooling](./tooling.md)** &mdash; Command-line options, disassembly, package management, and `lust-config.toml` reference.
+5. **[Roadmap](./roadmap.md)** &mdash; Ongoing developments and future language goals.
+6. **[Appendix](./appendix.md)** &mdash; Summary of syntax differences from Lua, keywords, and standard library reference.
