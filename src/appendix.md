@@ -88,8 +88,8 @@ while
 
 ### `io` Module *(Opt-in via `lust-config.toml`)*
 
-`read_file`, `read_file_bytes`, `write_file`, `read_stdin`, `read_line`, `write_stdout`
+`read_file`, `read_file_bytes`, `read_dir`, `write_file`, `read_stdin`, `read_line`, `write_stdout`
 
 ### `os` Module *(Opt-in via `lust-config.toml`)*
 
-`time`, `sleep`, `create_file`, `create_dir`, `remove_file`, `remove_dir`, `rename`
+`time`, `sleep`, `create_file`, `create_dir`, `remove_file`, `remove_dir`, `rename`, `get_env`
