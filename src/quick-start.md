@@ -58,6 +58,11 @@ Run your program with the `lust` CLI:
 
 ```bash
 lust hello.lust
+
+# Or explicitly choose an execution backend:
+lust run hello.lust --backend vm         # Bytecode VM
+lust run hello.lust --backend cranelift  # Cranelift JIT
+lust run hello.lust --backend zig        # Zig AOT Native
 ```
 
 **Output:**
@@ -65,6 +70,12 @@ lust hello.lust
 ```text
 Hello from Lust!
 Welcome to typed scripting in 2026!
+```
+
+You can also compile your script into a native C-shared library:
+
+```bash
+lust build hello.lust --backend zig --cdylib -o libhello.dylib
 ```
 
 ---

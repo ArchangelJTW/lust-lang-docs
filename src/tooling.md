@@ -1,30 +1,77 @@
 # CLI & Tooling
 
-Lust includes a full suite of developer tooling: the CLI runtime runner, bytecode disassembler, package manager, stub generator, and language server.
+Lust includes a full suite of developer tooling: the unified CLI runner, multi-backend compiler, bytecode disassembler, C-ABI library generator, package manager, stub generator, and language server.
 
 ---
 
 ## The Lust CLI
 
-The `lust` executable is the primary entry point for executing scripts and inspecting compilation output:
+The `lust` executable is the primary entry point for executing scripts, compiling native libraries, and inspecting compilation output:
 
 ```text
 USAGE:
-    lust <script.lust>                   Run a Lust script
-    lust --disassemble <script.lust>     Show bytecode disassembly (-d)
-    lust --dump-externs <script.lust>    Create extern stubs from lust-config.toml
-    lust --help, -h                      Show this help message
-    lust --version, -v                   Show version information
-    lust pkg <command> [options]         Manage Lust packages
+    lust <script.lust>                                  Run a Lust script (default auto backend)
+    lust run <file> --backend [vm|cranelift|zig|auto] [--strict]
+                                                        Run script with specified backend
+    lust build <file> --backend zig [--cdylib|--staticlib] [--emit-h] [--max-memory <size>] [-o <out>]
+                                                        Build native binary or C-ABI library via Zig AOT
+    lust --disassemble <script.lust>                    Show bytecode disassembly (-d)
+    lust --mir <script.lust>                            Run script using Lust MIR pipeline
+    lust --strict-mir <script.lust>                     Run with strict MIR (reject fallback/unsupported)
+    lust --no-gc <script.lust>                          Run script with cycle collector GC disabled
+    lust bindgen <entry.lust>                           Generate checked Rust bindings for @bindgen functions
+    lust pkg <command> [options]                        Manage Lust packages
+    lust --help, -h                                     Show help message
+    lust --version, -v                                  Show version information
 ```
 
-### Running Scripts
+### Running Scripts with Backends (`lust run`)
+
+You can select the execution backend using the `--backend` flag:
+
+- **`vm`**: Portable register-based Bytecode Virtual Machine with zero external dependencies.
+- **`cranelift`**: Low-latency Just-In-Time (JIT) machine code compilation through the Lust MIR pipeline.
+- **`zig`**: Direct Ahead-Of-Time compilation via Zig 0.17.1 to native machine code.
+- **`auto`** *(default)*: Uses trace-based Dynasm JIT / Cranelift JIT where available with automatic fallback.
 
 ```bash
-lust main.lust
+# Run with the portable bytecode VM
+lust run main.lust --backend vm
+
+# Run with Cranelift JIT in strict MIR mode
+lust run main.lust --backend cranelift --strict
+
+# Run with Zig AOT direct compilation
+lust run main.lust --backend zig
 ```
 
-The CLI loads `main.lust`, parses and type-checks the module dependency graph, applies settings from `lust-config.toml` if present in the directory, and executes the script.
+### Compiling Native Libraries (`lust build`)
+
+Lust can compile scripts directly into standalone native libraries and C headers for embedding into C, C++, Rust, Zig, Go, or Python applications:
+
+```bash
+# 1. Compile as a C-compatible shared library (.dylib / .so / .dll)
+lust build policy.lust --backend zig --cdylib -o libpolicy.dylib
+
+# 2. Compile as a static archive (.a / .lib)
+lust build engine.lust --backend zig --staticlib -o libengine.a
+
+# 3. Generate clean, portable C-ABI header files
+lust build policy.lust --backend zig --cdylib --emit-h -o libpolicy.dylib
+
+# 4. Limit runtime memory usage with bounded allocator (e.g. 64MB or 512KB)
+lust build sandbox.lust --backend zig --cdylib --max-memory 64MB -o libsandbox.dylib
+```
+
+### Zero-GC Execution Mode (`--no-gc`)
+
+In latency-critical, real-time, or deterministic workloads, you can completely bypass the cycle-collecting garbage collector:
+
+```bash
+lust --no-gc server.lust
+# Or via environment variable:
+LUST_NO_GC=1 lust server.lust
+```
 
 ### Bytecode Disassembly
 

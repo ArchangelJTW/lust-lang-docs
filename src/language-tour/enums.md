@@ -158,6 +158,27 @@ end
 
 ---
 
+## Propagating Option and Result with `?`
+
+Rather than manually matching every `Option` or `Result` with `if x is Ok(...)`, Lust supports the postfix `?` (try-unwrap) operator:
+
+```lust
+function compute_ratio(a: int, b: int): Result<int, string>
+    local valid_a = divide(a, 2)?      -- Early returns Err if divide fails
+    local valid_b = divide(b, 2)?      -- Early returns Err if divide fails
+    return Result.Ok(valid_a + valid_b)
+end
+
+function get_first_character(words: Array<string>): Option<string>
+    local first_word = array.first(words)? -- Early returns None if empty
+    return string.slice(first_word, 0, 1)
+end
+```
+
+The try operator works uniformly across the Bytecode VM, Cranelift JIT, and Zig AOT backends.
+
+---
+
 ## Safe Indexing with `IndexError`
 
 Recall from [Collections](./collections.md) that array bracket reads `arr[i]` return `Result<T, IndexError>`:

@@ -16,10 +16,12 @@ Many scripting languages suffer from silent bugs due to pervasive dynamic typing
 | Feature | Description |
 |---|---|
 | **Static Types & Inference** | Declare types with `:` or let the typechecker infer them from context. |
+| **Complete Lua 5.4 Math & Bitwise** | Full arithmetic and bitwise operators: `//`, `^`, `&`, `\|`, `~`, `<<`, `>>`, `^^` and compound assignments. |
 | **Unified `is` Operator** | Check types, narrow union types, and destructure enum variants cleanly in conditionals. |
 | **Safe `as` Casting** | Fallible downcasting from `unknown` returns `Option<T>` without runtime crashes. |
-| **Trace-Based JIT** | Hot loops compile into native x64 machine code via `dynasm-rs`. |
-| **Deterministic Memory** | Reference counting frees resources immediately; a fallback cycle collector cleans up graphs. |
+| **Zero-Cost `table.*` Facade** | High-performance `Array<T>` and `Map<K, V>` collections unified under the `table.*` standard library module and `Table<T>` / `Table<K, V>` type aliases. |
+| **Multi-Tier Execution Pipeline** | Seamless execution across portable Bytecode VM, Cranelift JIT, and Direct Zig 0.17.1 AOT compilation (`.dylib`, `.a`, `--emit-h`). |
+| **Deterministic Memory** | Reference counting frees resources immediately; fallback cycle collector cleans up graphs; supports `--no-gc` zero-overhead mode. |
 | **Cooperative Multitasking** | Built-in `task` module provides coroutine scheduling with structured diagnostics. |
 | **First-Class Embedding** | Rich Rust embedding bindings (`EmbeddedProgram`), C FFI (`lust_ffi.h`), and native extension loading. |
 

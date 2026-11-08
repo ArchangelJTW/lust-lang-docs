@@ -141,21 +141,56 @@ end
 
 ### For-In Loops
 
-Use `for-in` to traverse collections:
+Use `for-in` to traverse collections, ranges, and index-value pairs:
 
 ```lust
--- Iterating over an Array
+-- 1. Direct element iteration over an Array
 local fruits: Array<string> = ["apple", "banana", "cherry"]
 for fruit in fruits do
     println("Fruit: " .. fruit)
 end
 
--- Iterating over a Map with map.iter()
+-- 2. 0-Based Index-Value iteration using ipairs(arr)
+for i, fruit in ipairs(fruits) do
+    -- i starts at 0 and goes to len - 1
+    println(i .. ": " .. fruit .. " (matches fruits[" .. i .. "])")
+end
+
+-- 3. Range-based iteration
+for i in 0..5 do
+    println("Range step: " .. i) -- 0, 1, 2, 3, 4
+end
+
+-- 4. Iterating over a Map with map.iter()
 local inventory: Map<string, int> = { apple = 10, banana = 25 }
 for item, count in map.iter(inventory) do
     println(item .. ": " .. count)
 end
 ```
+
+---
+
+## Error Propagation with the Try Operator (`?`)
+
+Lust provides the postfix `?` operator for clean, ergonomic error propagation without repetitive pattern matching:
+
+- **For `Result<T, E>`**: If the value is `Ok(v)`, it unwraps `v`. If `Err(e)`, it immediately returns `Result.Err(e)` from the enclosing function.
+- **For `Option<T>`**: If the value is `Some(v)`, it unwraps `v`. If `None`, it immediately returns `Option.None`.
+
+```lust
+function parse_and_double(s: string): Result<int, string>
+    -- Assume parse_int returns Result<int, string>
+    local num = parse_int(s)?
+    return Result.Ok(num * 2)
+end
+
+function get_first_length(items: Array<string>): Option<int>
+    local first = array.first(items)?
+    return Option.Some(string.len(first))
+end
+```
+
+The try operator is fully lowered into the MIR control-flow graph (`Terminator::Switch` and `Terminator::Cond`) across all backends (VM, Cranelift JIT, and Zig AOT).
 
 ---
 

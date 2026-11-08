@@ -55,22 +55,64 @@ local buffer_size: int = 1024
 
 ---
 
-## Arithmetic and Assignment Operators
+## Arithmetic Operators
 
-Lust provides standard arithmetic operators:
+Lust provides a complete set of arithmetic operators covering both integer and floating-point computations with 100% parity across the VM, Cranelift JIT, and Zig AOT backends:
 
 ```lust
-local a = 20
-local b = 6
+local a: int = 20
+local b: int = 6
 
 local sum = a + b              -- 26
-local difference = a - b       -- 14
-local product = a * b          -- 120
-local quotient = a / b         -- 3
-local remainder = a % b        -- 2
+local diff = a - b             -- 14
+local prod = a * b             -- 120
+local quot = a / b             -- 3 (Truncating division to zero)
+local floor_quot = a // b      -- 3 (Floor division: rounds towards -infinity)
+local remainder = a % b        -- 2 (Truncating remainder, matching Rust %)
+local power = 2 ^ 3            -- 8 (Integer exponentiation)
 ```
 
-Compound assignment operators modify variables in place:
+### Division and Remainder Semantics
+
+- **Standard Division (`/`)**: Performs truncating division towards zero (e.g., `-5 / 2 == -2`). Division by zero triggers a guaranteed `DivisionByZero` runtime trap across all backends.
+- **Floor Division (`//`)**: Rounds quotient strictly down towards $-\infty$:
+  - `5 // 2 == 2`
+  - `-5 // 2 == -3`
+  - `5 // -2 == -3`
+  - `-5 // -2 == 2`
+- **Modulo (`%`) vs `math.mod(a, b)`**:
+  - `%` implements truncating remainder (`wrapping_rem`, e.g., `-5 % 2 == -1`).
+  - `math.mod(a, b)` implements floored modulo whose sign matches the divisor $b$. This guarantees the invariant identity:
+    $$a == (a // b) * b + math.mod(a, b)$$
+
+### Exponentiation (`^`)
+
+- **Right-associative**: `2 ^ 3 ^ 2 == 2 ^ (3 ^ 2) == 2 ^ 9 == 512`.
+- **Precedence higher than unary minus**: `-2 ^ 2 == -(2 ^ 2) == -4`.
+- **Integer preservation**: `(int, int) -> int` when the exponent is non-negative ($>= 0$). A negative integer exponent raises a runtime error. `float ^ float` or mixed numeric operations return `float`.
+
+---
+
+## Bitwise Operators
+
+Bitwise operators operate on integer values (`int` / `i64`) with automatic shift amount normalization (`rhs & 63`):
+
+| Operator | Syntax | Description | Example |
+|---|---|---|---|
+| **AND** | `a & b` | Bitwise conjunction | `0b1100 & 0b1010 == 0b1000` |
+| **OR** | `a \| b` | Bitwise disjunction | `0b1100 \| 0b1010 == 0b1110` |
+| **XOR** | `a ^^ b` or `a ~ b` | Bitwise exclusive OR | `0b1100 ^^ 0b1010 == 0b0110` |
+| **NOT** | `~a` | Unary one's complement (`~x == (-x) - 1`) | `~0 == -1` |
+| **SHL** | `a << b` | Left shift (`l << (r & 63)`) | `1 << 4 == 16` |
+| **SHR** | `a >> b` | Arithmetic right shift (preserves sign) | `-16 >> 2 == -4` |
+
+> **Note on XOR and `~=`:** Lust accepts both `^^` and `~` for binary XOR. However, `^^` is the canonical operator because `^^=` is supported for compound assignment, whereas `~=` is reserved for the inequality comparison operator (`!=`).
+
+---
+
+## Compound Assignment Operators & Single Evaluation
+
+Lust supports in-place compound assignment for all binary arithmetic and bitwise operations:
 
 ```lust
 local total = 100
@@ -78,7 +120,39 @@ total += 25                    -- 125
 total -= 15                    -- 110
 total *= 2                     -- 220
 total /= 4                     -- 55
+total //= 2                    -- 27
+total %= 10                    -- 7
+total ^= 2                     -- 49
+total &= 0x0F                  -- 1
+total |= 0x10                  -- 17
+total ^^= 0x01                 -- 16
+total <<= 2                    -- 64
+total >>= 3                    -- 8
 ```
+
+### Guaranteed Single Evaluation
+When modifying nested structure fields or array index elements (such as `arr[get_index()] += step` or `target.field += step`), Lust guarantees that the target base and index expressions are evaluated **strictly once**. Side effects in accessor expressions are never duplicated.
+
+---
+
+## Operator Precedence
+
+Lust uses a 12-level precedence hierarchy matching modern systems languages:
+
+| Level | Operators | Associativity | Description |
+|:---:|---|:---:|---|
+| **12 (Highest)** | `.` (field), `[]` (index), `()` (call), `?` (try-unwrap) | Left | Primary access and error propagation |
+| **11** | `^` | **Right** | Exponentiation (`-2 ^ 2 == -4`) |
+| **10** | `-` (unary), `not`, `~` (bitwise NOT), `#` | Right | Unary prefixes |
+| **9** | `*`, `/`, `//`, `%` | Left | Multiplicative |
+| **8** | `+`, `-` | Left | Additive |
+| **7** | `..` | **Right** | String concatenation |
+| **6** | `<<`, `>>` | Left | Bitwise shifts |
+| **5** | `&` | Left | Bitwise AND |
+| **4** | `^^`, `~` (binary XOR) | Left | Bitwise XOR |
+| **3** | `\|` | Left | Bitwise OR |
+| **2** | `==`, `!=`, `~=`, `<`, `<=`, `>`, `>=` | None | Relational comparisons |
+| **1 (Lowest)** | `and`, `or` | Left | Short-circuit boolean logic |
 
 ---
 
