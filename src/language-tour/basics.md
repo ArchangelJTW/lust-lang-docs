@@ -55,6 +55,130 @@ local buffer_size: int = 1024
 
 ---
 
+## Numeric Literals & Radix Bases
+
+Lust provides first-class support for four numeric bases (decimal, hexadecimal, binary, and octal), visual digit separators (`_`), bit pattern semantics, and flexible floating-point representations.
+
+### Radix Notations & Integer Literals
+
+Integer literals default to 64-bit signed integers (`int` / `i64`). You can express integers using any of the four standard radix bases:
+
+| Base | Prefix | Valid Digits | Examples | Description |
+|---|---|---|---|---|
+| **Decimal** | *(none)* | `0-9` | `42`, `1_000_000`, `42_133_7` | Standard base-10 integers |
+| **Hexadecimal** | `0x` or `0X` | `0-9`, `a-f`, `A-F` | `0x0F`, `0xDEAD_BEEF`, `0xFFFF_FFFF_FFFF_FFFF` | Base-16 bit patterns |
+| **Binary** | `0b` or `0B` | `0`, `1` | `0b1010_0101`, `0b1111_0000` | Base-2 binary strings |
+| **Octal** | `0o` or `0O` | `0-7` | `0o755`, `0o644`, `0o177777` | Base-8 POSIX permission masks |
+
+Both lowercase and uppercase radix prefixes (`0x` / `0X`, `0b` / `0B`, `0o` / `0O`) are fully supported and interchangeable.
+
+### Bit Patterns & Two's Complement Semantics
+
+In Lust, radix literals (`0x`, `0b`, `0o`) are interpreted as 64-bit unsigned register bit patterns (`0x0 ..= 0xFFFF_FFFF_FFFF_FFFF`). The compiler maps the raw bit pattern into Lust's signed 64-bit integer type (`int` / `i64`) using two's complement reinterpretation (`val as i64`):
+
+- **Upper positive boundary (`i64::MAX`)**:  
+  `0x7FFF_FFFF_FFFF_FFFF` = `9223372036854775807`
+- **Most Significant Bit (MSB) boundary (`i64::MIN`)**:  
+  `0x8000_0000_0000_0000` = `-9223372036854775808`
+- **All bits set (mask of all ones)**:  
+  `0xFFFF_FFFF_FFFF_FFFF` = `-1`
+
+This design provides clean, zero-overhead bit manipulation without requiring special unsigned primitive types:
+
+```lust
+local all_ones: int = 0xFFFF_FFFF_FFFF_FFFF  -- Value is -1
+local msb_flag: int = 0x8000_0000_0000_0000  -- Value is -9223372036854775808
+local max_pos: int  = 0x7FFF_FFFF_FFFF_FFFF  -- Value is 9223372036854775807
+```
+
+For standard decimal numbers, Lust directly supports the full 64-bit range from `-9223372036854775808` (`i64::MIN`) to `9223372036854775807` (`i64::MAX`). Values exceeding 64-bit capacity produce a compile-time overflow error.
+
+### Digit Separators (`_`)
+
+To improve readability when writing large numbers or grouped bit patterns, Lust allows underscore (`_`) separators between digits:
+
+```lust
+local microsecond_budget = 1_000_000
+local subnet_mask = 0b11111111_11111111_11111111_00000000
+local hex_magic = 0xCAFE_BABE
+```
+
+#### Placement Rules
+
+Digit separators are strictly restricted to positions between digits to prevent ambiguity:
+- **Allowed**: Between any two valid digits of the corresponding base (e.g., `1_000_000`, `0xDEAD_BEEF`, `0b1010_0101`, `0o123_456`).
+- **Consecutive underscores are prohibited**: `1__0` or `0x1__0` (compile error).
+- **Trailing underscores are prohibited**: `100_` or `0xFF_` (compile error).
+- **Leading underscore after prefix is prohibited**: `0x_1`, `0b_0`, or `0o_7` (compile error).
+- **Adjacency to a decimal point is prohibited**: `1._0` or `1_.0` (compile error).
+- **Adjacency to an exponent indicator or sign is prohibited**: `1.0_e3`, `1e_3`, or `1e+_3` (compile error).
+
+### Floating-Point Literals
+
+Floating-point numbers (`float` / `f64`) can be written with a fractional decimal point, scientific notation with an exponent indicator (`e` or `E`), or both:
+
+- **Fractional decimals**: `3.1415_9265`, `1_000.5_0`, `0.001`
+- **Scientific notation**: `1e3` ($1000.0$), `1e-3` ($0.001$), `1.0e+6` ($1000000.0$)
+- **With separators**: `1e1_0` ($10^{10}$)
+
+Underscores may be used within the integer, fractional, or exponent parts following the same placement rules.
+
+### Complete Executable Example
+
+Below is a complete, executable Lust script demonstrating all numeric literal variants, bit patterns, and assertions:
+
+```lust
+-- Decimal integers and digit separators
+local dec = 1_000_000
+local pi_approx = 3.1415_9265
+local sci_not = 1.0e+6
+local dec_min = -9_223_372_036_854_775_808
+local dec_max = 9_223_372_036_854_775_807
+assert(dec == 1000000)
+assert(pi_approx == 3.14159265)
+assert(sci_not == 1000000.0)
+assert(dec_min == -9223372036854775808)
+assert(dec_max == 9223372036854775807)
+
+-- Hexadecimal bit patterns and MSB bounds
+local hex_val = 0xDEAD_BEEF
+local hex_upper = 0x7FFF_FFFF_FFFF_FFFF
+local hex_min = 0x8000_0000_0000_0000
+local hex_all_ones = 0xFFFF_FFFF_FFFF_FFFF
+assert(hex_val == 3735928559)
+assert(hex_upper == 9223372036854775807)
+assert(hex_min == -9223372036854775808)
+assert(hex_all_ones == -1)
+
+-- Binary literals
+local bin_byte = 0b1010_0101
+local bin_nibble = 0B1111_0000
+assert(bin_byte == 165)
+assert(bin_nibble == 240)
+
+-- Octal literals
+local oct_mode = 0o755
+local oct_rw = 0O644
+local oct_max16 = 0o177777
+assert(oct_mode == 493)
+assert(oct_rw == 420)
+assert(oct_max16 == 65535)
+
+-- Scientific notation and floating-point with separators
+local exp_small = 1e-3
+local exp_large = 1e3
+local exp_sep = 1e1_0
+local float_sep = 1_000.5_0
+assert(exp_small == 0.001)
+assert(exp_large == 1000.0)
+assert(exp_sep == 10000000000.0)
+assert(float_sep == 1000.5)
+
+println("All numeric literal assertions passed!")
+```
+
+---
+
 ## Arithmetic Operators
 
 Lust provides a complete set of arithmetic operators covering both integer and floating-point computations with 100% parity across the VM, Cranelift JIT, and Zig AOT backends:
