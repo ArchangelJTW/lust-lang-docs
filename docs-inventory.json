@@ -1,0 +1,3341 @@
+[
+  {
+    "id": "DOC-APPENDIX-001",
+    "chapter": "appendix.md",
+    "line_start": 32,
+    "line_end": 39,
+    "class": "TRACE_OUTPUT",
+    "source_target": null,
+    "oracle": {
+      "type": "trace_match"
+    },
+    "link_rule": {
+      "mandatory": false,
+      "type": "none"
+    }
+  },
+  {
+    "id": "DOC-DATA-AND-SCHEMAS-001",
+    "chapter": "data-and-schemas.md",
+    "line_start": 48,
+    "line_end": 64,
+    "class": "CARGO_EXAMPLE",
+    "source_target": "examples/schemas/02_json_deserialization.rs",
+    "oracle": {
+      "type": "reference_exists"
+    },
+    "link_rule": {
+      "mandatory": true,
+      "type": "repo_file"
+    }
+  },
+  {
+    "id": "DOC-DATA-AND-SCHEMAS-002",
+    "chapter": "data-and-schemas.md",
+    "line_start": 66,
+    "line_end": 76,
+    "class": "CARGO_EXAMPLE",
+    "source_target": null,
+    "oracle": {
+      "type": "reference_exists"
+    },
+    "link_rule": {
+      "mandatory": false,
+      "type": "none"
+    }
+  },
+  {
+    "id": "DOC-DATA-AND-SCHEMAS-003",
+    "chapter": "data-and-schemas.md",
+    "line_start": 82,
+    "line_end": 98,
+    "class": "CONTEXTUAL_LUST",
+    "source_target": null,
+    "oracle": {
+      "type": "diagnostic_match",
+      "expected_exit": 0
+    },
+    "link_rule": {
+      "mandatory": false,
+      "type": "none"
+    }
+  },
+  {
+    "id": "DOC-DATA-AND-SCHEMAS-004",
+    "chapter": "data-and-schemas.md",
+    "line_start": 112,
+    "line_end": 125,
+    "class": "CARGO_EXAMPLE",
+    "source_target": "examples/schemas/03_messagepack_binary.rs",
+    "oracle": {
+      "type": "reference_exists"
+    },
+    "link_rule": {
+      "mandatory": true,
+      "type": "repo_file"
+    }
+  },
+  {
+    "id": "DOC-DATA-AND-SCHEMAS-005",
+    "chapter": "data-and-schemas.md",
+    "line_start": 147,
+    "line_end": 160,
+    "class": "CARGO_EXAMPLE",
+    "source_target": "examples/schemas/01_schema_validation.rs",
+    "oracle": {
+      "type": "reference_exists"
+    },
+    "link_rule": {
+      "mandatory": true,
+      "type": "repo_file"
+    }
+  },
+  {
+    "id": "DOC-DATA-AND-SCHEMAS-006",
+    "chapter": "data-and-schemas.md",
+    "line_start": 192,
+    "line_end": 201,
+    "class": "CARGO_EXAMPLE",
+    "source_target": null,
+    "oracle": {
+      "type": "reference_exists"
+    },
+    "link_rule": {
+      "mandatory": false,
+      "type": "none"
+    }
+  },
+  {
+    "id": "DOC-DATA-AND-SCHEMAS-007",
+    "chapter": "data-and-schemas.md",
+    "line_start": 207,
+    "line_end": 229,
+    "class": "CARGO_EXAMPLE",
+    "source_target": null,
+    "oracle": {
+      "type": "reference_exists"
+    },
+    "link_rule": {
+      "mandatory": false,
+      "type": "none"
+    }
+  },
+  {
+    "id": "DOC-DATA-AND-SCHEMAS-008",
+    "chapter": "data-and-schemas.md",
+    "line_start": 235,
+    "line_end": 255,
+    "class": "CARGO_EXAMPLE",
+    "source_target": null,
+    "oracle": {
+      "type": "reference_exists"
+    },
+    "link_rule": {
+      "mandatory": false,
+      "type": "none"
+    }
+  },
+  {
+    "id": "DOC-DATA-AND-SCHEMAS-009",
+    "chapter": "data-and-schemas.md",
+    "line_start": 270,
+    "line_end": 276,
+    "class": "DIAGRAM_SPEC",
+    "source_target": null,
+    "oracle": {
+      "type": "reference_exists"
+    },
+    "link_rule": {
+      "mandatory": false,
+      "type": "none"
+    }
+  },
+  {
+    "id": "DOC-DATA-AND-SCHEMAS-010",
+    "chapter": "data-and-schemas.md",
+    "line_start": 282,
+    "line_end": 289,
+    "class": "CARGO_EXAMPLE",
+    "source_target": null,
+    "oracle": {
+      "type": "reference_exists"
+    },
+    "link_rule": {
+      "mandatory": false,
+      "type": "none"
+    }
+  },
+  {
+    "id": "DOC-DATA-AND-SCHEMAS-011",
+    "chapter": "data-and-schemas.md",
+    "line_start": 295,
+    "line_end": 309,
+    "class": "CARGO_EXAMPLE",
+    "source_target": null,
+    "oracle": {
+      "type": "reference_exists"
+    },
+    "link_rule": {
+      "mandatory": false,
+      "type": "none"
+    }
+  },
+  {
+    "id": "DOC-DATA-AND-SCHEMAS-012",
+    "chapter": "data-and-schemas.md",
+    "line_start": 321,
+    "line_end": 341,
+    "class": "CARGO_EXAMPLE",
+    "source_target": null,
+    "oracle": {
+      "type": "reference_exists"
+    },
+    "link_rule": {
+      "mandatory": false,
+      "type": "none"
+    }
+  },
+  {
+    "id": "DOC-DATA-AND-SCHEMAS-013",
+    "chapter": "data-and-schemas.md",
+    "line_start": 352,
+    "line_end": 376,
+    "class": "RUNNABLE_LUST",
+    "source_target": "examples/schemas/04_schema_dsl.lust",
+    "oracle": {
+      "type": "exit_code_and_stdout",
+      "expected_exit": 0
+    },
+    "link_rule": {
+      "mandatory": true,
+      "type": "repo_file"
+    }
+  },
+  {
+    "id": "DOC-EFFECTS-001",
+    "chapter": "effects.md",
+    "line_start": 20,
+    "line_end": 45,
+    "class": "DIAGRAM_SPEC",
+    "source_target": null,
+    "oracle": {
+      "type": "reference_exists"
+    },
+    "link_rule": {
+      "mandatory": false,
+      "type": "none"
+    }
+  },
+  {
+    "id": "DOC-EFFECTS-002",
+    "chapter": "effects.md",
+    "line_start": 81,
+    "line_end": 91,
+    "class": "RUNNABLE_LUST",
+    "source_target": "examples/effects/04_effects_syntax.lust",
+    "oracle": {
+      "type": "exit_code_and_stdout",
+      "expected_exit": 0
+    },
+    "link_rule": {
+      "mandatory": true,
+      "type": "repo_file"
+    }
+  },
+  {
+    "id": "DOC-EFFECTS-003",
+    "chapter": "effects.md",
+    "line_start": 99,
+    "line_end": 115,
+    "class": "CONTEXTUAL_LUST",
+    "source_target": null,
+    "oracle": {
+      "type": "diagnostic_match",
+      "expected_exit": 0
+    },
+    "link_rule": {
+      "mandatory": false,
+      "type": "none"
+    }
+  },
+  {
+    "id": "DOC-EFFECTS-004",
+    "chapter": "effects.md",
+    "line_start": 128,
+    "line_end": 130,
+    "class": "TRACE_OUTPUT",
+    "source_target": null,
+    "oracle": {
+      "type": "trace_match"
+    },
+    "link_rule": {
+      "mandatory": false,
+      "type": "none"
+    }
+  },
+  {
+    "id": "DOC-EFFECTS-005",
+    "chapter": "effects.md",
+    "line_start": 142,
+    "line_end": 159,
+    "class": "CONTEXTUAL_LUST",
+    "source_target": null,
+    "oracle": {
+      "type": "diagnostic_match",
+      "expected_exit": 0
+    },
+    "link_rule": {
+      "mandatory": false,
+      "type": "none"
+    }
+  },
+  {
+    "id": "DOC-EFFECTS-006",
+    "chapter": "effects.md",
+    "line_start": 171,
+    "line_end": 178,
+    "class": "CARGO_EXAMPLE",
+    "source_target": null,
+    "oracle": {
+      "type": "reference_exists"
+    },
+    "link_rule": {
+      "mandatory": false,
+      "type": "none"
+    }
+  },
+  {
+    "id": "DOC-EFFECTS-007",
+    "chapter": "effects.md",
+    "line_start": 190,
+    "line_end": 203,
+    "class": "CARGO_EXAMPLE",
+    "source_target": null,
+    "oracle": {
+      "type": "reference_exists"
+    },
+    "link_rule": {
+      "mandatory": false,
+      "type": "none"
+    }
+  },
+  {
+    "id": "DOC-EFFECTS-008",
+    "chapter": "effects.md",
+    "line_start": 217,
+    "line_end": 219,
+    "class": "TRACE_OUTPUT",
+    "source_target": null,
+    "oracle": {
+      "type": "trace_match"
+    },
+    "link_rule": {
+      "mandatory": false,
+      "type": "none"
+    }
+  },
+  {
+    "id": "DOC-EFFECTS-009",
+    "chapter": "effects.md",
+    "line_start": 246,
+    "line_end": 251,
+    "class": "CARGO_EXAMPLE",
+    "source_target": "examples/effects/01_basic_effects.rs",
+    "oracle": {
+      "type": "reference_exists"
+    },
+    "link_rule": {
+      "mandatory": true,
+      "type": "repo_file"
+    }
+  },
+  {
+    "id": "DOC-EFFECTS-010",
+    "chapter": "effects.md",
+    "line_start": 287,
+    "line_end": 302,
+    "class": "CARGO_EXAMPLE",
+    "source_target": "examples/effects/03_acquire_release_and_scopes.rs",
+    "oracle": {
+      "type": "reference_exists"
+    },
+    "link_rule": {
+      "mandatory": true,
+      "type": "repo_file"
+    }
+  },
+  {
+    "id": "DOC-EFFECTS-011",
+    "chapter": "effects.md",
+    "line_start": 315,
+    "line_end": 326,
+    "class": "CARGO_EXAMPLE",
+    "source_target": "examples/effects/02_retry_and_repeat.rs",
+    "oracle": {
+      "type": "reference_exists"
+    },
+    "link_rule": {
+      "mandatory": true,
+      "type": "repo_file"
+    }
+  },
+  {
+    "id": "DOC-EFFECTS-012",
+    "chapter": "effects.md",
+    "line_start": 338,
+    "line_end": 357,
+    "class": "CARGO_EXAMPLE",
+    "source_target": "examples/effects/05_dependency_injection_mocking.rs",
+    "oracle": {
+      "type": "reference_exists"
+    },
+    "link_rule": {
+      "mandatory": true,
+      "type": "repo_file"
+    }
+  },
+  {
+    "id": "DOC-EMBEDDING-001",
+    "chapter": "embedding.md",
+    "line_start": 16,
+    "line_end": 18,
+    "class": "CLI_BASH",
+    "source_target": null,
+    "oracle": {
+      "type": "cli_help_valid"
+    },
+    "link_rule": {
+      "mandatory": false,
+      "type": "none"
+    }
+  },
+  {
+    "id": "DOC-EMBEDDING-002",
+    "chapter": "embedding.md",
+    "line_start": 37,
+    "line_end": 62,
+    "class": "CARGO_EXAMPLE",
+    "source_target": "examples/embedding/standalone_vm.rs",
+    "oracle": {
+      "type": "reference_exists"
+    },
+    "link_rule": {
+      "mandatory": true,
+      "type": "repo_file"
+    }
+  },
+  {
+    "id": "DOC-EMBEDDING-003",
+    "chapter": "embedding.md",
+    "line_start": 82,
+    "line_end": 96,
+    "class": "CARGO_EXAMPLE",
+    "source_target": null,
+    "oracle": {
+      "type": "reference_exists"
+    },
+    "link_rule": {
+      "mandatory": false,
+      "type": "none"
+    }
+  },
+  {
+    "id": "DOC-EMBEDDING-004",
+    "chapter": "embedding.md",
+    "line_start": 104,
+    "line_end": 126,
+    "class": "CARGO_EXAMPLE",
+    "source_target": null,
+    "oracle": {
+      "type": "reference_exists"
+    },
+    "link_rule": {
+      "mandatory": false,
+      "type": "none"
+    }
+  },
+  {
+    "id": "DOC-EMBEDDING-005",
+    "chapter": "embedding.md",
+    "line_start": 132,
+    "line_end": 136,
+    "class": "CONTEXTUAL_LUST",
+    "source_target": null,
+    "oracle": {
+      "type": "diagnostic_match",
+      "expected_exit": 0
+    },
+    "link_rule": {
+      "mandatory": false,
+      "type": "none"
+    }
+  },
+  {
+    "id": "DOC-EMBEDDING-006",
+    "chapter": "embedding.md",
+    "line_start": 140,
+    "line_end": 159,
+    "class": "CARGO_EXAMPLE",
+    "source_target": null,
+    "oracle": {
+      "type": "reference_exists"
+    },
+    "link_rule": {
+      "mandatory": false,
+      "type": "none"
+    }
+  },
+  {
+    "id": "DOC-EMBEDDING-007",
+    "chapter": "embedding.md",
+    "line_start": 165,
+    "line_end": 171,
+    "class": "CONTEXTUAL_LUST",
+    "source_target": null,
+    "oracle": {
+      "type": "diagnostic_match",
+      "expected_exit": 0
+    },
+    "link_rule": {
+      "mandatory": false,
+      "type": "none"
+    }
+  },
+  {
+    "id": "DOC-EMBEDDING-008",
+    "chapter": "embedding.md",
+    "line_start": 175,
+    "line_end": 198,
+    "class": "CARGO_EXAMPLE",
+    "source_target": null,
+    "oracle": {
+      "type": "reference_exists"
+    },
+    "link_rule": {
+      "mandatory": false,
+      "type": "none"
+    }
+  },
+  {
+    "id": "DOC-EMBEDDING-009",
+    "chapter": "embedding.md",
+    "line_start": 204,
+    "line_end": 210,
+    "class": "CARGO_EXAMPLE",
+    "source_target": null,
+    "oracle": {
+      "type": "reference_exists"
+    },
+    "link_rule": {
+      "mandatory": false,
+      "type": "none"
+    }
+  },
+  {
+    "id": "DOC-EMBEDDING-010",
+    "chapter": "embedding.md",
+    "line_start": 218,
+    "line_end": 236,
+    "class": "CARGO_EXAMPLE",
+    "source_target": null,
+    "oracle": {
+      "type": "reference_exists"
+    },
+    "link_rule": {
+      "mandatory": false,
+      "type": "none"
+    }
+  },
+  {
+    "id": "DOC-EMBEDDING-011",
+    "chapter": "embedding.md",
+    "line_start": 244,
+    "line_end": 262,
+    "class": "CARGO_EXAMPLE",
+    "source_target": null,
+    "oracle": {
+      "type": "reference_exists"
+    },
+    "link_rule": {
+      "mandatory": false,
+      "type": "none"
+    }
+  },
+  {
+    "id": "DOC-EMBEDDING-012",
+    "chapter": "embedding.md",
+    "line_start": 272,
+    "line_end": 288,
+    "class": "CARGO_EXAMPLE",
+    "source_target": null,
+    "oracle": {
+      "type": "reference_exists"
+    },
+    "link_rule": {
+      "mandatory": false,
+      "type": "none"
+    }
+  },
+  {
+    "id": "DOC-EMBEDDING-013",
+    "chapter": "embedding.md",
+    "line_start": 294,
+    "line_end": 309,
+    "class": "CARGO_EXAMPLE",
+    "source_target": null,
+    "oracle": {
+      "type": "reference_exists"
+    },
+    "link_rule": {
+      "mandatory": false,
+      "type": "none"
+    }
+  },
+  {
+    "id": "DOC-EMBEDDING-014",
+    "chapter": "embedding.md",
+    "line_start": 319,
+    "line_end": 332,
+    "class": "CARGO_EXAMPLE",
+    "source_target": null,
+    "oracle": {
+      "type": "reference_exists"
+    },
+    "link_rule": {
+      "mandatory": false,
+      "type": "none"
+    }
+  },
+  {
+    "id": "DOC-EMBEDDING-015",
+    "chapter": "embedding.md",
+    "line_start": 338,
+    "line_end": 343,
+    "class": "CARGO_EXAMPLE",
+    "source_target": null,
+    "oracle": {
+      "type": "reference_exists"
+    },
+    "link_rule": {
+      "mandatory": false,
+      "type": "none"
+    }
+  },
+  {
+    "id": "DOC-EMBEDDING-016",
+    "chapter": "embedding.md",
+    "line_start": 369,
+    "line_end": 372,
+    "class": "CLI_BASH",
+    "source_target": null,
+    "oracle": {
+      "type": "cli_help_valid"
+    },
+    "link_rule": {
+      "mandatory": false,
+      "type": "none"
+    }
+  },
+  {
+    "id": "DOC-EMBEDDING-017",
+    "chapter": "embedding.md",
+    "line_start": 382,
+    "line_end": 443,
+    "class": "TRACE_OUTPUT",
+    "source_target": null,
+    "oracle": {
+      "type": "trace_match"
+    },
+    "link_rule": {
+      "mandatory": false,
+      "type": "none"
+    }
+  },
+  {
+    "id": "DOC-EMBEDDING-018",
+    "chapter": "embedding.md",
+    "line_start": 469,
+    "line_end": 475,
+    "class": "CONFIG_DATA",
+    "source_target": null,
+    "oracle": {
+      "type": "schema_valid"
+    },
+    "link_rule": {
+      "mandatory": false,
+      "type": "none"
+    }
+  },
+  {
+    "id": "DOC-EMBEDDING-019",
+    "chapter": "embedding.md",
+    "line_start": 483,
+    "line_end": 548,
+    "class": "CARGO_EXAMPLE",
+    "source_target": null,
+    "oracle": {
+      "type": "reference_exists"
+    },
+    "link_rule": {
+      "mandatory": false,
+      "type": "none"
+    }
+  },
+  {
+    "id": "DOC-EMBEDDING-020",
+    "chapter": "embedding.md",
+    "line_start": 559,
+    "line_end": 562,
+    "class": "CONFIG_DATA",
+    "source_target": null,
+    "oracle": {
+      "type": "schema_valid"
+    },
+    "link_rule": {
+      "mandatory": false,
+      "type": "none"
+    }
+  },
+  {
+    "id": "DOC-EMBEDDING-021",
+    "chapter": "embedding.md",
+    "line_start": 567,
+    "line_end": 569,
+    "class": "CLI_BASH",
+    "source_target": null,
+    "oracle": {
+      "type": "cli_help_valid"
+    },
+    "link_rule": {
+      "mandatory": false,
+      "type": "none"
+    }
+  },
+  {
+    "id": "DOC-EMBEDDING-022",
+    "chapter": "embedding.md",
+    "line_start": 573,
+    "line_end": 577,
+    "class": "CONTEXTUAL_LUST",
+    "source_target": null,
+    "oracle": {
+      "type": "diagnostic_match",
+      "expected_exit": 0
+    },
+    "link_rule": {
+      "mandatory": false,
+      "type": "none"
+    }
+  },
+  {
+    "id": "DOC-EMBEDDING-023",
+    "chapter": "embedding.md",
+    "line_start": 589,
+    "line_end": 595,
+    "class": "CONFIG_DATA",
+    "source_target": null,
+    "oracle": {
+      "type": "schema_valid"
+    },
+    "link_rule": {
+      "mandatory": false,
+      "type": "none"
+    }
+  },
+  {
+    "id": "DOC-EMBEDDING-024",
+    "chapter": "embedding.md",
+    "line_start": 599,
+    "line_end": 601,
+    "class": "CLI_BASH",
+    "source_target": null,
+    "oracle": {
+      "type": "cli_help_valid"
+    },
+    "link_rule": {
+      "mandatory": false,
+      "type": "none"
+    }
+  },
+  {
+    "id": "DOC-EMBEDDING-025",
+    "chapter": "embedding.md",
+    "line_start": 605,
+    "line_end": 614,
+    "class": "TRACE_OUTPUT",
+    "source_target": null,
+    "oracle": {
+      "type": "trace_match"
+    },
+    "link_rule": {
+      "mandatory": false,
+      "type": "none"
+    }
+  },
+  {
+    "id": "DOC-EMBEDDING-026",
+    "chapter": "embedding.md",
+    "line_start": 618,
+    "line_end": 626,
+    "class": "CONTEXTUAL_LUST",
+    "source_target": null,
+    "oracle": {
+      "type": "diagnostic_match",
+      "expected_exit": 0
+    },
+    "link_rule": {
+      "mandatory": false,
+      "type": "none"
+    }
+  },
+  {
+    "id": "DOC-LANGUAGE-TOUR-BASICS-001",
+    "chapter": "language-tour/basics.md",
+    "line_start": 12,
+    "line_end": 15,
+    "class": "RUNNABLE_LUST",
+    "source_target": "examples/basic/02_variables.lust",
+    "oracle": {
+      "type": "exit_code_and_stdout",
+      "expected_exit": 0
+    },
+    "link_rule": {
+      "mandatory": true,
+      "type": "repo_file"
+    }
+  },
+  {
+    "id": "DOC-LANGUAGE-TOUR-BASICS-002",
+    "chapter": "language-tour/basics.md",
+    "line_start": 19,
+    "line_end": 22,
+    "class": "CONTEXTUAL_LUST",
+    "source_target": null,
+    "oracle": {
+      "type": "diagnostic_match",
+      "expected_exit": 0
+    },
+    "link_rule": {
+      "mandatory": false,
+      "type": "none"
+    }
+  },
+  {
+    "id": "DOC-LANGUAGE-TOUR-BASICS-003",
+    "chapter": "language-tour/basics.md",
+    "line_start": 43,
+    "line_end": 48,
+    "class": "CONTEXTUAL_LUST",
+    "source_target": null,
+    "oracle": {
+      "type": "diagnostic_match",
+      "expected_exit": 0
+    },
+    "link_rule": {
+      "mandatory": false,
+      "type": "none"
+    }
+  },
+  {
+    "id": "DOC-LANGUAGE-TOUR-BASICS-004",
+    "chapter": "language-tour/basics.md",
+    "line_start": 52,
+    "line_end": 55,
+    "class": "CONTEXTUAL_LUST",
+    "source_target": null,
+    "oracle": {
+      "type": "diagnostic_match",
+      "expected_exit": 0
+    },
+    "link_rule": {
+      "mandatory": false,
+      "type": "none"
+    }
+  },
+  {
+    "id": "DOC-LANGUAGE-TOUR-BASICS-005",
+    "chapter": "language-tour/basics.md",
+    "line_start": 89,
+    "line_end": 93,
+    "class": "CONTEXTUAL_LUST",
+    "source_target": null,
+    "oracle": {
+      "type": "diagnostic_match",
+      "expected_exit": 0
+    },
+    "link_rule": {
+      "mandatory": false,
+      "type": "none"
+    }
+  },
+  {
+    "id": "DOC-LANGUAGE-TOUR-BASICS-006",
+    "chapter": "language-tour/basics.md",
+    "line_start": 101,
+    "line_end": 105,
+    "class": "CONTEXTUAL_LUST",
+    "source_target": null,
+    "oracle": {
+      "type": "diagnostic_match",
+      "expected_exit": 0
+    },
+    "link_rule": {
+      "mandatory": false,
+      "type": "none"
+    }
+  },
+  {
+    "id": "DOC-LANGUAGE-TOUR-BASICS-007",
+    "chapter": "language-tour/basics.md",
+    "line_start": 134,
+    "line_end": 222,
+    "class": "RUNNABLE_LUST",
+    "source_target": "examples/basic/20_numeric_literals.lust",
+    "oracle": {
+      "type": "exit_code_and_stdout",
+      "expected_exit": 0
+    },
+    "link_rule": {
+      "mandatory": true,
+      "type": "repo_file"
+    }
+  },
+  {
+    "id": "DOC-LANGUAGE-TOUR-BASICS-008",
+    "chapter": "language-tour/basics.md",
+    "line_start": 230,
+    "line_end": 241,
+    "class": "CONTEXTUAL_LUST",
+    "source_target": null,
+    "oracle": {
+      "type": "diagnostic_match",
+      "expected_exit": 0
+    },
+    "link_rule": {
+      "mandatory": false,
+      "type": "none"
+    }
+  },
+  {
+    "id": "DOC-LANGUAGE-TOUR-BASICS-009",
+    "chapter": "language-tour/basics.md",
+    "line_start": 285,
+    "line_end": 299,
+    "class": "CONTEXTUAL_LUST",
+    "source_target": null,
+    "oracle": {
+      "type": "diagnostic_match",
+      "expected_exit": 0
+    },
+    "link_rule": {
+      "mandatory": false,
+      "type": "none"
+    }
+  },
+  {
+    "id": "DOC-LANGUAGE-TOUR-BASICS-010",
+    "chapter": "language-tour/basics.md",
+    "line_start": 331,
+    "line_end": 341,
+    "class": "CONTEXTUAL_LUST",
+    "source_target": null,
+    "oracle": {
+      "type": "diagnostic_match",
+      "expected_exit": 0
+    },
+    "link_rule": {
+      "mandatory": false,
+      "type": "none"
+    }
+  },
+  {
+    "id": "DOC-LANGUAGE-TOUR-BASICS-011",
+    "chapter": "language-tour/basics.md",
+    "line_start": 349,
+    "line_end": 354,
+    "class": "CONTEXTUAL_LUST",
+    "source_target": null,
+    "oracle": {
+      "type": "diagnostic_match",
+      "expected_exit": 0
+    },
+    "link_rule": {
+      "mandatory": false,
+      "type": "none"
+    }
+  },
+  {
+    "id": "DOC-LANGUAGE-TOUR-BASICS-012",
+    "chapter": "language-tour/basics.md",
+    "line_start": 358,
+    "line_end": 363,
+    "class": "CONTEXTUAL_LUST",
+    "source_target": null,
+    "oracle": {
+      "type": "diagnostic_match",
+      "expected_exit": 0
+    },
+    "link_rule": {
+      "mandatory": false,
+      "type": "none"
+    }
+  },
+  {
+    "id": "DOC-LANGUAGE-TOUR-BASICS-013",
+    "chapter": "language-tour/basics.md",
+    "line_start": 367,
+    "line_end": 369,
+    "class": "CONTEXTUAL_LUST",
+    "source_target": null,
+    "oracle": {
+      "type": "diagnostic_match",
+      "expected_exit": 0
+    },
+    "link_rule": {
+      "mandatory": false,
+      "type": "none"
+    }
+  },
+  {
+    "id": "DOC-LANGUAGE-TOUR-BASICS-014",
+    "chapter": "language-tour/basics.md",
+    "line_start": 373,
+    "line_end": 375,
+    "class": "CONTEXTUAL_LUST",
+    "source_target": null,
+    "oracle": {
+      "type": "diagnostic_match",
+      "expected_exit": 0
+    },
+    "link_rule": {
+      "mandatory": false,
+      "type": "none"
+    }
+  },
+  {
+    "id": "DOC-LANGUAGE-TOUR-BASICS-015",
+    "chapter": "language-tour/basics.md",
+    "line_start": 381,
+    "line_end": 389,
+    "class": "CONTEXTUAL_LUST",
+    "source_target": null,
+    "oracle": {
+      "type": "diagnostic_match",
+      "expected_exit": 0
+    },
+    "link_rule": {
+      "mandatory": false,
+      "type": "none"
+    }
+  },
+  {
+    "id": "DOC-LANGUAGE-TOUR-COLLECTIONS-001",
+    "chapter": "language-tour/collections.md",
+    "line_start": 16,
+    "line_end": 19,
+    "class": "RUNNABLE_LUST",
+    "source_target": "examples/basic/08_arrays.lust",
+    "oracle": {
+      "type": "exit_code_and_stdout",
+      "expected_exit": 0
+    },
+    "link_rule": {
+      "mandatory": true,
+      "type": "repo_file"
+    }
+  },
+  {
+    "id": "DOC-LANGUAGE-TOUR-COLLECTIONS-002",
+    "chapter": "language-tour/collections.md",
+    "line_start": 27,
+    "line_end": 39,
+    "class": "CONTEXTUAL_LUST",
+    "source_target": null,
+    "oracle": {
+      "type": "diagnostic_match",
+      "expected_exit": 0
+    },
+    "link_rule": {
+      "mandatory": false,
+      "type": "none"
+    }
+  },
+  {
+    "id": "DOC-LANGUAGE-TOUR-COLLECTIONS-003",
+    "chapter": "language-tour/collections.md",
+    "line_start": 43,
+    "line_end": 45,
+    "class": "CONTEXTUAL_LUST",
+    "source_target": null,
+    "oracle": {
+      "type": "diagnostic_match",
+      "expected_exit": 0
+    },
+    "link_rule": {
+      "mandatory": false,
+      "type": "none"
+    }
+  },
+  {
+    "id": "DOC-LANGUAGE-TOUR-COLLECTIONS-004",
+    "chapter": "language-tour/collections.md",
+    "line_start": 49,
+    "line_end": 54,
+    "class": "CONTEXTUAL_LUST",
+    "source_target": null,
+    "oracle": {
+      "type": "diagnostic_match",
+      "expected_exit": 0
+    },
+    "link_rule": {
+      "mandatory": false,
+      "type": "none"
+    }
+  },
+  {
+    "id": "DOC-LANGUAGE-TOUR-COLLECTIONS-005",
+    "chapter": "language-tour/collections.md",
+    "line_start": 80,
+    "line_end": 96,
+    "class": "CONTEXTUAL_LUST",
+    "source_target": null,
+    "oracle": {
+      "type": "diagnostic_match",
+      "expected_exit": 0
+    },
+    "link_rule": {
+      "mandatory": false,
+      "type": "none"
+    }
+  },
+  {
+    "id": "DOC-LANGUAGE-TOUR-COLLECTIONS-006",
+    "chapter": "language-tour/collections.md",
+    "line_start": 102,
+    "line_end": 121,
+    "class": "CONTEXTUAL_LUST",
+    "source_target": null,
+    "oracle": {
+      "type": "diagnostic_match",
+      "expected_exit": 0
+    },
+    "link_rule": {
+      "mandatory": false,
+      "type": "none"
+    }
+  },
+  {
+    "id": "DOC-LANGUAGE-TOUR-COLLECTIONS-007",
+    "chapter": "language-tour/collections.md",
+    "line_start": 132,
+    "line_end": 138,
+    "class": "RUNNABLE_LUST",
+    "source_target": "examples/basic/10_maps.lust",
+    "oracle": {
+      "type": "exit_code_and_stdout",
+      "expected_exit": 0
+    },
+    "link_rule": {
+      "mandatory": true,
+      "type": "repo_file"
+    }
+  },
+  {
+    "id": "DOC-LANGUAGE-TOUR-COLLECTIONS-008",
+    "chapter": "language-tour/collections.md",
+    "line_start": 159,
+    "line_end": 170,
+    "class": "CONTEXTUAL_LUST",
+    "source_target": null,
+    "oracle": {
+      "type": "diagnostic_match",
+      "expected_exit": 0
+    },
+    "link_rule": {
+      "mandatory": false,
+      "type": "none"
+    }
+  },
+  {
+    "id": "DOC-LANGUAGE-TOUR-COLLECTIONS-009",
+    "chapter": "language-tour/collections.md",
+    "line_start": 180,
+    "line_end": 186,
+    "class": "CONTEXTUAL_LUST",
+    "source_target": null,
+    "oracle": {
+      "type": "diagnostic_match",
+      "expected_exit": 0
+    },
+    "link_rule": {
+      "mandatory": false,
+      "type": "none"
+    }
+  },
+  {
+    "id": "DOC-LANGUAGE-TOUR-COLLECTIONS-010",
+    "chapter": "language-tour/collections.md",
+    "line_start": 190,
+    "line_end": 199,
+    "class": "CONTEXTUAL_LUST",
+    "source_target": null,
+    "oracle": {
+      "type": "diagnostic_match",
+      "expected_exit": 0
+    },
+    "link_rule": {
+      "mandatory": false,
+      "type": "none"
+    }
+  },
+  {
+    "id": "DOC-LANGUAGE-TOUR-COLLECTIONS-011",
+    "chapter": "language-tour/collections.md",
+    "line_start": 207,
+    "line_end": 215,
+    "class": "CONTEXTUAL_LUST",
+    "source_target": null,
+    "oracle": {
+      "type": "diagnostic_match",
+      "expected_exit": 0
+    },
+    "link_rule": {
+      "mandatory": false,
+      "type": "none"
+    }
+  },
+  {
+    "id": "DOC-LANGUAGE-TOUR-COLLECTIONS-012",
+    "chapter": "language-tour/collections.md",
+    "line_start": 225,
+    "line_end": 252,
+    "class": "CONTEXTUAL_LUST",
+    "source_target": null,
+    "oracle": {
+      "type": "diagnostic_match",
+      "expected_exit": 0
+    },
+    "link_rule": {
+      "mandatory": false,
+      "type": "none"
+    }
+  },
+  {
+    "id": "DOC-LANGUAGE-TOUR-COLLECTIONS-013",
+    "chapter": "language-tour/collections.md",
+    "line_start": 260,
+    "line_end": 276,
+    "class": "CONTEXTUAL_LUST",
+    "source_target": null,
+    "oracle": {
+      "type": "diagnostic_match",
+      "expected_exit": 0
+    },
+    "link_rule": {
+      "mandatory": false,
+      "type": "none"
+    }
+  },
+  {
+    "id": "DOC-LANGUAGE-TOUR-CONTROL-FLOW-001",
+    "chapter": "language-tour/control-flow.md",
+    "line_start": 14,
+    "line_end": 21,
+    "class": "RUNNABLE_LUST",
+    "source_target": "examples/basic/03_functions.lust",
+    "oracle": {
+      "type": "exit_code_and_stdout",
+      "expected_exit": 0
+    },
+    "link_rule": {
+      "mandatory": true,
+      "type": "repo_file"
+    }
+  },
+  {
+    "id": "DOC-LANGUAGE-TOUR-CONTROL-FLOW-002",
+    "chapter": "language-tour/control-flow.md",
+    "line_start": 25,
+    "line_end": 31,
+    "class": "CONTEXTUAL_LUST",
+    "source_target": null,
+    "oracle": {
+      "type": "diagnostic_match",
+      "expected_exit": 0
+    },
+    "link_rule": {
+      "mandatory": false,
+      "type": "none"
+    }
+  },
+  {
+    "id": "DOC-LANGUAGE-TOUR-CONTROL-FLOW-003",
+    "chapter": "language-tour/control-flow.md",
+    "line_start": 39,
+    "line_end": 50,
+    "class": "CONTEXTUAL_LUST",
+    "source_target": null,
+    "oracle": {
+      "type": "diagnostic_match",
+      "expected_exit": 0
+    },
+    "link_rule": {
+      "mandatory": false,
+      "type": "none"
+    }
+  },
+  {
+    "id": "DOC-LANGUAGE-TOUR-CONTROL-FLOW-004",
+    "chapter": "language-tour/control-flow.md",
+    "line_start": 54,
+    "line_end": 62,
+    "class": "CONTEXTUAL_LUST",
+    "source_target": null,
+    "oracle": {
+      "type": "diagnostic_match",
+      "expected_exit": 0
+    },
+    "link_rule": {
+      "mandatory": false,
+      "type": "none"
+    }
+  },
+  {
+    "id": "DOC-LANGUAGE-TOUR-CONTROL-FLOW-005",
+    "chapter": "language-tour/control-flow.md",
+    "line_start": 70,
+    "line_end": 82,
+    "class": "CONTEXTUAL_LUST",
+    "source_target": null,
+    "oracle": {
+      "type": "diagnostic_match",
+      "expected_exit": 0
+    },
+    "link_rule": {
+      "mandatory": false,
+      "type": "none"
+    }
+  },
+  {
+    "id": "DOC-LANGUAGE-TOUR-CONTROL-FLOW-006",
+    "chapter": "language-tour/control-flow.md",
+    "line_start": 92,
+    "line_end": 99,
+    "class": "CONTEXTUAL_LUST",
+    "source_target": null,
+    "oracle": {
+      "type": "diagnostic_match",
+      "expected_exit": 0
+    },
+    "link_rule": {
+      "mandatory": false,
+      "type": "none"
+    }
+  },
+  {
+    "id": "DOC-LANGUAGE-TOUR-CONTROL-FLOW-007",
+    "chapter": "language-tour/control-flow.md",
+    "line_start": 107,
+    "line_end": 111,
+    "class": "CONTEXTUAL_LUST",
+    "source_target": null,
+    "oracle": {
+      "type": "diagnostic_match",
+      "expected_exit": 0
+    },
+    "link_rule": {
+      "mandatory": false,
+      "type": "none"
+    }
+  },
+  {
+    "id": "DOC-LANGUAGE-TOUR-CONTROL-FLOW-008",
+    "chapter": "language-tour/control-flow.md",
+    "line_start": 124,
+    "line_end": 130,
+    "class": "RUNNABLE_LUST",
+    "source_target": "examples/basic/12_loops.lust",
+    "oracle": {
+      "type": "exit_code_and_stdout",
+      "expected_exit": 0
+    },
+    "link_rule": {
+      "mandatory": true,
+      "type": "repo_file"
+    }
+  },
+  {
+    "id": "DOC-LANGUAGE-TOUR-CONTROL-FLOW-009",
+    "chapter": "language-tour/control-flow.md",
+    "line_start": 136,
+    "line_end": 146,
+    "class": "CONTEXTUAL_LUST",
+    "source_target": null,
+    "oracle": {
+      "type": "diagnostic_match",
+      "expected_exit": 0
+    },
+    "link_rule": {
+      "mandatory": false,
+      "type": "none"
+    }
+  },
+  {
+    "id": "DOC-LANGUAGE-TOUR-CONTROL-FLOW-010",
+    "chapter": "language-tour/control-flow.md",
+    "line_start": 152,
+    "line_end": 170,
+    "class": "CONTEXTUAL_LUST",
+    "source_target": null,
+    "oracle": {
+      "type": "diagnostic_match",
+      "expected_exit": 0
+    },
+    "link_rule": {
+      "mandatory": false,
+      "type": "none"
+    }
+  },
+  {
+    "id": "DOC-LANGUAGE-TOUR-CONTROL-FLOW-011",
+    "chapter": "language-tour/control-flow.md",
+    "line_start": 181,
+    "line_end": 192,
+    "class": "CONTEXTUAL_LUST",
+    "source_target": null,
+    "oracle": {
+      "type": "diagnostic_match",
+      "expected_exit": 0
+    },
+    "link_rule": {
+      "mandatory": false,
+      "type": "none"
+    }
+  },
+  {
+    "id": "DOC-LANGUAGE-TOUR-CONTROL-FLOW-012",
+    "chapter": "language-tour/control-flow.md",
+    "line_start": 209,
+    "line_end": 228,
+    "class": "CONTEXTUAL_LUST",
+    "source_target": null,
+    "oracle": {
+      "type": "diagnostic_match",
+      "expected_exit": 0
+    },
+    "link_rule": {
+      "mandatory": false,
+      "type": "none"
+    }
+  },
+  {
+    "id": "DOC-LANGUAGE-TOUR-CONTROL-FLOW-013",
+    "chapter": "language-tour/control-flow.md",
+    "line_start": 244,
+    "line_end": 247,
+    "class": "CONTEXTUAL_LUST",
+    "source_target": null,
+    "oracle": {
+      "type": "diagnostic_match",
+      "expected_exit": 0
+    },
+    "link_rule": {
+      "mandatory": false,
+      "type": "none"
+    }
+  },
+  {
+    "id": "DOC-LANGUAGE-TOUR-CONTROL-FLOW-014",
+    "chapter": "language-tour/control-flow.md",
+    "line_start": 251,
+    "line_end": 258,
+    "class": "CONTEXTUAL_LUST",
+    "source_target": null,
+    "oracle": {
+      "type": "diagnostic_match",
+      "expected_exit": 0
+    },
+    "link_rule": {
+      "mandatory": false,
+      "type": "none"
+    }
+  },
+  {
+    "id": "DOC-LANGUAGE-TOUR-CONTROL-FLOW-015",
+    "chapter": "language-tour/control-flow.md",
+    "line_start": 277,
+    "line_end": 289,
+    "class": "CONTEXTUAL_LUST",
+    "source_target": null,
+    "oracle": {
+      "type": "diagnostic_match",
+      "expected_exit": 0
+    },
+    "link_rule": {
+      "mandatory": false,
+      "type": "none"
+    }
+  },
+  {
+    "id": "DOC-LANGUAGE-TOUR-CONTROL-FLOW-016",
+    "chapter": "language-tour/control-flow.md",
+    "line_start": 305,
+    "line_end": 322,
+    "class": "CONTEXTUAL_LUST",
+    "source_target": null,
+    "oracle": {
+      "type": "diagnostic_match",
+      "expected_exit": 0
+    },
+    "link_rule": {
+      "mandatory": false,
+      "type": "none"
+    }
+  },
+  {
+    "id": "DOC-LANGUAGE-TOUR-CONTROL-FLOW-017",
+    "chapter": "language-tour/control-flow.md",
+    "line_start": 330,
+    "line_end": 339,
+    "class": "CONTEXTUAL_LUST",
+    "source_target": null,
+    "oracle": {
+      "type": "diagnostic_match",
+      "expected_exit": 0
+    },
+    "link_rule": {
+      "mandatory": false,
+      "type": "none"
+    }
+  },
+  {
+    "id": "DOC-LANGUAGE-TOUR-CONTROL-FLOW-018",
+    "chapter": "language-tour/control-flow.md",
+    "line_start": 343,
+    "line_end": 352,
+    "class": "CONTEXTUAL_LUST",
+    "source_target": null,
+    "oracle": {
+      "type": "diagnostic_match",
+      "expected_exit": 0
+    },
+    "link_rule": {
+      "mandatory": false,
+      "type": "none"
+    }
+  },
+  {
+    "id": "DOC-LANGUAGE-TOUR-ENUMS-001",
+    "chapter": "language-tour/enums.md",
+    "line_start": 14,
+    "line_end": 20,
+    "class": "RUNNABLE_LUST",
+    "source_target": "examples/basic/05_enums.lust",
+    "oracle": {
+      "type": "exit_code_and_stdout",
+      "expected_exit": 0
+    },
+    "link_rule": {
+      "mandatory": true,
+      "type": "repo_file"
+    }
+  },
+  {
+    "id": "DOC-LANGUAGE-TOUR-ENUMS-002",
+    "chapter": "language-tour/enums.md",
+    "line_start": 26,
+    "line_end": 30,
+    "class": "CONTEXTUAL_LUST",
+    "source_target": null,
+    "oracle": {
+      "type": "diagnostic_match",
+      "expected_exit": 0
+    },
+    "link_rule": {
+      "mandatory": false,
+      "type": "none"
+    }
+  },
+  {
+    "id": "DOC-LANGUAGE-TOUR-ENUMS-003",
+    "chapter": "language-tour/enums.md",
+    "line_start": 36,
+    "line_end": 51,
+    "class": "CONTEXTUAL_LUST",
+    "source_target": null,
+    "oracle": {
+      "type": "diagnostic_match",
+      "expected_exit": 0
+    },
+    "link_rule": {
+      "mandatory": false,
+      "type": "none"
+    }
+  },
+  {
+    "id": "DOC-LANGUAGE-TOUR-ENUMS-004",
+    "chapter": "language-tour/enums.md",
+    "line_start": 66,
+    "line_end": 76,
+    "class": "RUNNABLE_LUST",
+    "source_target": "examples/basic/06_option.lust",
+    "oracle": {
+      "type": "exit_code_and_stdout",
+      "expected_exit": 0
+    },
+    "link_rule": {
+      "mandatory": true,
+      "type": "repo_file"
+    }
+  },
+  {
+    "id": "DOC-LANGUAGE-TOUR-ENUMS-005",
+    "chapter": "language-tour/enums.md",
+    "line_start": 80,
+    "line_end": 86,
+    "class": "CONTEXTUAL_LUST",
+    "source_target": null,
+    "oracle": {
+      "type": "diagnostic_match",
+      "expected_exit": 0
+    },
+    "link_rule": {
+      "mandatory": false,
+      "type": "none"
+    }
+  },
+  {
+    "id": "DOC-LANGUAGE-TOUR-ENUMS-006",
+    "chapter": "language-tour/enums.md",
+    "line_start": 99,
+    "line_end": 108,
+    "class": "CONTEXTUAL_LUST",
+    "source_target": null,
+    "oracle": {
+      "type": "diagnostic_match",
+      "expected_exit": 0
+    },
+    "link_rule": {
+      "mandatory": false,
+      "type": "none"
+    }
+  },
+  {
+    "id": "DOC-LANGUAGE-TOUR-ENUMS-007",
+    "chapter": "language-tour/enums.md",
+    "line_start": 121,
+    "line_end": 131,
+    "class": "RUNNABLE_LUST",
+    "source_target": "examples/basic/07_result.lust",
+    "oracle": {
+      "type": "exit_code_and_stdout",
+      "expected_exit": 0
+    },
+    "link_rule": {
+      "mandatory": true,
+      "type": "repo_file"
+    }
+  },
+  {
+    "id": "DOC-LANGUAGE-TOUR-ENUMS-008",
+    "chapter": "language-tour/enums.md",
+    "line_start": 137,
+    "line_end": 149,
+    "class": "CONTEXTUAL_LUST",
+    "source_target": null,
+    "oracle": {
+      "type": "diagnostic_match",
+      "expected_exit": 0
+    },
+    "link_rule": {
+      "mandatory": false,
+      "type": "none"
+    }
+  },
+  {
+    "id": "DOC-LANGUAGE-TOUR-ENUMS-009",
+    "chapter": "language-tour/enums.md",
+    "line_start": 155,
+    "line_end": 171,
+    "class": "CONTEXTUAL_LUST",
+    "source_target": null,
+    "oracle": {
+      "type": "diagnostic_match",
+      "expected_exit": 0
+    },
+    "link_rule": {
+      "mandatory": false,
+      "type": "none"
+    }
+  },
+  {
+    "id": "DOC-LANGUAGE-TOUR-ENUMS-010",
+    "chapter": "language-tour/enums.md",
+    "line_start": 183,
+    "line_end": 193,
+    "class": "CONTEXTUAL_LUST",
+    "source_target": null,
+    "oracle": {
+      "type": "diagnostic_match",
+      "expected_exit": 0
+    },
+    "link_rule": {
+      "mandatory": false,
+      "type": "none"
+    }
+  },
+  {
+    "id": "DOC-LANGUAGE-TOUR-ENUMS-011",
+    "chapter": "language-tour/enums.md",
+    "line_start": 201,
+    "line_end": 212,
+    "class": "CONTEXTUAL_LUST",
+    "source_target": null,
+    "oracle": {
+      "type": "diagnostic_match",
+      "expected_exit": 0
+    },
+    "link_rule": {
+      "mandatory": false,
+      "type": "none"
+    }
+  },
+  {
+    "id": "DOC-LANGUAGE-TOUR-ENUMS-012",
+    "chapter": "language-tour/enums.md",
+    "line_start": 222,
+    "line_end": 229,
+    "class": "CONTEXTUAL_LUST",
+    "source_target": null,
+    "oracle": {
+      "type": "diagnostic_match",
+      "expected_exit": 0
+    },
+    "link_rule": {
+      "mandatory": false,
+      "type": "none"
+    }
+  },
+  {
+    "id": "DOC-LANGUAGE-TOUR-GENERICS-AND-TRAITS-001",
+    "chapter": "language-tour/generics-and-traits.md",
+    "line_start": 15,
+    "line_end": 23,
+    "class": "CONTEXTUAL_LUST",
+    "source_target": null,
+    "oracle": {
+      "type": "diagnostic_match",
+      "expected_exit": 0
+    },
+    "link_rule": {
+      "mandatory": false,
+      "type": "none"
+    }
+  },
+  {
+    "id": "DOC-LANGUAGE-TOUR-GENERICS-AND-TRAITS-002",
+    "chapter": "language-tour/generics-and-traits.md",
+    "line_start": 29,
+    "line_end": 35,
+    "class": "CONTEXTUAL_LUST",
+    "source_target": null,
+    "oracle": {
+      "type": "diagnostic_match",
+      "expected_exit": 0
+    },
+    "link_rule": {
+      "mandatory": false,
+      "type": "none"
+    }
+  },
+  {
+    "id": "DOC-LANGUAGE-TOUR-GENERICS-AND-TRAITS-003",
+    "chapter": "language-tour/generics-and-traits.md",
+    "line_start": 39,
+    "line_end": 41,
+    "class": "CONTEXTUAL_LUST",
+    "source_target": null,
+    "oracle": {
+      "type": "diagnostic_match",
+      "expected_exit": 0
+    },
+    "link_rule": {
+      "mandatory": false,
+      "type": "none"
+    }
+  },
+  {
+    "id": "DOC-LANGUAGE-TOUR-GENERICS-AND-TRAITS-004",
+    "chapter": "language-tour/generics-and-traits.md",
+    "line_start": 49,
+    "line_end": 66,
+    "class": "CONTEXTUAL_LUST",
+    "source_target": null,
+    "oracle": {
+      "type": "diagnostic_match",
+      "expected_exit": 0
+    },
+    "link_rule": {
+      "mandatory": false,
+      "type": "none"
+    }
+  },
+  {
+    "id": "DOC-LANGUAGE-TOUR-GENERICS-AND-TRAITS-005",
+    "chapter": "language-tour/generics-and-traits.md",
+    "line_start": 79,
+    "line_end": 104,
+    "class": "RUNNABLE_LUST",
+    "source_target": "examples/traits/01_basic_trait.lust",
+    "oracle": {
+      "type": "exit_code_and_stdout",
+      "expected_exit": 0
+    },
+    "link_rule": {
+      "mandatory": true,
+      "type": "repo_file"
+    }
+  },
+  {
+    "id": "DOC-LANGUAGE-TOUR-GENERICS-AND-TRAITS-006",
+    "chapter": "language-tour/generics-and-traits.md",
+    "line_start": 113,
+    "line_end": 123,
+    "class": "RUNNABLE_LUST",
+    "source_target": "examples/traits/02_trait_bounds.lust",
+    "oracle": {
+      "type": "exit_code_and_stdout",
+      "expected_exit": 0
+    },
+    "link_rule": {
+      "mandatory": true,
+      "type": "repo_file"
+    }
+  },
+  {
+    "id": "DOC-LANGUAGE-TOUR-GENERICS-AND-TRAITS-007",
+    "chapter": "language-tour/generics-and-traits.md",
+    "line_start": 133,
+    "line_end": 145,
+    "class": "CONTEXTUAL_LUST",
+    "source_target": null,
+    "oracle": {
+      "type": "diagnostic_match",
+      "expected_exit": 0
+    },
+    "link_rule": {
+      "mandatory": false,
+      "type": "none"
+    }
+  },
+  {
+    "id": "DOC-LANGUAGE-TOUR-GENERICS-AND-TRAITS-008",
+    "chapter": "language-tour/generics-and-traits.md",
+    "line_start": 153,
+    "line_end": 169,
+    "class": "CONTEXTUAL_LUST",
+    "source_target": null,
+    "oracle": {
+      "type": "diagnostic_match",
+      "expected_exit": 0
+    },
+    "link_rule": {
+      "mandatory": false,
+      "type": "none"
+    }
+  },
+  {
+    "id": "DOC-LANGUAGE-TOUR-IO-AND-OS-001",
+    "chapter": "language-tour/io-and-os.md",
+    "line_start": 8,
+    "line_end": 12,
+    "class": "CONFIG_DATA",
+    "source_target": "examples/basic/lust-config.toml",
+    "oracle": {
+      "type": "schema_valid",
+      "schema_file": "manifest.schema.json"
+    },
+    "link_rule": {
+      "mandatory": true,
+      "type": "repo_file"
+    }
+  },
+  {
+    "id": "DOC-LANGUAGE-TOUR-IO-AND-OS-002",
+    "chapter": "language-tour/io-and-os.md",
+    "line_start": 36,
+    "line_end": 59,
+    "class": "RUNNABLE_LUST",
+    "source_target": "examples/basic/18_io.lust",
+    "oracle": {
+      "type": "exit_code_and_stdout",
+      "expected_exit": 0
+    },
+    "link_rule": {
+      "mandatory": true,
+      "type": "repo_file"
+    }
+  },
+  {
+    "id": "DOC-LANGUAGE-TOUR-IO-AND-OS-003",
+    "chapter": "language-tour/io-and-os.md",
+    "line_start": 71,
+    "line_end": 79,
+    "class": "CONTEXTUAL_LUST",
+    "source_target": null,
+    "oracle": {
+      "type": "diagnostic_match",
+      "expected_exit": 0
+    },
+    "link_rule": {
+      "mandatory": false,
+      "type": "none"
+    }
+  },
+  {
+    "id": "DOC-LANGUAGE-TOUR-IO-AND-OS-004",
+    "chapter": "language-tour/io-and-os.md",
+    "line_start": 103,
+    "line_end": 114,
+    "class": "RUNNABLE_LUST",
+    "source_target": "examples/basic/19_os.lust",
+    "oracle": {
+      "type": "exit_code_and_stdout",
+      "expected_exit": 0
+    },
+    "link_rule": {
+      "mandatory": true,
+      "type": "repo_file"
+    }
+  },
+  {
+    "id": "DOC-LANGUAGE-TOUR-IO-AND-OS-005",
+    "chapter": "language-tour/io-and-os.md",
+    "line_start": 118,
+    "line_end": 152,
+    "class": "CONTEXTUAL_LUST",
+    "source_target": null,
+    "oracle": {
+      "type": "diagnostic_match",
+      "expected_exit": 0
+    },
+    "link_rule": {
+      "mandatory": false,
+      "type": "none"
+    }
+  },
+  {
+    "id": "DOC-LANGUAGE-TOUR-MODULES-001",
+    "chapter": "language-tour/modules.md",
+    "line_start": 14,
+    "line_end": 21,
+    "class": "RUNNABLE_LUST",
+    "source_target": "examples/modules/main.lust",
+    "oracle": {
+      "type": "exit_code_and_stdout",
+      "expected_exit": 0
+    },
+    "link_rule": {
+      "mandatory": true,
+      "type": "repo_file"
+    }
+  },
+  {
+    "id": "DOC-LANGUAGE-TOUR-MODULES-002",
+    "chapter": "language-tour/modules.md",
+    "line_start": 35,
+    "line_end": 40,
+    "class": "CONTEXTUAL_LUST",
+    "source_target": null,
+    "oracle": {
+      "type": "diagnostic_match",
+      "expected_exit": 0
+    },
+    "link_rule": {
+      "mandatory": false,
+      "type": "none"
+    }
+  },
+  {
+    "id": "DOC-LANGUAGE-TOUR-MODULES-003",
+    "chapter": "language-tour/modules.md",
+    "line_start": 46,
+    "line_end": 51,
+    "class": "CONTEXTUAL_LUST",
+    "source_target": null,
+    "oracle": {
+      "type": "diagnostic_match",
+      "expected_exit": 0
+    },
+    "link_rule": {
+      "mandatory": false,
+      "type": "none"
+    }
+  },
+  {
+    "id": "DOC-LANGUAGE-TOUR-MODULES-004",
+    "chapter": "language-tour/modules.md",
+    "line_start": 57,
+    "line_end": 62,
+    "class": "CONTEXTUAL_LUST",
+    "source_target": null,
+    "oracle": {
+      "type": "diagnostic_match",
+      "expected_exit": 0
+    },
+    "link_rule": {
+      "mandatory": false,
+      "type": "none"
+    }
+  },
+  {
+    "id": "DOC-LANGUAGE-TOUR-MODULES-005",
+    "chapter": "language-tour/modules.md",
+    "line_start": 72,
+    "line_end": 76,
+    "class": "CONTEXTUAL_LUST",
+    "source_target": null,
+    "oracle": {
+      "type": "diagnostic_match",
+      "expected_exit": 0
+    },
+    "link_rule": {
+      "mandatory": false,
+      "type": "none"
+    }
+  },
+  {
+    "id": "DOC-LANGUAGE-TOUR-MODULES-006",
+    "chapter": "language-tour/modules.md",
+    "line_start": 78,
+    "line_end": 83,
+    "class": "CONTEXTUAL_LUST",
+    "source_target": null,
+    "oracle": {
+      "type": "diagnostic_match",
+      "expected_exit": 0
+    },
+    "link_rule": {
+      "mandatory": false,
+      "type": "none"
+    }
+  },
+  {
+    "id": "DOC-LANGUAGE-TOUR-OVERVIEW-001",
+    "chapter": "language-tour/overview.md",
+    "line_start": 16,
+    "line_end": 55,
+    "class": "CONTEXTUAL_LUST",
+    "source_target": null,
+    "oracle": {
+      "type": "diagnostic_match",
+      "expected_exit": 0
+    },
+    "link_rule": {
+      "mandatory": false,
+      "type": "none"
+    }
+  },
+  {
+    "id": "DOC-LANGUAGE-TOUR-OVERVIEW-002",
+    "chapter": "language-tour/overview.md",
+    "line_start": 58,
+    "line_end": 61,
+    "class": "TRACE_OUTPUT",
+    "source_target": null,
+    "oracle": {
+      "type": "trace_match"
+    },
+    "link_rule": {
+      "mandatory": false,
+      "type": "none"
+    }
+  },
+  {
+    "id": "DOC-LANGUAGE-TOUR-STRUCTS-001",
+    "chapter": "language-tour/structs.md",
+    "line_start": 14,
+    "line_end": 19,
+    "class": "RUNNABLE_LUST",
+    "source_target": "examples/basic/04_structs.lust",
+    "oracle": {
+      "type": "exit_code_and_stdout",
+      "expected_exit": 0
+    },
+    "link_rule": {
+      "mandatory": true,
+      "type": "repo_file"
+    }
+  },
+  {
+    "id": "DOC-LANGUAGE-TOUR-STRUCTS-002",
+    "chapter": "language-tour/structs.md",
+    "line_start": 23,
+    "line_end": 30,
+    "class": "CONTEXTUAL_LUST",
+    "source_target": null,
+    "oracle": {
+      "type": "diagnostic_match",
+      "expected_exit": 0
+    },
+    "link_rule": {
+      "mandatory": false,
+      "type": "none"
+    }
+  },
+  {
+    "id": "DOC-LANGUAGE-TOUR-STRUCTS-003",
+    "chapter": "language-tour/structs.md",
+    "line_start": 42,
+    "line_end": 58,
+    "class": "CONTEXTUAL_LUST",
+    "source_target": null,
+    "oracle": {
+      "type": "diagnostic_match",
+      "expected_exit": 0
+    },
+    "link_rule": {
+      "mandatory": false,
+      "type": "none"
+    }
+  },
+  {
+    "id": "DOC-LANGUAGE-TOUR-STRUCTS-004",
+    "chapter": "language-tour/structs.md",
+    "line_start": 64,
+    "line_end": 77,
+    "class": "CONTEXTUAL_LUST",
+    "source_target": null,
+    "oracle": {
+      "type": "diagnostic_match",
+      "expected_exit": 0
+    },
+    "link_rule": {
+      "mandatory": false,
+      "type": "none"
+    }
+  },
+  {
+    "id": "DOC-LANGUAGE-TOUR-STRUCTS-005",
+    "chapter": "language-tour/structs.md",
+    "line_start": 90,
+    "line_end": 96,
+    "class": "RUNNABLE_LUST",
+    "source_target": "examples/advanced/08_ref_structs.lust",
+    "oracle": {
+      "type": "exit_code_and_stdout",
+      "expected_exit": 0
+    },
+    "link_rule": {
+      "mandatory": true,
+      "type": "repo_file"
+    }
+  },
+  {
+    "id": "DOC-LANGUAGE-TOUR-STRUCTS-006",
+    "chapter": "language-tour/structs.md",
+    "line_start": 104,
+    "line_end": 131,
+    "class": "CONTEXTUAL_LUST",
+    "source_target": null,
+    "oracle": {
+      "type": "diagnostic_match",
+      "expected_exit": 0
+    },
+    "link_rule": {
+      "mandatory": false,
+      "type": "none"
+    }
+  },
+  {
+    "id": "DOC-LANGUAGE-TOUR-TASKS-001",
+    "chapter": "language-tour/tasks.md",
+    "line_start": 14,
+    "line_end": 21,
+    "class": "RUNNABLE_LUST",
+    "source_target": "examples/advanced/07_tasks_cooperative.lust",
+    "oracle": {
+      "type": "exit_code_and_stdout",
+      "expected_exit": 0
+    },
+    "link_rule": {
+      "mandatory": true,
+      "type": "repo_file"
+    }
+  },
+  {
+    "id": "DOC-LANGUAGE-TOUR-TASKS-002",
+    "chapter": "language-tour/tasks.md",
+    "line_start": 35,
+    "line_end": 47,
+    "class": "CONTEXTUAL_LUST",
+    "source_target": null,
+    "oracle": {
+      "type": "diagnostic_match",
+      "expected_exit": 0
+    },
+    "link_rule": {
+      "mandatory": false,
+      "type": "none"
+    }
+  },
+  {
+    "id": "DOC-LANGUAGE-TOUR-TASKS-003",
+    "chapter": "language-tour/tasks.md",
+    "line_start": 67,
+    "line_end": 79,
+    "class": "CONTEXTUAL_LUST",
+    "source_target": null,
+    "oracle": {
+      "type": "diagnostic_match",
+      "expected_exit": 0
+    },
+    "link_rule": {
+      "mandatory": false,
+      "type": "none"
+    }
+  },
+  {
+    "id": "DOC-LANGUAGE-TOUR-TASKS-004",
+    "chapter": "language-tour/tasks.md",
+    "line_start": 87,
+    "line_end": 124,
+    "class": "CONTEXTUAL_LUST",
+    "source_target": null,
+    "oracle": {
+      "type": "diagnostic_match",
+      "expected_exit": 0
+    },
+    "link_rule": {
+      "mandatory": false,
+      "type": "none"
+    }
+  },
+  {
+    "id": "DOC-LANGUAGE-TOUR-TASKS-005",
+    "chapter": "language-tour/tasks.md",
+    "line_start": 128,
+    "line_end": 136,
+    "class": "TRACE_OUTPUT",
+    "source_target": null,
+    "oracle": {
+      "type": "trace_match"
+    },
+    "link_rule": {
+      "mandatory": false,
+      "type": "none"
+    }
+  },
+  {
+    "id": "DOC-LANGUAGE-TOUR-TYPE-SYSTEM-001",
+    "chapter": "language-tour/type-system.md",
+    "line_start": 17,
+    "line_end": 29,
+    "class": "CONTEXTUAL_LUST",
+    "source_target": null,
+    "oracle": {
+      "type": "diagnostic_match",
+      "expected_exit": 0
+    },
+    "link_rule": {
+      "mandatory": false,
+      "type": "none"
+    }
+  },
+  {
+    "id": "DOC-LANGUAGE-TOUR-TYPE-SYSTEM-002",
+    "chapter": "language-tour/type-system.md",
+    "line_start": 37,
+    "line_end": 39,
+    "class": "CONTEXTUAL_LUST",
+    "source_target": null,
+    "oracle": {
+      "type": "diagnostic_match",
+      "expected_exit": 0
+    },
+    "link_rule": {
+      "mandatory": false,
+      "type": "none"
+    }
+  },
+  {
+    "id": "DOC-LANGUAGE-TOUR-TYPE-SYSTEM-003",
+    "chapter": "language-tour/type-system.md",
+    "line_start": 43,
+    "line_end": 57,
+    "class": "CONTEXTUAL_LUST",
+    "source_target": null,
+    "oracle": {
+      "type": "diagnostic_match",
+      "expected_exit": 0
+    },
+    "link_rule": {
+      "mandatory": false,
+      "type": "none"
+    }
+  },
+  {
+    "id": "DOC-LANGUAGE-TOUR-TYPE-SYSTEM-004",
+    "chapter": "language-tour/type-system.md",
+    "line_start": 65,
+    "line_end": 70,
+    "class": "CONTEXTUAL_LUST",
+    "source_target": null,
+    "oracle": {
+      "type": "diagnostic_match",
+      "expected_exit": 0
+    },
+    "link_rule": {
+      "mandatory": false,
+      "type": "none"
+    }
+  },
+  {
+    "id": "DOC-LANGUAGE-TOUR-TYPE-SYSTEM-005",
+    "chapter": "language-tour/type-system.md",
+    "line_start": 86,
+    "line_end": 99,
+    "class": "CONTEXTUAL_LUST",
+    "source_target": null,
+    "oracle": {
+      "type": "diagnostic_match",
+      "expected_exit": 0
+    },
+    "link_rule": {
+      "mandatory": false,
+      "type": "none"
+    }
+  },
+  {
+    "id": "DOC-LANGUAGE-TOUR-TYPE-SYSTEM-006",
+    "chapter": "language-tour/type-system.md",
+    "line_start": 105,
+    "line_end": 109,
+    "class": "CONTEXTUAL_LUST",
+    "source_target": null,
+    "oracle": {
+      "type": "diagnostic_match",
+      "expected_exit": 0
+    },
+    "link_rule": {
+      "mandatory": false,
+      "type": "none"
+    }
+  },
+  {
+    "id": "DOC-LANGUAGE-TOUR-TYPE-SYSTEM-007",
+    "chapter": "language-tour/type-system.md",
+    "line_start": 115,
+    "line_end": 120,
+    "class": "CONTEXTUAL_LUST",
+    "source_target": null,
+    "oracle": {
+      "type": "diagnostic_match",
+      "expected_exit": 0
+    },
+    "link_rule": {
+      "mandatory": false,
+      "type": "none"
+    }
+  },
+  {
+    "id": "DOC-LANGUAGE-TOUR-TYPE-SYSTEM-008",
+    "chapter": "language-tour/type-system.md",
+    "line_start": 132,
+    "line_end": 140,
+    "class": "CONTEXTUAL_LUST",
+    "source_target": null,
+    "oracle": {
+      "type": "diagnostic_match",
+      "expected_exit": 0
+    },
+    "link_rule": {
+      "mandatory": false,
+      "type": "none"
+    }
+  },
+  {
+    "id": "DOC-LANGUAGE-TOUR-TYPE-SYSTEM-009",
+    "chapter": "language-tour/type-system.md",
+    "line_start": 146,
+    "line_end": 154,
+    "class": "CONTEXTUAL_LUST",
+    "source_target": null,
+    "oracle": {
+      "type": "diagnostic_match",
+      "expected_exit": 0
+    },
+    "link_rule": {
+      "mandatory": false,
+      "type": "none"
+    }
+  },
+  {
+    "id": "DOC-LANGUAGE-TOUR-TYPE-SYSTEM-010",
+    "chapter": "language-tour/type-system.md",
+    "line_start": 160,
+    "line_end": 168,
+    "class": "CONTEXTUAL_LUST",
+    "source_target": null,
+    "oracle": {
+      "type": "diagnostic_match",
+      "expected_exit": 0
+    },
+    "link_rule": {
+      "mandatory": false,
+      "type": "none"
+    }
+  },
+  {
+    "id": "DOC-QUICK-START-001",
+    "chapter": "quick-start.md",
+    "line_start": 13,
+    "line_end": 16,
+    "class": "CLI_BASH",
+    "source_target": null,
+    "oracle": {
+      "type": "cli_help_valid"
+    },
+    "link_rule": {
+      "mandatory": false,
+      "type": "none"
+    }
+  },
+  {
+    "id": "DOC-QUICK-START-002",
+    "chapter": "quick-start.md",
+    "line_start": 20,
+    "line_end": 22,
+    "class": "CLI_BASH",
+    "source_target": null,
+    "oracle": {
+      "type": "cli_help_valid"
+    },
+    "link_rule": {
+      "mandatory": false,
+      "type": "none"
+    }
+  },
+  {
+    "id": "DOC-QUICK-START-003",
+    "chapter": "quick-start.md",
+    "line_start": 28,
+    "line_end": 33,
+    "class": "CLI_BASH",
+    "source_target": null,
+    "oracle": {
+      "type": "cli_help_valid"
+    },
+    "link_rule": {
+      "mandatory": false,
+      "type": "none"
+    }
+  },
+  {
+    "id": "DOC-QUICK-START-004",
+    "chapter": "quick-start.md",
+    "line_start": 37,
+    "line_end": 39,
+    "class": "CLI_BASH",
+    "source_target": null,
+    "oracle": {
+      "type": "cli_help_valid"
+    },
+    "link_rule": {
+      "mandatory": false,
+      "type": "none"
+    }
+  },
+  {
+    "id": "DOC-QUICK-START-005",
+    "chapter": "quick-start.md",
+    "line_start": 50,
+    "line_end": 58,
+    "class": "RUNNABLE_LUST",
+    "source_target": "examples/basic/01_hello.lust",
+    "oracle": {
+      "type": "exit_code_and_stdout",
+      "expected_exit": 0
+    },
+    "link_rule": {
+      "mandatory": true,
+      "type": "repo_file"
+    }
+  },
+  {
+    "id": "DOC-QUICK-START-006",
+    "chapter": "quick-start.md",
+    "line_start": 62,
+    "line_end": 69,
+    "class": "CLI_BASH",
+    "source_target": null,
+    "oracle": {
+      "type": "cli_help_valid"
+    },
+    "link_rule": {
+      "mandatory": false,
+      "type": "none"
+    }
+  },
+  {
+    "id": "DOC-QUICK-START-007",
+    "chapter": "quick-start.md",
+    "line_start": 73,
+    "line_end": 76,
+    "class": "TRACE_OUTPUT",
+    "source_target": null,
+    "oracle": {
+      "type": "trace_match"
+    },
+    "link_rule": {
+      "mandatory": false,
+      "type": "none"
+    }
+  },
+  {
+    "id": "DOC-QUICK-START-008",
+    "chapter": "quick-start.md",
+    "line_start": 80,
+    "line_end": 82,
+    "class": "CLI_BASH",
+    "source_target": null,
+    "oracle": {
+      "type": "cli_help_valid"
+    },
+    "link_rule": {
+      "mandatory": false,
+      "type": "none"
+    }
+  },
+  {
+    "id": "DOC-QUICK-START-009",
+    "chapter": "quick-start.md",
+    "line_start": 90,
+    "line_end": 94,
+    "class": "CONFIG_DATA",
+    "source_target": null,
+    "oracle": {
+      "type": "schema_valid"
+    },
+    "link_rule": {
+      "mandatory": false,
+      "type": "none"
+    }
+  },
+  {
+    "id": "DOC-QUICK-START-010",
+    "chapter": "quick-start.md",
+    "line_start": 104,
+    "line_end": 106,
+    "class": "CLI_BASH",
+    "source_target": null,
+    "oracle": {
+      "type": "cli_help_valid"
+    },
+    "link_rule": {
+      "mandatory": false,
+      "type": "none"
+    }
+  },
+  {
+    "id": "DOC-REACTIVE-PROGRAMMING-001",
+    "chapter": "reactive-programming.md",
+    "line_start": 24,
+    "line_end": 30,
+    "class": "TRACE_OUTPUT",
+    "source_target": null,
+    "oracle": {
+      "type": "trace_match"
+    },
+    "link_rule": {
+      "mandatory": false,
+      "type": "none"
+    }
+  },
+  {
+    "id": "DOC-REACTIVE-PROGRAMMING-002",
+    "chapter": "reactive-programming.md",
+    "line_start": 47,
+    "line_end": 53,
+    "class": "CARGO_EXAMPLE",
+    "source_target": "examples/rx/01_observables_basics.rs",
+    "oracle": {
+      "type": "reference_exists"
+    },
+    "link_rule": {
+      "mandatory": true,
+      "type": "repo_file"
+    }
+  },
+  {
+    "id": "DOC-REACTIVE-PROGRAMMING-003",
+    "chapter": "reactive-programming.md",
+    "line_start": 62,
+    "line_end": 71,
+    "class": "CARGO_EXAMPLE",
+    "source_target": null,
+    "oracle": {
+      "type": "reference_exists"
+    },
+    "link_rule": {
+      "mandatory": false,
+      "type": "none"
+    }
+  },
+  {
+    "id": "DOC-REACTIVE-PROGRAMMING-004",
+    "chapter": "reactive-programming.md",
+    "line_start": 77,
+    "line_end": 85,
+    "class": "DIAGRAM_SPEC",
+    "source_target": null,
+    "oracle": {
+      "type": "reference_exists"
+    },
+    "link_rule": {
+      "mandatory": false,
+      "type": "none"
+    }
+  },
+  {
+    "id": "DOC-REACTIVE-PROGRAMMING-005",
+    "chapter": "reactive-programming.md",
+    "line_start": 118,
+    "line_end": 124,
+    "class": "CARGO_EXAMPLE",
+    "source_target": "examples/rx/02_operators_filter_map.rs",
+    "oracle": {
+      "type": "reference_exists"
+    },
+    "link_rule": {
+      "mandatory": true,
+      "type": "repo_file"
+    }
+  },
+  {
+    "id": "DOC-REACTIVE-PROGRAMMING-006",
+    "chapter": "reactive-programming.md",
+    "line_start": 146,
+    "line_end": 148,
+    "class": "CARGO_EXAMPLE",
+    "source_target": null,
+    "oracle": {
+      "type": "reference_exists"
+    },
+    "link_rule": {
+      "mandatory": false,
+      "type": "none"
+    }
+  },
+  {
+    "id": "DOC-REACTIVE-PROGRAMMING-007",
+    "chapter": "reactive-programming.md",
+    "line_start": 161,
+    "line_end": 167,
+    "class": "CARGO_EXAMPLE",
+    "source_target": null,
+    "oracle": {
+      "type": "reference_exists"
+    },
+    "link_rule": {
+      "mandatory": false,
+      "type": "none"
+    }
+  },
+  {
+    "id": "DOC-REACTIVE-PROGRAMMING-008",
+    "chapter": "reactive-programming.md",
+    "line_start": 193,
+    "line_end": 197,
+    "class": "CARGO_EXAMPLE",
+    "source_target": "examples/rx/03_backpressure_buffers.rs",
+    "oracle": {
+      "type": "reference_exists"
+    },
+    "link_rule": {
+      "mandatory": true,
+      "type": "repo_file"
+    }
+  },
+  {
+    "id": "DOC-REACTIVE-PROGRAMMING-009",
+    "chapter": "reactive-programming.md",
+    "line_start": 236,
+    "line_end": 280,
+    "class": "CARGO_EXAMPLE",
+    "source_target": null,
+    "oracle": {
+      "type": "reference_exists"
+    },
+    "link_rule": {
+      "mandatory": false,
+      "type": "none"
+    }
+  },
+  {
+    "id": "DOC-REACTIVE-PROGRAMMING-010",
+    "chapter": "reactive-programming.md",
+    "line_start": 286,
+    "line_end": 311,
+    "class": "CARGO_EXAMPLE",
+    "source_target": null,
+    "oracle": {
+      "type": "reference_exists"
+    },
+    "link_rule": {
+      "mandatory": false,
+      "type": "none"
+    }
+  },
+  {
+    "id": "DOC-SIMULATION-TESTING-001",
+    "chapter": "simulation-testing.md",
+    "line_start": 28,
+    "line_end": 40,
+    "class": "TRACE_OUTPUT",
+    "source_target": null,
+    "oracle": {
+      "type": "trace_match"
+    },
+    "link_rule": {
+      "mandatory": false,
+      "type": "none"
+    }
+  },
+  {
+    "id": "DOC-SIMULATION-TESTING-002",
+    "chapter": "simulation-testing.md",
+    "line_start": 61,
+    "line_end": 82,
+    "class": "TRACE_OUTPUT",
+    "source_target": null,
+    "oracle": {
+      "type": "trace_match"
+    },
+    "link_rule": {
+      "mandatory": false,
+      "type": "none"
+    }
+  },
+  {
+    "id": "DOC-SIMULATION-TESTING-003",
+    "chapter": "simulation-testing.md",
+    "line_start": 92,
+    "line_end": 99,
+    "class": "CARGO_EXAMPLE",
+    "source_target": null,
+    "oracle": {
+      "type": "reference_exists"
+    },
+    "link_rule": {
+      "mandatory": false,
+      "type": "none"
+    }
+  },
+  {
+    "id": "DOC-SIMULATION-TESTING-004",
+    "chapter": "simulation-testing.md",
+    "line_start": 113,
+    "line_end": 119,
+    "class": "CARGO_EXAMPLE",
+    "source_target": null,
+    "oracle": {
+      "type": "reference_exists"
+    },
+    "link_rule": {
+      "mandatory": false,
+      "type": "none"
+    }
+  },
+  {
+    "id": "DOC-SIMULATION-TESTING-005",
+    "chapter": "simulation-testing.md",
+    "line_start": 127,
+    "line_end": 134,
+    "class": "CARGO_EXAMPLE",
+    "source_target": null,
+    "oracle": {
+      "type": "reference_exists"
+    },
+    "link_rule": {
+      "mandatory": false,
+      "type": "none"
+    }
+  },
+  {
+    "id": "DOC-SIMULATION-TESTING-006",
+    "chapter": "simulation-testing.md",
+    "line_start": 138,
+    "line_end": 141,
+    "class": "CARGO_EXAMPLE",
+    "source_target": null,
+    "oracle": {
+      "type": "reference_exists"
+    },
+    "link_rule": {
+      "mandatory": false,
+      "type": "none"
+    }
+  },
+  {
+    "id": "DOC-SIMULATION-TESTING-007",
+    "chapter": "simulation-testing.md",
+    "line_start": 150,
+    "line_end": 171,
+    "class": "CONFIG_DATA",
+    "source_target": null,
+    "oracle": {
+      "type": "schema_valid"
+    },
+    "link_rule": {
+      "mandatory": false,
+      "type": "none"
+    }
+  },
+  {
+    "id": "DOC-SIMULATION-TESTING-008",
+    "chapter": "simulation-testing.md",
+    "line_start": 174,
+    "line_end": 176,
+    "class": "CLI_BASH",
+    "source_target": null,
+    "oracle": {
+      "type": "cli_help_valid"
+    },
+    "link_rule": {
+      "mandatory": false,
+      "type": "none"
+    }
+  },
+  {
+    "id": "DOC-SIMULATION-TESTING-009",
+    "chapter": "simulation-testing.md",
+    "line_start": 182,
+    "line_end": 186,
+    "class": "CARGO_EXAMPLE",
+    "source_target": null,
+    "oracle": {
+      "type": "reference_exists"
+    },
+    "link_rule": {
+      "mandatory": false,
+      "type": "none"
+    }
+  },
+  {
+    "id": "DOC-SIMULATION-TESTING-010",
+    "chapter": "simulation-testing.md",
+    "line_start": 194,
+    "line_end": 209,
+    "class": "CARGO_EXAMPLE",
+    "source_target": null,
+    "oracle": {
+      "type": "reference_exists"
+    },
+    "link_rule": {
+      "mandatory": false,
+      "type": "none"
+    }
+  },
+  {
+    "id": "DOC-SIMULATION-TESTING-011",
+    "chapter": "simulation-testing.md",
+    "line_start": 225,
+    "line_end": 229,
+    "class": "CARGO_EXAMPLE",
+    "source_target": null,
+    "oracle": {
+      "type": "reference_exists"
+    },
+    "link_rule": {
+      "mandatory": false,
+      "type": "none"
+    }
+  },
+  {
+    "id": "DOC-SIMULATION-TESTING-012",
+    "chapter": "simulation-testing.md",
+    "line_start": 238,
+    "line_end": 257,
+    "class": "TRACE_OUTPUT",
+    "source_target": null,
+    "oracle": {
+      "type": "trace_match"
+    },
+    "link_rule": {
+      "mandatory": false,
+      "type": "none"
+    }
+  },
+  {
+    "id": "DOC-SIMULATION-TESTING-013",
+    "chapter": "simulation-testing.md",
+    "line_start": 267,
+    "line_end": 277,
+    "class": "CARGO_EXAMPLE",
+    "source_target": null,
+    "oracle": {
+      "type": "reference_exists"
+    },
+    "link_rule": {
+      "mandatory": false,
+      "type": "none"
+    }
+  },
+  {
+    "id": "DOC-SIMULATION-TESTING-014",
+    "chapter": "simulation-testing.md",
+    "line_start": 293,
+    "line_end": 298,
+    "class": "CONTEXTUAL_LUST",
+    "source_target": null,
+    "oracle": {
+      "type": "diagnostic_match",
+      "expected_exit": 0
+    },
+    "link_rule": {
+      "mandatory": false,
+      "type": "none"
+    }
+  },
+  {
+    "id": "DOC-SIMULATION-TESTING-015",
+    "chapter": "simulation-testing.md",
+    "line_start": 313,
+    "line_end": 339,
+    "class": "CARGO_EXAMPLE",
+    "source_target": "examples/simulation/02_fault_injection_vfs.rs",
+    "oracle": {
+      "type": "reference_exists"
+    },
+    "link_rule": {
+      "mandatory": true,
+      "type": "repo_file"
+    }
+  },
+  {
+    "id": "DOC-SIMULATION-TESTING-016",
+    "chapter": "simulation-testing.md",
+    "line_start": 352,
+    "line_end": 359,
+    "class": "CARGO_EXAMPLE",
+    "source_target": null,
+    "oracle": {
+      "type": "reference_exists"
+    },
+    "link_rule": {
+      "mandatory": false,
+      "type": "none"
+    }
+  },
+  {
+    "id": "DOC-SIMULATION-TESTING-017",
+    "chapter": "simulation-testing.md",
+    "line_start": 382,
+    "line_end": 389,
+    "class": "TRACE_OUTPUT",
+    "source_target": null,
+    "oracle": {
+      "type": "trace_match"
+    },
+    "link_rule": {
+      "mandatory": false,
+      "type": "none"
+    }
+  },
+  {
+    "id": "DOC-SIMULATION-TESTING-018",
+    "chapter": "simulation-testing.md",
+    "line_start": 395,
+    "line_end": 406,
+    "class": "CONFIG_DATA",
+    "source_target": null,
+    "oracle": {
+      "type": "schema_valid"
+    },
+    "link_rule": {
+      "mandatory": false,
+      "type": "none"
+    }
+  },
+  {
+    "id": "DOC-SIMULATION-TESTING-019",
+    "chapter": "simulation-testing.md",
+    "line_start": 409,
+    "line_end": 414,
+    "class": "CONFIG_DATA",
+    "source_target": null,
+    "oracle": {
+      "type": "schema_valid"
+    },
+    "link_rule": {
+      "mandatory": false,
+      "type": "none"
+    }
+  },
+  {
+    "id": "DOC-SIMULATION-TESTING-020",
+    "chapter": "simulation-testing.md",
+    "line_start": 420,
+    "line_end": 424,
+    "class": "CARGO_EXAMPLE",
+    "source_target": null,
+    "oracle": {
+      "type": "reference_exists"
+    },
+    "link_rule": {
+      "mandatory": false,
+      "type": "none"
+    }
+  },
+  {
+    "id": "DOC-SIMULATION-TESTING-021",
+    "chapter": "simulation-testing.md",
+    "line_start": 427,
+    "line_end": 433,
+    "class": "TRACE_OUTPUT",
+    "source_target": null,
+    "oracle": {
+      "type": "trace_match"
+    },
+    "link_rule": {
+      "mandatory": false,
+      "type": "none"
+    }
+  },
+  {
+    "id": "DOC-SIMULATION-TESTING-022",
+    "chapter": "simulation-testing.md",
+    "line_start": 454,
+    "line_end": 457,
+    "class": "CLI_BASH",
+    "source_target": null,
+    "oracle": {
+      "type": "cli_help_valid"
+    },
+    "link_rule": {
+      "mandatory": false,
+      "type": "none"
+    }
+  },
+  {
+    "id": "DOC-SIMULATION-TESTING-023",
+    "chapter": "simulation-testing.md",
+    "line_start": 468,
+    "line_end": 488,
+    "class": "TRACE_OUTPUT",
+    "source_target": null,
+    "oracle": {
+      "type": "trace_match"
+    },
+    "link_rule": {
+      "mandatory": false,
+      "type": "none"
+    }
+  },
+  {
+    "id": "DOC-SIMULATION-TESTING-024",
+    "chapter": "simulation-testing.md",
+    "line_start": 500,
+    "line_end": 526,
+    "class": "CONTEXTUAL_LUST",
+    "source_target": null,
+    "oracle": {
+      "type": "diagnostic_match",
+      "expected_exit": 0
+    },
+    "link_rule": {
+      "mandatory": false,
+      "type": "none"
+    }
+  },
+  {
+    "id": "DOC-SIMULATION-TESTING-025",
+    "chapter": "simulation-testing.md",
+    "line_start": 535,
+    "line_end": 628,
+    "class": "CARGO_EXAMPLE",
+    "source_target": "examples/simulation/03_replay_bundle_export.rs",
+    "oracle": {
+      "type": "reference_exists"
+    },
+    "link_rule": {
+      "mandatory": true,
+      "type": "repo_file"
+    }
+  },
+  {
+    "id": "DOC-TEST-FRAMEWORK-001",
+    "chapter": "test-framework.md",
+    "line_start": 21,
+    "line_end": 34,
+    "class": "RUNNABLE_LUST",
+    "source_target": "examples/testing/01_test_suite_basics.lust",
+    "oracle": {
+      "type": "exit_code_and_stdout",
+      "expected_exit": 0
+    },
+    "link_rule": {
+      "mandatory": true,
+      "type": "repo_file"
+    }
+  },
+  {
+    "id": "DOC-TEST-FRAMEWORK-002",
+    "chapter": "test-framework.md",
+    "line_start": 40,
+    "line_end": 59,
+    "class": "CONTEXTUAL_LUST",
+    "source_target": null,
+    "oracle": {
+      "type": "diagnostic_match",
+      "expected_exit": 0
+    },
+    "link_rule": {
+      "mandatory": false,
+      "type": "none"
+    }
+  },
+  {
+    "id": "DOC-TEST-FRAMEWORK-003",
+    "chapter": "test-framework.md",
+    "line_start": 70,
+    "line_end": 110,
+    "class": "RUNNABLE_LUST",
+    "source_target": "examples/testing/02_lifecycle_hooks.lust",
+    "oracle": {
+      "type": "exit_code_and_stdout",
+      "expected_exit": 0
+    },
+    "link_rule": {
+      "mandatory": true,
+      "type": "repo_file"
+    }
+  },
+  {
+    "id": "DOC-TEST-FRAMEWORK-004",
+    "chapter": "test-framework.md",
+    "line_start": 141,
+    "line_end": 164,
+    "class": "RUNNABLE_LUST",
+    "source_target": "examples/effects/07_test_syntax_demo.lust",
+    "oracle": {
+      "type": "exit_code_and_stdout",
+      "expected_exit": 0
+    },
+    "link_rule": {
+      "mandatory": true,
+      "type": "repo_file"
+    }
+  },
+  {
+    "id": "DOC-TEST-FRAMEWORK-005",
+    "chapter": "test-framework.md",
+    "line_start": 172,
+    "line_end": 198,
+    "class": "CARGO_EXAMPLE",
+    "source_target": null,
+    "oracle": {
+      "type": "reference_exists"
+    },
+    "link_rule": {
+      "mandatory": false,
+      "type": "none"
+    }
+  },
+  {
+    "id": "DOC-TEST-FRAMEWORK-006",
+    "chapter": "test-framework.md",
+    "line_start": 208,
+    "line_end": 224,
+    "class": "CARGO_EXAMPLE",
+    "source_target": null,
+    "oracle": {
+      "type": "reference_exists"
+    },
+    "link_rule": {
+      "mandatory": false,
+      "type": "none"
+    }
+  },
+  {
+    "id": "DOC-TEST-FRAMEWORK-007",
+    "chapter": "test-framework.md",
+    "line_start": 232,
+    "line_end": 251,
+    "class": "CLI_BASH",
+    "source_target": null,
+    "oracle": {
+      "type": "cli_help_valid"
+    },
+    "link_rule": {
+      "mandatory": false,
+      "type": "none"
+    }
+  },
+  {
+    "id": "DOC-TEST-FRAMEWORK-008",
+    "chapter": "test-framework.md",
+    "line_start": 277,
+    "line_end": 283,
+    "class": "CLI_BASH",
+    "source_target": null,
+    "oracle": {
+      "type": "cli_help_valid"
+    },
+    "link_rule": {
+      "mandatory": false,
+      "type": "none"
+    }
+  },
+  {
+    "id": "DOC-TOOLING-001",
+    "chapter": "tooling.md",
+    "line_start": 11,
+    "line_end": 26,
+    "class": "TRACE_OUTPUT",
+    "source_target": null,
+    "oracle": {
+      "type": "trace_match"
+    },
+    "link_rule": {
+      "mandatory": false,
+      "type": "none"
+    }
+  },
+  {
+    "id": "DOC-TOOLING-002",
+    "chapter": "tooling.md",
+    "line_start": 37,
+    "line_end": 46,
+    "class": "CLI_BASH",
+    "source_target": null,
+    "oracle": {
+      "type": "cli_help_valid"
+    },
+    "link_rule": {
+      "mandatory": false,
+      "type": "none"
+    }
+  },
+  {
+    "id": "DOC-TOOLING-003",
+    "chapter": "tooling.md",
+    "line_start": 52,
+    "line_end": 64,
+    "class": "CLI_BASH",
+    "source_target": null,
+    "oracle": {
+      "type": "cli_help_valid"
+    },
+    "link_rule": {
+      "mandatory": false,
+      "type": "none"
+    }
+  },
+  {
+    "id": "DOC-TOOLING-004",
+    "chapter": "tooling.md",
+    "line_start": 70,
+    "line_end": 74,
+    "class": "CLI_BASH",
+    "source_target": null,
+    "oracle": {
+      "type": "cli_help_valid"
+    },
+    "link_rule": {
+      "mandatory": false,
+      "type": "none"
+    }
+  },
+  {
+    "id": "DOC-TOOLING-005",
+    "chapter": "tooling.md",
+    "line_start": 80,
+    "line_end": 84,
+    "class": "CLI_BASH",
+    "source_target": null,
+    "oracle": {
+      "type": "cli_help_valid"
+    },
+    "link_rule": {
+      "mandatory": false,
+      "type": "none"
+    }
+  },
+  {
+    "id": "DOC-TOOLING-006",
+    "chapter": "tooling.md",
+    "line_start": 103,
+    "line_end": 106,
+    "class": "CLI_BASH",
+    "source_target": null,
+    "oracle": {
+      "type": "cli_help_valid"
+    },
+    "link_rule": {
+      "mandatory": false,
+      "type": "none"
+    }
+  },
+  {
+    "id": "DOC-TOOLING-007",
+    "chapter": "tooling.md",
+    "line_start": 110,
+    "line_end": 112,
+    "class": "CLI_BASH",
+    "source_target": null,
+    "oracle": {
+      "type": "cli_help_valid"
+    },
+    "link_rule": {
+      "mandatory": false,
+      "type": "none"
+    }
+  },
+  {
+    "id": "DOC-TOOLING-008",
+    "chapter": "tooling.md",
+    "line_start": 122,
+    "line_end": 143,
+    "class": "CONFIG_DATA",
+    "source_target": null,
+    "oracle": {
+      "type": "schema_valid"
+    },
+    "link_rule": {
+      "mandatory": false,
+      "type": "none"
+    }
+  },
+  {
+    "id": "DOC-TOOLING-009",
+    "chapter": "tooling.md",
+    "line_start": 151,
+    "line_end": 153,
+    "class": "CLI_BASH",
+    "source_target": null,
+    "oracle": {
+      "type": "cli_help_valid"
+    },
+    "link_rule": {
+      "mandatory": false,
+      "type": "none"
+    }
+  },
+  {
+    "id": "DOC-TOOLING-010",
+    "chapter": "tooling.md",
+    "line_start": 165,
+    "line_end": 167,
+    "class": "CLI_BASH",
+    "source_target": null,
+    "oracle": {
+      "type": "cli_help_valid"
+    },
+    "link_rule": {
+      "mandatory": false,
+      "type": "none"
+    }
+  }
+]
