@@ -136,7 +136,8 @@ Requirements declared in `~ (Req1 + Req2)` represent unsatisfied effect dependen
 
 Lust provides effect handlers to supply concrete implementations or intercept operations:
 
-```lust
+```lust,ignore
+-- RFC Proposal Syntax: Algebraic Effect Handlers (see chapter RFC banner)
 -- Define individual effect operations
 effect ReadFile(path: string): string ! IoError
 effect WriteFile(path: string, content: string): bool ! IoError
@@ -319,7 +320,8 @@ Unlike typed errors (`Cause::Fail`), terminal interrupts (`Cause::Interrupted`) 
 
 The standard testing framework (`@std/test`) allows seamless mocking of service capabilities:
 
-```lust
+```lust,ignore
+-- RFC Proposal Syntax: Algebraic Effect Handlers (see chapter RFC banner)
 use @std/test.{suite, test, assert_eq, assert_success}
 
 struct MockDb
@@ -328,13 +330,13 @@ end
 
 service Database: MockDb
 
-suite("User Repository Tests", function()
-    test("loads user from mocked store", function()
+suite "User Repository Tests" do
+    test "loads user from mocked store" do
         local mock = MockDb { items = ["User1", "User2"] }
         
         -- Run effect with mock database
         local result = handle load_user(0) with Database = mock
         assert_success(result, "User1")
-    end)
-end)
+    end
+end
 ```
