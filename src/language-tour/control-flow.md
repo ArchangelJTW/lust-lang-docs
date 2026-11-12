@@ -194,6 +194,109 @@ The try operator is fully lowered into the MIR control-flow graph (`Terminator::
 
 ---
 
+## Resource Cleanup: `defer` and `errdefer`
+
+Lust provides Zig-inspired scoped cleanup mechanisms to ensure deterministic resource disposal without manual `finally` blocks:
+
+- **`defer`**: Schedules a cleanup statement or block that **always** executes when the current scope exits, regardless of whether execution completed normally or via an early `return`.
+- **`errdefer`**: Schedules an error-only cleanup statement or block that executes **only if** the enclosing function or scope exits with an error (e.g. returning `Result.Err` or propagating an error with `?`). If the scope succeeds, `errdefer` actions remain dormant and are discarded.
+
+Both forms execute in strict **LIFO (Last-In, First-Out)** order when multiple cleanup handlers are registered.
+
+### Single Statement & Block Syntax
+
+```lust
+function process_transaction(db: Database, file_path: string): Result<TransactionResult, string>
+    local file = File.open(file_path)?
+    defer file.close() -- Always closes the file upon exit
+
+    db.begin_transaction()?
+    errdefer db.rollback() -- Rolled back ONLY if an error occurs below
+
+    errdefer {
+        -- Multi-line block for auditing failures
+        println("Transaction failed for " .. file_path)
+        metrics.increment("tx.failures")
+    }
+
+    local data = file.read_all()?
+    local result = db.insert_record(data)?
+
+    db.commit()?
+    return Result.Ok(result)
+end
+```
+
+### Safety Invariants & Semantic Rules
+
+1. **Error Scope Only:** If `process_transaction` returns `Result.Ok(...)`, `errdefer db.rollback()` is **never** executed. Only unconditional `defer file.close()` runs.
+2. **Control Flow Restrictions:** `return`, `break`, and `continue` are **strictly forbidden** inside `defer` and `errdefer` blocks to prevent corrupting active return values or stack unwinding.
+3. **Effect Thunks:** Cleanups are tied to stack scopes and cannot be placed directly inside raw effect thunk bodies (`effect do errdefer ... end`).
+
+---
+
+## The Pipeline Operator (`|>`)
+
+Lust includes a first-class pipeline operator **`|>`** that transforms nested function calls into clean, left-to-right readable chains. 
+
+Instead of deeply nested function invocations:
+
+```lust
+-- Traditional nested calls (hard to read inside-out):
+local total = Math.round(Math.abs(calculate_discount(get_subtotal(order), 0.15)))
+```
+
+You can write an intuitive pipeline:
+
+```lust
+-- Pipeline operator (reads naturally top-to-bottom):
+local total = order
+    |> get_subtotal
+    |> calculate_discount(0.15)
+    |> Math.abs
+    |> Math.round
+```
+
+### Thread-First Transformation Semantics
+
+The pipeline operator is **left-associative** and uses **thread-first** substitution rules:
+
+1. **Unary Function Call:**
+   $$x \;\mid>\; f \quad\Longrightarrow\quad f(x)$$
+2. **Call with Additional Arguments:** The piped value becomes the **first positional argument**:
+   $$x \;\mid>\; g(y, z) \quad\Longrightarrow\quad g(x, y, z)$$
+3. **Module or Method Call:**
+   $$x \;\mid>\; Module.method(arg) \quad\Longrightarrow\quad Module.method(x, arg)$$
+
+### Multiline Pipelines & Precedence
+
+You can split pipeline expressions across multiple lines by placing newlines after each `|>` token.
+
+Arithmetic (`+`, `*`), bitwise (`|`, `&`), comparison (`<`, `==`), and unary operators bind **tighter** than `|>`:
+
+```lust
+function double(x: int): int return x * 2 end
+function add(a: int, b: int): int return a + b end
+
+-- 1. Arithmetic evaluates before piping: (2 + 3) |> double => double(5) = 10
+local r1 = 2 + 3 |> double
+
+-- 2. Chained left-to-right: add(double(10), 5) = 25
+local r2 = 10 |> double |> add(5)
+
+-- 3. Anonymous lambdas in pipelines:
+local r3 = 50 |> (function(x: int): int return x / 2 end)
+```
+
+### Zero-Cost Compiler Fusion
+
+In Lust, `|>` is not merely syntax sugar:
+- In the AST and MIR lowering stages, the compiler recognizes the entire pipeline DAG.
+- Intermediate structures are optimized through **Scalar Replacement of Aggregates (SROA)**, eliminating heap allocations for intermediate records.
+- Sequential iterations over collections (`Iter.filter |> Iter.map`) trigger **Loop Fusion**, collapsing multiple logical steps into a single machine loop.
+
+---
+
 ## Loop Control: `break` and `continue`
 
 - `break` exits the nearest loop immediately.

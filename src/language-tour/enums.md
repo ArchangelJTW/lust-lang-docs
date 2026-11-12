@@ -123,6 +123,8 @@ local outcome2 = divide(10, 0)
 
 ### Pattern Matching on `Result`
 
+When matching `outcome is Err(err)`, the compiler binds `err` strictly to the error type parameter `E` (unlike `Ok(val)`, which binds `val` to `T`).
+
 ```lust
 if outcome1 is Ok(val) then
     println("10 / 2 = " .. val)
@@ -137,22 +139,48 @@ elseif outcome2 is Err(msg) then
 end
 ```
 
-### Result Helper Methods
+#### Nested Pattern Matching
+
+Lust supports nested pattern matching on sum types. You can destructure nested enums directly in a single `is` expression without intermediate variables:
+
+```lust
+local query_result: Result<Option<string>, int> = Result.Ok(Option.Some("admin"))
+
+if query_result is Ok(Some(name)) then
+    println("Found user: " .. name)
+elseif query_result is Ok(None) then
+    println("Query succeeded but no user exists")
+elseif query_result is Err(code) then
+    println("Query failed with error code: " .. code)
+end
+
+-- Matching nested errors:
+local r: Result<string, Option<int>> = Result.Err(Option.Some(404))
+if r is Err(Some(code)) then
+    println("Failed with HTTP code: " .. code)
+end
+```
+
+### Sum Type Methods & Dual Invocation Syntax
+
+Both `Option<T>` and `Result<T, E>` provide built-in helper methods. Lust supports both colon method invocation (`value:method()`) and standard dot member invocation (`value.method()`):
 
 | Method | Return Type | Description |
 |---|---|---|
-| `res:is_ok()` | `bool` | Returns `true` if the result is `Ok`. |
-| `res:is_err()` | `bool` | Returns `true` if the result is `Err`. |
-| `res:unwrap()` | `T` | Returns the successful value or panics if `Err`. |
-| `res:unwrap_err()` | `E` | Returns the error value or panics if `Ok`. |
+| `res:is_ok()` / `res.is_ok()` | `bool` | Returns `true` if the result is `Ok`. |
+| `res:is_err()` / `res.is_err()` | `bool` | Returns `true` if the result is `Err`. |
+| `res:unwrap()` / `res.unwrap()` | `T` | Returns the successful value or panics if `Err`. |
+| `res:unwrap_err()` / `res.unwrap_err()` | `E` | Returns the error value or panics if `Ok`. |
 
 ```lust
+-- Using colon syntax
 if outcome1:is_ok() then
     println("Value: " .. outcome1:unwrap())
 end
 
-if outcome2:is_err() then
-    println("Failed as expected")
+-- Using dot syntax
+if outcome2.is_err() then
+    println("Error: " .. outcome2.unwrap_err())
 end
 ```
 
