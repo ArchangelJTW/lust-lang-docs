@@ -48,9 +48,9 @@ use std.data.Document
 
 -- Encoding data to JSON string
 local payload: Map<string, unknown> = {
-    "user_id": 1042,
-    "username": "alex",
-    "is_active": true
+    user_id = 1042,
+    username = "alex",
+    is_active = true
 }
 local json_str: string = json.encode(payload)
 println(json_str)
@@ -347,7 +347,7 @@ use std.regex.BoundedRegex
 -- 1. Define schema
 local UserSchema = s.object()
     .field("id", s.int().min(1).build())
-    .field("email", s.string().regex(r"^[a-z]+@[a-z]+\.[a-z]+$").build())
+    .field("email", s.string().regex("^[a-z]+@[a-z]+\\.[a-z]+$").build())
     .field("role", s.string().min(1).build())
     .build()
 

@@ -175,14 +175,14 @@ In Lua, a single `table` type serves as array, dictionary, object, and set, crea
 - `Table<K, V>` $\equiv$ `Map<K, V>` (Key-value generic table is a typed Map)
 
 ```lust
--- Constructing via Table aliases:
-local list: Table<int> = [10, 20, 30]
-local dict: Table<string, int> = { apple = 5, banana = 12 }
+-- Constructing via Array and Map:
+local list: Array<int> = [10, 20, 30]
+local dict: Map<string, int> = { apple = 5, banana = 12 }
 ```
 
 ### Table Module Functions
 
-The `table` module functions statically dispatch to the optimal array or map implementation at compile time with **zero runtime penalty**:
+The `table` module functions (`use std.table`) statically dispatch to the optimal array or map implementation at compile time with **zero runtime penalty**:
 
 | Function | Applied To | Description |
 |---|---|---|
@@ -199,7 +199,9 @@ The `table` module functions statically dispatch to the optimal array or map imp
 | `table.clear(t)` | `Array<T>`, `Map<K, V>` | Clears all elements. |
 
 ```lust
-local scores: Table<int> = [90, 85, 95]
+use std.table
+
+local scores: Array<int> = [90, 85, 95]
 table.insert(scores, 100)
 table.sort(scores)
 println("Highest: " .. scores[3]:unwrap()) -- 100

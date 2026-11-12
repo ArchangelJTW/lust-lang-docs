@@ -199,7 +199,7 @@ end
 
 function get_first_character(words: Array<string>): Option<string>
     local first_word = array.first(words)? -- Early returns None if empty
-    return string.slice(first_word, 0, 1)
+    return Option.Some(string.slice(first_word, 0, 1))
 end
 ```
 

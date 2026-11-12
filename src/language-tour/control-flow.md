@@ -141,7 +141,7 @@ end
 
 ### For-In Loops
 
-Use `for-in` to traverse collections, ranges, and index-value pairs:
+Use `for-in` to traverse collections and index-value pairs:
 
 ```lust
 -- 1. Direct element iteration over an Array
@@ -156,15 +156,10 @@ for i, fruit in ipairs(fruits) do
     println(i .. ": " .. fruit .. " (matches fruits[" .. i .. "])")
 end
 
--- 3. Range-based iteration
-for i in 0..5 do
-    println("Range step: " .. i) -- 0, 1, 2, 3, 4
-end
-
--- 4. Iterating over a Map with map.iter()
+-- 3. Iterating over a Map with map.iter()
 local inventory: Map<string, int> = { apple = 10, banana = 25 }
 for item, count in map.iter(inventory) do
-    println(item .. ": " .. count)
+    println(item .. ": " .. tostring(count))
 end
 ```
 

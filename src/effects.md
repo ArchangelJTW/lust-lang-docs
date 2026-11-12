@@ -57,7 +57,7 @@ Lust clearly separates immediate effect execution from lazy program descriptions
 2. **Lazy Blueprints (`effect do ... end`):**
    An `effect do ... end` block freezes execution into a first-class `Effect<A, E, R>` blueprint. Constructing a blueprint performs **zero side effects**.
 3. **Replayability Contract:**
-   Running a blueprint multiple times (e.g. via `effect.run_sync(blueprint)`) executes the body afresh on each invocation, ensuring clean, isolated state per run.
+   Running a blueprint multiple times (e.g. via `blueprint:run_sync()`) executes the body afresh on each invocation, ensuring clean, isolated state per run.
 
 ---
 
@@ -244,7 +244,7 @@ When an effect block is constructed and executed synchronously:
 local program = effect do
     return 10 * 4 + 2
 end
-local result = effect.run_sync(program)
+local result = program:run_sync()
 ```
 
 The Lust compiler performs compile-time thunk devirtualization and inlining:
@@ -323,7 +323,7 @@ Unlike typed errors (`Cause::Fail`), terminal interrupts (`Cause::Interrupted`) 
 
 The standard testing framework (`@std/test`) allows seamless mocking of service capabilities:
 
-```lua
+```lust
 use @std/test.{suite, test, assert_eq, assert_success}
 
 struct MockDb
