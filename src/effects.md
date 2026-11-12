@@ -1,5 +1,8 @@
 # Pure Core & Effects Architecture in Lust
 
+> [!NOTE] Design Specification / RFC
+> Данная глава описывает архитектурную спецификацию и дизайн системы алгебраических эффектов Lust.
+
 Lust features a state-of-the-art **Pure Core & Typed Algebraic Effects** system. It provides static tracking of side effects, zero-allocation dependency injection, capability-based security boundaries, and predictable resource finalization across both the Bytecode VM and the high-performance Cranelift JIT / Zig AOT engines.
 
 ---
@@ -134,26 +137,19 @@ Requirements declared in `~ (Req1 + Req2)` represent unsatisfied effect dependen
 Lust provides effect handlers to supply concrete implementations or intercept operations:
 
 ```lust
--- Define an effectful operation
-effect FileSystem
-    function read_file(path: string): string ! IoError
-    function write_file(path: string, content: string): bool ! IoError
+-- Define individual effect operations
+effect ReadFile(path: string): string ! IoError
+effect WriteFile(path: string, content: string): bool ! IoError
+
+-- Function requiring ReadFile capability
+function load_user_profile(user_id: string): string ! IoError ~ ReadFile
+    return ReadFile("/etc/users/" .. user_id .. ".json")?
 end
 
--- Function requiring FileSystem capability
-function load_user_profile(user_id: string): string ! IoError ~ FileSystem
-    return FileSystem.read_file("/etc/users/" .. user_id .. ".json")?
-end
-
--- Providing a handler for FileSystem
+-- Providing a handler for ReadFile
 function run_with_mock(): string ! IoError
-    return handle load_user_profile("alice") with FileSystem
-        function read_file(path: string): string ! IoError
-            return '{"name": "Alice", "role": "admin"}'
-        end
-        function write_file(path: string, content: string): bool ! IoError
-            return true
-        end
+    return handle load_user_profile("alice") with
+        case ReadFile(path) => '{"name": "Alice", "role": "admin"}'
     end
 end
 ```
@@ -332,13 +328,13 @@ end
 
 service Database: MockDb
 
-suite "User Repository Tests" do
-    test "loads user from mocked store" do
+suite("User Repository Tests", function()
+    test("loads user from mocked store", function()
         local mock = MockDb { items = ["User1", "User2"] }
         
         -- Run effect with mock database
         local result = handle load_user(0) with Database = mock
         assert_success(result, "User1")
-    end
-end
+    end)
+end)
 ```

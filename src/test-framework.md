@@ -11,14 +11,14 @@ In contrast to testing solutions in dynamic languages (which often inject implic
 
 ## Writing Tests
 
-### Standalone Tests: `test "name" do ... end`
+### Standalone Tests: `test("name", function() ... end)`
 
-Basic unit tests are defined with the `test` construct:
+Basic unit tests are defined with the `test` function:
 
 ```lust
 use std.test.{test, assert, assert_eq, assert_ne, assert_almost_eq}
 
-test "basic arithmetic and equality assertions" do
+test("basic arithmetic and equality assertions", function()
     local x = 10
     local y = 20
     local sum = x + y
@@ -27,7 +27,7 @@ test "basic arithmetic and equality assertions" do
     assert_ne(sum, 0)
     assert_almost_eq(3.14159, 3.14150, 0.001)
     assert(sum > x, "Sum must be greater than first operand")
-end
+end)
 ```
 
 ### Test Modifiers: `.skip`, `.timeout`, `.only`
@@ -38,21 +38,21 @@ You can attach modifiers to test declarations to control test execution:
 use std.test.{test, assert, assert_eq}
 
 -- 1. Skip a test with a descriptive reason
-test.skip("requires external redis instance in CI") "redis cluster failover probe" do
+test.skip("requires external redis instance in CI", "redis cluster failover probe", function()
     local ping_response = "PONG"
     assert_eq(ping_response, "PONG")
-end
+end)
 
 -- 2. Enforce a custom timeout (in milliseconds)
-test.timeout(3000) "network handshake within deadline" do
+test.timeout(3000, "network handshake within deadline", function()
     local connected = true
     assert(connected, "TCP connection established")
-end
+end)
 
 -- 3. Run only this test during focused debugging
-test.only "debug specific memory boundary" do
+test.only("debug specific memory boundary", function()
     assert(true)
-end
+end)
 ```
 
 ---
@@ -64,43 +64,43 @@ Organize related tests into hierarchical suites using `suite` (or its alias `des
 ```lust
 use std.test.{suite, describe, test, before_each, after_each, before_all, after_all, assert_eq, assert_almost_eq}
 
-suite "E-Commerce Checkout & Payment Suite" do
+suite("E-Commerce Checkout & Payment Suite", function()
     -- One-time setup before all tests in this suite
-    before_all do
+    before_all(function()
         local schema_version = 42
-    end
+    end)
 
     -- One-time cleanup after all tests in this suite
-    after_all do
+    after_all(function()
         local audit_logged = true
-    end
+    end)
 
     -- Setup hook executed before each individual test
-    before_each do
+    before_each(function()
         local db_tx = 1001
-    end
+    end)
 
     -- Teardown hook executed after each individual test (even if the test panics)
-    after_each do
+    after_each(function()
         local rollback = true
-    end
+    end)
 
-    test "calculates subtotal and VAT correctly" do
+    test("calculates subtotal and VAT correctly", function()
         local price = 100.0
         local vat_rate = 0.20
         local total = price * (1.0 + vat_rate)
 
         assert_almost_eq(total, 120.0, 0.01)
-    end
+    end)
 
     -- Nested test suite
-    describe "Payment Gateways" do
-        test "authorizes credit card transaction" do
+    describe("Payment Gateways", function()
+        test("authorizes credit card transaction", function()
             local card_valid = true
             assert_eq(card_valid, true)
-        end
-    end
-end
+        end)
+    end)
+end)
 ```
 
 ### Hook Execution Semantics
@@ -133,7 +133,7 @@ For code using Lust's effect system, assertions can inspect the final `Exit<A, E
 use std.test.{test, assert_success, assert_fails, assert_interrupted, assert_dies}
 use std.effect.{Effect, Exit, Cause, InterruptReason}
 
-test "verifies typed effect outcomes" do
+test("verifies typed effect outcomes", function()
     -- 1. assert_success: unwraps and returns the success value
     local ok_exit = Exit.Success(100)
     local val = assert_success(ok_exit)
@@ -151,7 +151,7 @@ test "verifies typed effect outcomes" do
     -- 4. assert_dies: catches fatal defects/panics
     local die_exit = Exit.Failure(Cause.Die("unexpected nil dereference"))
     assert_dies(die_exit, "nil dereference")
-end
+end)
 ```
 
 ---

@@ -10,7 +10,7 @@ This roadmap outlines recent milestones achieved in Lust as well as active and f
 - [x] **Mid-Level IR (MIR) & Verification Pipeline** &mdash; SSA/CFG representation with single-terminator verification (`MirVerifier`), constant folding, and multi-backend lowering (`vm_backend`, `cranelift_backend`, `zig_backend`).
 - [x] **Cranelift JIT Backend** &mdash; Native machine code generation via Cranelift JIT 0.137 through the MIR pipeline with multi-function module compilation.
 - [x] **Zig 0.17.1 Ahead-Of-Time (AOT) Backend** &mdash; Direct compilation to native executables, shared libraries (`--cdylib`), static libraries (`--staticlib`), and portable C-ABI headers (`--emit-h`).
-- [x] **Zero-Cost `table.*` Standard Library Facade** &mdash; High-performance unboxed `Array<T>` and `Map<K, V>` collections exposed via `table.*` and `Table<T>` / `Table<K, V>` generic type aliases.
+- [x] **Typed Collections Architecture** &mdash; High-performance unboxed `Array<T>` and `Map<K, V>` collections managed via dedicated `array` and `map` standard modules.
 - [x] **Resource Governance & Bounded Allocator** &mdash; `--max-memory <size>` memory ceilings, gas limiting in loops, and zero-overhead non-GC execution (`--no-gc`, `LUST_NO_GC`).
 - [x] **Unified CLI Architecture** &mdash; `lust run --backend [vm|cranelift|zig|auto]` and `lust build --backend zig` for end-to-end multi-target development.
 - [x] **Safe Array Indexing Model** &mdash; Non-trapping array bracket access returning `Result<T, IndexError>` with `.index` and `.length` fields.

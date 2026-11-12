@@ -202,11 +202,12 @@ Both forms execute in strict **LIFO (Last-In, First-Out)** order when multiple c
 
 ```lust
 function process_transaction(db: Database, file_path: string): Result<TransactionResult, string>
-    local file = File.open(file_path)?
-    defer file.close() -- Always closes the file upon exit
+    local data = io.read_file(file_path)?
+    local conn = db.open_connection()?
+    defer db.close_connection(conn) -- Always closes connection upon exit
 
-    db.begin_transaction()?
-    errdefer db.rollback() -- Rolled back ONLY if an error occurs below
+    db.begin_transaction(conn)?
+    errdefer db.rollback(conn) -- Rolled back ONLY if an error occurs below
 
     errdefer {
         -- Multi-line block for auditing failures
@@ -214,17 +215,15 @@ function process_transaction(db: Database, file_path: string): Result<Transactio
         metrics.increment("tx.failures")
     }
 
-    local data = file.read_all()?
-    local result = db.insert_record(data)?
-
-    db.commit()?
+    local result = db.insert_record(conn, data)?
+    db.commit(conn)?
     return Result.Ok(result)
 end
 ```
 
 ### Safety Invariants & Semantic Rules
 
-1. **Error Scope Only:** If `process_transaction` returns `Result.Ok(...)`, `errdefer db.rollback()` is **never** executed. Only unconditional `defer file.close()` runs.
+1. **Error Scope Only:** If `process_transaction` returns `Result.Ok(...)`, `errdefer db.rollback(conn)` is **never** executed. Only unconditional `defer db.close_connection(conn)` runs.
 2. **Control Flow Restrictions:** `return`, `break`, and `continue` are **strictly forbidden** inside `defer` and `errdefer` blocks to prevent corrupting active return values or stack unwinding.
 3. **Effect Thunks:** Cleanups are tied to stack scopes and cannot be placed directly inside raw effect thunk bodies (`effect do errdefer ... end`).
 

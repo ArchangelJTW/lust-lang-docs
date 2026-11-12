@@ -19,7 +19,7 @@ Many scripting languages suffer from silent bugs due to pervasive dynamic typing
 | **Complete Lua 5.4 Math & Bitwise** | Full arithmetic and bitwise operators: `//`, `^`, `&`, `\|`, `~`, `<<`, `>>`, `^^` and compound assignments. |
 | **Unified `is` Operator** | Check types, narrow union types, and destructure enum variants cleanly in conditionals. |
 | **Safe `as` Casting** | Fallible downcasting from `unknown` returns `Option<T>` without runtime crashes. |
-| **Zero-Cost `table.*` Facade** | High-performance `Array<T>` and `Map<K, V>` collections unified under the `table.*` standard library module and `Table<T>` / `Table<K, V>` type aliases. |
+| **Typed Collections Architecture** | High-performance unboxed `Array<T>` and `Map<K, V>` collections managed via dedicated `array` and `map` standard modules. |
 | **Multi-Tier Execution Pipeline** | Seamless execution across portable Bytecode VM, Cranelift JIT, and Direct Zig 0.17.1 AOT compilation (`.dylib`, `.a`, `--emit-h`). |
 | **Deterministic Memory** | Reference counting frees resources immediately; fallback cycle collector cleans up graphs; supports `--no-gc` zero-overhead mode. |
 | **Cooperative Multitasking** | Built-in `task` module provides coroutine scheduling with structured diagnostics. |

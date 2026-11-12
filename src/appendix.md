@@ -13,11 +13,8 @@ This appendix collects reference tables, comparison cheat sheets, and the standa
 | **Error Handling** | `error()`, `pcall()` strings | `Result<T, E>` (`Ok` or `Err`) and `?` try-operator |
 | **Array Indexing** | **1-based** | **0-based** (`arr[0]`), non-trapping `Result<T, IndexError>` |
 | **Iteration (`ipairs`)** | 1-based (`1..#t`) | **0-based** (`0..len-1`) for native arrays; 1-based for `LuaTable` bridge |
-| **Collections** | Single dynamic `table` | Distinct `Array<T>` and `Map<K, V>` with zero-cost `table.*` facade |
-| **Generic Aliases** | N/A | `Table<T> == Array<T>`, `Table<K, V> == Map<K, V>` |
-| **Math & Bitwise** | Lua 5.4 operators | Full parity: `+`, `-`, `*`, `/`, `//`, `%`, `^`, `&`, `\|`, `~`, `<<`, `>>`, `^^` |
-| **Compound Assign** | Not supported | Full set: `+=`, `-=`, `*=`, `/=`, `//=`, `%=`, `^=`, `&=`, `\|=`, `^^=`, `<<=`, `>>=` |
-| **Collection Methods**| Metatable method calls | Module functions (`table.*`, `array.*`, `map.*`) |
+| **Collections** | Single dynamic `table` | Distinct `Array<T>` and `Map<K, V>` with dedicated `array` and `map` modules |
+| **Collection Methods**| Metatable method calls | Module functions (`array.*`, `map.*`) |
 | **Classes / Records** | Tables with metatable prototypes | `struct` definitions with `impl` blocks |
 | **Variant Data** | Tables with tag fields | Tagged `enum` with payload variants |
 | **Pattern Matching** | Manual `type()` / field checks | Unified `is` operator with destructuring |
@@ -73,11 +70,6 @@ while
 - `type(val)` &mdash; Returns the type name string of a value.
 - `ipairs(arr)` &mdash; 0-based iterator for native arrays yielding `(index, value)`.
 
-### `table` Module (Zero-Cost Generic Facade)
-
-`clear`, `clone`, `concat`, `contains`, `first`, `get`, `insert`, `is_empty`, `last`, `len`, `pop`, `push`, `remove`, `reverse`, `set`, `slice`, `sort`
-
-*Statically dispatched at compile time to `array.*` or `map.*` with zero runtime overhead.*
 
 ### `array` Module
 

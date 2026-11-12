@@ -170,17 +170,16 @@ Both `Option<T>` and `Result<T, E>` provide built-in helper methods. Lust suppor
 | `res:is_ok()` / `res.is_ok()` | `bool` | Returns `true` if the result is `Ok`. |
 | `res:is_err()` / `res.is_err()` | `bool` | Returns `true` if the result is `Err`. |
 | `res:unwrap()` / `res.unwrap()` | `T` | Returns the successful value or panics if `Err`. |
-| `res:unwrap_err()` / `res.unwrap_err()` | `E` | Returns the error value or panics if `Ok`. |
 
 ```lust
--- Using colon syntax
+-- Using helper method
 if outcome1:is_ok() then
     println("Value: " .. outcome1:unwrap())
 end
 
--- Using dot syntax
-if outcome2.is_err() then
-    println("Error: " .. outcome2.unwrap_err())
+-- Safely extracting error details via pattern matching
+if outcome2 is Err(err) then
+    println("Error: " .. err)
 end
 ```
 

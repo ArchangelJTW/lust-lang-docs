@@ -78,15 +78,13 @@ When processing massive datasets, gigabyte-sized log dumps, or real-time event f
 
 ```lust
 use std.data.jsonl
-use std.io.File
-
-local log_file = File.open("events.jsonl")?
+use std.io
 
 -- Stream lines with a fixed 32KB buffer limit
-local reader = jsonl.reader(log_file, {
+local reader = jsonl.open_reader("events.jsonl", {
     max_line_bytes = 16384,
     buffer_capacity = 32768
-})
+})?
 
 for record in reader do
     -- Each record is decoded and validated without accumulating previous lines

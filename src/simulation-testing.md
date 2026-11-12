@@ -493,24 +493,24 @@ Lust scripts do not require special branches to run under simulation. Standard s
 
 ```lust
 -- scripts/resilient_service.lust
-import os from "@std/os"
-import io from "@std/io"
+use std.os
+use std.io
 
 function process_work_order(order_id: int): string
     -- 1. Deterministic file access via VFS
-    local file_path = "/workspace/orders/" .. order_id .. ".json"
+    local file_path = "/workspace/orders/" .. tostring(order_id) .. ".json"
     
-    if not io.exists(file_path) then
+    local read_res = io.read_file(file_path)
+    if read_res is Err(_) then
         return "OrderNotFound"
     end
-    
-    local content = io.read_to_string(file_path)
+    local content = read_res:unwrap()
     
     -- 2. Virtual sleep: in simulation, advances virtual clock instantaneously!
-    os.sleep(5000) -- 5 seconds
+    os.sleep(5.0) -- 5 seconds
     
     -- 3. Write processed result
-    io.write("/workspace/results/" .. order_id .. ".done", "PROCESSED: " .. content)
+    io.write_file("/workspace/results/" .. tostring(order_id) .. ".done", "PROCESSED: " .. content)
     return "Success"
 end
 
@@ -561,15 +561,15 @@ fn run_simulation_campaign_seed(seed: u64) -> Result<(), String> {
 
     // 4. Compile and load Lust script
     let script = r#"
-        import io from "@std/io"
-        import os from "@std/os"
+        use std.io
+        use std.os
 
         function worker(): string
             local path = "/workspace/orders/101.json"
-            if io.exists(path) then
-                local data = io.read_to_string(path)
-                os.sleep(1000) -- 1 second virtual sleep
-                io.write("/workspace/orders/101.done", data)
+            local read_res = io.read_file(path)
+            if read_res is Ok(data) then
+                os.sleep(1.0) -- 1.0 second virtual sleep
+                io.write_file("/workspace/orders/101.done", data)
                 return "DONE"
             end
             return "MISSING"

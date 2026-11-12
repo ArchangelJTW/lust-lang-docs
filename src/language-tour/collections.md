@@ -165,47 +165,31 @@ println("Has Germany: " .. tostring(map.has(capitals, "Germany"))) -- false
 
 ---
 
-## The `table` Module & `Table` Type Aliases
+## Common Collection Workflows
 
-In Lua, a single `table` type serves as array, dictionary, object, and set, creating runtime performance overhead. Lust provides **specialized, zero-overhead storage** under the hood (`Array<T>` for flat memory buffers, `Map<K, V>` for hash tables) while exposing a familiar, zero-cost **`table.*` standard library facade** and type constructors:
+In Lust, `Array<T>` and `Map<K, V>` provide specialized, zero-overhead storage without runtime performance penalties. Rather than relying on a single dynamic table type, Lust provides dedicated, statically checked `array` and `map` modules:
 
-### Type Aliases
-
-- `Table<T>` $\equiv$ `Array<T>` (Single-type generic table is a typed Array)
-- `Table<K, V>` $\equiv$ `Map<K, V>` (Key-value generic table is a typed Map)
+### Working with Arrays
 
 ```lust
--- Constructing via Array and Map:
-local list: Array<int> = [10, 20, 30]
-local dict: Map<string, int> = { apple = 5, banana = 12 }
+local scores: Array<int> = [90, 85, 95]
+array.push(scores, 100)
+array.sort(scores)
+println("Highest: " .. scores[3]:unwrap()) -- 100
+println("Joined: " .. array.concat(scores, ", ")) -- "85, 90, 95, 100"
 ```
 
-### Table Module Functions
-
-The `table` module functions (`use std.table`) statically dispatch to the optimal array or map implementation at compile time with **zero runtime penalty**:
-
-| Function | Applied To | Description |
-|---|---|---|
-| `table.insert(t, val)` / `(t, idx, val)` | `Array<T>` | Pushes to end or inserts at index. |
-| `table.remove(t, idx?)` | `Array<T>` | Removes at index (or pops last element). |
-| `table.concat(t, sep?)` | `Array<T>` | Concatenates elements into a string with optional separator. |
-| `table.sort(t)` | `Array<T>` | Sorts array elements in place. |
-| `table.slice(t, start, end)` | `Array<T>` | Returns a sub-array `[start, end)`. |
-| `table.len(t)` | `Array<T>`, `Map<K, V>` | Returns element count. |
-| `table.is_empty(t)` | `Array<T>`, `Map<K, V>` | Checks if empty. |
-| `table.get(t, key)` | `Array<T>`, `Map<K, V>` | Safe access returning `Option<V>`. |
-| `table.set(t, key, val)` | `Map<K, V>` | Inserts or updates key-value pair. |
-| `table.contains(t, val)` | `Array<T>` | Checks if value exists in array. |
-| `table.clear(t)` | `Array<T>`, `Map<K, V>` | Clears all elements. |
+### Working with Maps
 
 ```lust
-use std.table
+local config: Map<string, string> = { env = "production", region = "eu-west" }
+map.set(config, "version", "3.5.8")
+println("Entries: " .. tostring(map.len(config)))
 
-local scores: Array<int> = [90, 85, 95]
-table.insert(scores, 100)
-table.sort(scores)
-println("Highest: " .. scores[3]:unwrap()) -- 100
-println("Joined: " .. table.concat(scores, ", ")) -- "85, 90, 95, 100"
+local maybe_env = map.get(config, "env")
+if maybe_env is Some(v) then
+    println("Environment: " .. v)
+end
 ```
 
 ---
