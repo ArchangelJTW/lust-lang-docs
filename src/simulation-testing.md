@@ -278,6 +278,9 @@ pub struct FiberContinuation {
 
 ### 4.2 `PreemptiveExplorationScheduler`
 
+> 📂 **Запускаемый пример:** [`examples/simulation/01_deterministic_scheduler.rs`](https://github.com/lust-lang/lust/blob/perf/10x-jit-optimization-suite/examples/simulation/01_deterministic_scheduler.rs)  
+> 💻 *Файл в репозитории компилятора:* `examples/simulation/01_deterministic_scheduler.rs`
+
 The exploration scheduler orchestrates multi-fiber workloads:
 - **Ready Queue Shuffle:** Before selecting the next task, the ready queue is deterministically shuffled using Fisher-Yates driven by `StdRng` / `Pcg64`.
 - **Randomized Quantum:** Each step picks a quantum $Q \in [1, \text{max\_quantum}]$ instructions.
@@ -302,7 +305,10 @@ shared_array[0] = count
 
 ## 5. Invariant Engine & Fault Injection
 
-Testing is vacuous without rigorous oracles. Lust implements a dual-clause invariant engine providing both **Safety** ("bad things never happen") and **Liveness** ("good things eventually happen").
+Testing is vacuous without rigorous oracles. Lust implements a dual-clause invariant engine providing both **Safety** ("bad things never happen") and **Liveness** ("good things eventually happen"):
+
+> 📂 **Запускаемый пример:** [`examples/simulation/02_fault_injection_vfs.rs`](https://github.com/lust-lang/lust/blob/perf/10x-jit-optimization-suite/examples/simulation/02_fault_injection_vfs.rs)  
+> 💻 *Файл в репозитории компилятора:* `examples/simulation/02_fault_injection_vfs.rs`
 
 ```
 +------------------------------------------------------------------------------------+
@@ -522,6 +528,9 @@ end
 ### 8.2 Driving Simulations from Rust Host Code
 
 Here is how a Rust application sets up an end-to-end simulation harness with fault injection, step limiting, and invariant monitoring:
+
+> 📂 **Запускаемый пример:** [`examples/simulation/03_replay_bundle_export.rs`](https://github.com/lust-lang/lust/blob/perf/10x-jit-optimization-suite/examples/simulation/03_replay_bundle_export.rs)  
+> 💻 *Файл в репозитории компилятора:* `examples/simulation/03_replay_bundle_export.rs`
 
 ```rust
 use std::io::ErrorKind;

@@ -2,6 +2,9 @@
 
 Lust provides optional standard-library modules for file access, standard streams, and selected operating-system services. The `io` and `os` modules are disabled by default. Enable either or both in `lust-config.toml`:
 
+> 📋 **Конфигурационный файл:** [`examples/basic/lust-config.toml`](https://github.com/lust-lang/lust/blob/perf/10x-jit-optimization-suite/examples/basic/lust-config.toml)  
+> 🔍 *Схема валидации:* [`manifest.schema.json`](https://github.com/lust-lang/lust/blob/perf/10x-jit-optimization-suite/manifest.schema.json)
+
 ```toml
 [settings]
 stdlib_modules = ["io", "os"]
@@ -26,6 +29,9 @@ File and stream operations return `Result<T, string>`. Check for `Ok(value)` or 
 | `io.read_file_bytes(path)` | `Result<Array<int>, string>` | Reads the file as byte values. Each array element is an integer from 0 to 255. |
 | `io.read_dir(path)` | `Result<Array<string>, string>` | Lists the names of entries in a directory. The returned names do not include the directory path. |
 | `io.write_file(path, contents)` | `Result<(), string>` | Creates or overwrites a file. String contents are written as-is; other values are converted to their string representation. |
+
+> 📂 **Запускаемый пример:** [`examples/basic/18_io.lust`](https://github.com/lust-lang/lust/blob/perf/10x-jit-optimization-suite/examples/basic/18_io.lust)  
+> 💻 *Файл в репозитории компилятора:* `examples/basic/18_io.lust`
 
 ```lust
 local path = "app_config.txt"
@@ -90,6 +96,9 @@ The `os` module provides time, sleep, filesystem, and environment-variable funct
 | `os.get_env(name)` | `Result<Option<string>, string>` | Reads an environment variable. Returns `Ok(None)` when it is not set, and `Err(message)` if it cannot be read as Unicode. |
 
 ### Example: Read an Environment Variable
+
+> 📂 **Запускаемый пример:** [`examples/basic/19_os.lust`](https://github.com/lust-lang/lust/blob/perf/10x-jit-optimization-suite/examples/basic/19_os.lust)  
+> 💻 *Файл в репозитории компилятора:* `examples/basic/19_os.lust`
 
 ```lust
 local env_res = os.get_env("HOME")

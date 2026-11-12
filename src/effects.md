@@ -75,6 +75,9 @@ A function's return specification (`ReturnSpec`) can specify:
 - Typed error branch preceded by `!` (`! ErrorType`)
 - Contextual service requirements preceded by `~` (`~ RequirementRow`)
 
+> 📂 **Запускаемый пример:** [`examples/effects/04_effects_syntax.lust`](https://github.com/lust-lang/lust/blob/perf/10x-jit-optimization-suite/examples/effects/04_effects_syntax.lust)  
+> 💻 *Файл в репозитории компилятора:* `examples/effects/04_effects_syntax.lust`
+
 ```lust
 -- Declares a function returning string, potentially failing with HttpError,
 -- and requiring both 'Network' and 'Console' capabilities.
@@ -237,6 +240,9 @@ Lust eliminates the traditional performance penalties of effect systems through 
 
 When an effect block is constructed and executed synchronously:
 
+> 📂 **Запускаемый пример:** [`examples/effects/01_basic_effects.rs`](https://github.com/lust-lang/lust/blob/perf/10x-jit-optimization-suite/examples/effects/01_basic_effects.rs)  
+> 💻 *Файл в репозитории компилятора:* `examples/effects/01_basic_effects.rs`
+
 ```lust
 local program = effect do
     return 10 * 4 + 2
@@ -275,6 +281,9 @@ Lust guarantees 100% semantic and performance parity across all execution target
 
 Lust combines effect scopes with deterministic RAII-style cleanup:
 
+> 📂 **Запускаемый пример:** [`examples/effects/03_acquire_release_and_scopes.rs`](https://github.com/lust-lang/lust/blob/perf/10x-jit-optimization-suite/examples/effects/03_acquire_release_and_scopes.rs)  
+> 💻 *Файл в репозитории компилятора:* `examples/effects/03_acquire_release_and_scopes.rs`
+
 ```lust
 function process_transaction(db_url: string, payload: string): bool ! DbError ~ (Database + Logger)
     scoped do
@@ -300,6 +309,9 @@ end
 
 Every effect terminates in an `Exit<A, E>`:
 
+> 📂 **Запускаемый пример:** [`examples/effects/02_retry_and_repeat.rs`](https://github.com/lust-lang/lust/blob/perf/10x-jit-optimization-suite/examples/effects/02_retry_and_repeat.rs)  
+> 💻 *Файл в репозитории компилятора:* `examples/effects/02_retry_and_repeat.rs`
+
 ```rust
 pub enum Exit<A, E = String> {
     Success(A),
@@ -319,6 +331,9 @@ Unlike typed errors (`Cause::Fail`), terminal interrupts (`Cause::Interrupted`) 
 ### 6.3 Mocking Capabilities in Tests (`@std/test`)
 
 The standard testing framework (`@std/test`) allows seamless mocking of service capabilities:
+
+> 📂 **Запускаемый пример:** [`examples/effects/05_dependency_injection_mocking.rs`](https://github.com/lust-lang/lust/blob/perf/10x-jit-optimization-suite/examples/effects/05_dependency_injection_mocking.rs)  
+> 💻 *Файл в репозитории компилятора:* `examples/effects/05_dependency_injection_mocking.rs`
 
 ```lust,ignore
 -- RFC Proposal Syntax: Algebraic Effect Handlers (see chapter RFC banner)

@@ -31,6 +31,9 @@ The `embed` module is available under the default `std` feature. Features that m
 
 Use `EmbeddedProgram::builder()` to assemble and compile modules in memory:
 
+> 📂 **Запускаемый пример:** [`examples/embedding/standalone_vm.rs`](https://github.com/lust-lang/lust/blob/perf/10x-jit-optimization-suite/examples/embedding/standalone_vm.rs)  
+> 💻 *Файл в репозитории компилятора:* `examples/embedding/standalone_vm.rs`
+
 ```rust
 use lust::EmbeddedProgram;
 
@@ -343,7 +346,19 @@ println!("Recursive calls:      {}", stats.recursive_calls);
 
 ### WebAssembly
 
-On `wasm32` the crate exposes a minimal `wasm-bindgen` surface instead of the full host API: `lust::wasm::run_lust(source: &str) -> Result<String, JsValue>`. It compiles an in-memory `main` module, executes its top level, and returns everything the script printed (`print`/`println` are redirected into the returned string and mirrored to `console.log`). There is no per-function call surface, native registration, or async support in this mode; wrap `EmbeddedProgram` yourself if you need more.
+### Async & Tokio Concurrency
+
+For high-throughput asynchronous services, Lust VM instances can be embedded within Tokio worker tasks:
+
+> 📂 **Проект встраивания:** [`examples/tokio-concurrency/`](https://github.com/lust-lang/lust/tree/perf/10x-jit-optimization-suite/examples/tokio-concurrency/)  
+> 🛠️ *Команда сборки и запуска:* `cargo run --manifest-path examples/tokio-concurrency/Cargo.toml`
+
+### Automated Host Bindings with Bindgen
+
+To generate type-safe Rust bindings and stubs for complex Lust data structures:
+
+> 📂 **Проект встраивания:** [`examples/bindgen/`](https://github.com/lust-lang/lust/tree/perf/10x-jit-optimization-suite/examples/bindgen/)  
+> 🛠️ *Команда сборки и запуска:* `cargo run --manifest-path examples/bindgen/Cargo.toml`
 
 ---
 
@@ -438,7 +453,10 @@ int main(void) {
 - Lifecycle order: `lust_builder_free(builder)` after `lust_builder_compile(...)` (compile consumes the in-memory modules), and `lust_program_free(program)` last.
 - `lust_program_run_entry(program)` executes the entry script's top level; call it before reading globals declared by that script.
 
-A complete example lives in `examples/c-ffi`.
+A complete example lives in `examples/c-ffi`:
+
+> 📂 **Проект встраивания:** [`examples/c-ffi/`](https://github.com/lust-lang/lust/tree/perf/10x-jit-optimization-suite/examples/c-ffi/)  
+> 🛠️ *Команда сборки и запуска:* `make -C examples/c-ffi test`
 
 ---
 

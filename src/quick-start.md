@@ -44,6 +44,9 @@ export PATH="$PWD:$PATH"
 
 Create a new file named `hello.lust`:
 
+> 📂 **Запускаемый пример:** [`examples/basic/01_hello.lust`](https://github.com/lust-lang/lust/blob/perf/10x-jit-optimization-suite/examples/basic/01_hello.lust)  
+> 💻 *Файл в репозитории компилятора:* `examples/basic/01_hello.lust`
+
 ```lust
 -- hello.lust
 println("Hello from Lust!")

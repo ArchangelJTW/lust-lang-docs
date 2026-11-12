@@ -39,7 +39,10 @@ In Lust, an `Observable<T, E>` is a **cold, lazy blueprint** for a stream:
 - `T`: The item type delivered to downstream observers. Must implement memory footprint measurement (`MeasurableItem`).
 - `E`: The error type (defaults to `String`).
 
-Constructing an `Observable` does not perform any computation, start timers, or allocate worker tasks. Execution begins only when an observer subscribes to the blueprint via `subscribe()`.
+Constructing an `Observable` does not perform any computation, start timers, or allocate worker tasks. Execution begins only when an observer subscribes to the blueprint via `subscribe()`:
+
+> 📂 **Запускаемый пример:** [`examples/rx/01_observables_basics.rs`](https://github.com/lust-lang/lust/blob/perf/10x-jit-optimization-suite/examples/rx/01_observables_basics.rs)  
+> 💻 *Файл в репозитории компилятора:* `examples/rx/01_observables_basics.rs`
 
 ```rust
 use lust::rx::{Observable, Observer, BufferOptions, RxScheduler, ExitStatus};
@@ -108,6 +111,9 @@ Observers often need to cancel themselves from inside `on_next` (e.g. upon seein
 ## 3. Operator Specification
 
 Operators transform, filter, or control reactive streams. Because Observables are blueprints, chaining operators builds a composite pipeline without starting execution prematurely.
+
+> 📂 **Запускаемый пример:** [`examples/rx/02_operators_filter_map.rs`](https://github.com/lust-lang/lust/blob/perf/10x-jit-optimization-suite/examples/rx/02_operators_filter_map.rs)  
+> 💻 *Файл в репозитории компилятора:* `examples/rx/02_operators_filter_map.rs`
 
 ```mermaid
 flowchart LR
@@ -180,6 +186,9 @@ The scheduler holds ready tasks in a bounded FIFO queue with a configurable limi
 The `BoundedQueue<T>` manages items waiting between producers and consumers. Memory is tracked along two simultaneous axes:
 1. **Item Count:** `max_items` and `low_items`.
 2. **Byte Footprint:** `max_bytes` and `low_bytes` measured via the `MeasurableItem` trait:
+
+> 📂 **Запускаемый пример:** [`examples/rx/03_backpressure_buffers.rs`](https://github.com/lust-lang/lust/blob/perf/10x-jit-optimization-suite/examples/rx/03_backpressure_buffers.rs)  
+> 💻 *Файл в репозитории компилятора:* `examples/rx/03_backpressure_buffers.rs`
 
 ```rust
 pub trait MeasurableItem {

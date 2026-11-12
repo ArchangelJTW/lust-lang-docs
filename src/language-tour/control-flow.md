@@ -8,6 +8,9 @@ This chapter covers functions, multiple return values, branching conditions, loo
 
 Functions are defined with the `function` keyword and terminate with `end`. Parameter types and return types are annotated with `:`:
 
+> 📂 **Запускаемый пример:** [`examples/basic/03_functions.lust`](https://github.com/lust-lang/lust/blob/perf/10x-jit-optimization-suite/examples/basic/03_functions.lust)  
+> 💻 *Файл в репозитории компилятора:* `examples/basic/03_functions.lust`
+
 ```lust
 function add(a: int, b: int): int
     return a + b
@@ -111,7 +114,10 @@ println("Category: " .. category) -- Outputs: Category: adult
 
 ## Loops
 
-Lust provides three forms of loops: `while`, numeric `for`, and iterator `for-in`.
+Lust provides three forms of loops: `while`, numeric `for`, and iterator `for-in`:
+
+> 📂 **Запускаемый пример:** [`examples/basic/12_loops.lust`](https://github.com/lust-lang/lust/blob/perf/10x-jit-optimization-suite/examples/basic/12_loops.lust)  
+> 💻 *Файл в репозитории компилятора:* `examples/basic/12_loops.lust`
 
 ### While Loops
 

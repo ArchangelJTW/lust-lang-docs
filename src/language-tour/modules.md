@@ -8,6 +8,9 @@ As scripts grow into full applications, Lust allows you to split code across mul
 
 Lust maps directory hierarchies directly to nested module names using dot notation. For example:
 
+> 📂 **Запускаемый пример:** [`examples/modules/main.lust`](https://github.com/lust-lang/lust/blob/perf/10x-jit-optimization-suite/examples/modules/main.lust)  
+> 💻 *Файл в репозитории компилятора:* `examples/modules/main.lust`
+
 ```text
 my_project/
 ├── lust-config.toml

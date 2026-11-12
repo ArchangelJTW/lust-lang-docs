@@ -8,6 +8,9 @@ In Lust, there are no `nil`, `null`, or `undefined` values. Instead, missing dat
 
 Enums define a type that can take one of several variants. Variants can be simple unit tags or carry typed data:
 
+> 📂 **Запускаемый пример:** [`examples/basic/05_enums.lust`](https://github.com/lust-lang/lust/blob/perf/10x-jit-optimization-suite/examples/basic/05_enums.lust)  
+> 💻 *Файл в репозитории компилятора:* `examples/basic/05_enums.lust`
+
 ```lust
 enum Status
     Pending,
@@ -56,6 +59,9 @@ Notice that when matching `s is Complete(code)`, Lust introduces `code` as an in
 When an operation might produce a value or nothing, use the built-in `Option<T>` enum. It has two variants:
 - `Option.Some(value)` (or bare `Some(value)`)
 - `Option.None` (or bare `None`)
+
+> 📂 **Запускаемый пример:** [`examples/basic/06_option.lust`](https://github.com/lust-lang/lust/blob/perf/10x-jit-optimization-suite/examples/basic/06_option.lust)  
+> 💻 *Файл в репозитории компилятора:* `examples/basic/06_option.lust`
 
 ```lust
 function find_even(n: int): Option<int>
@@ -108,6 +114,9 @@ end
 For operations that can succeed or fail with an error, Lust provides `Result<T, E>`:
 - `Result.Ok(value)` (or bare `Ok(value)`)
 - `Result.Err(error)` (or bare `Err(error)`)
+
+> 📂 **Запускаемый пример:** [`examples/basic/07_result.lust`](https://github.com/lust-lang/lust/blob/perf/10x-jit-optimization-suite/examples/basic/07_result.lust)  
+> 💻 *Файл в репозитории компилятора:* `examples/basic/07_result.lust`
 
 ```lust
 function divide(a: int, b: int): Result<int, string>

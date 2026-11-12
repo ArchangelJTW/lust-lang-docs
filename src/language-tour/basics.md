@@ -6,7 +6,8 @@ This chapter introduces Lust's fundamental building blocks: declaring variables,
 
 ## Declaring Variables with `local`
 
-In Lust, all local variables are declared using the `local` keyword. Variables are mutable by default:
+> 📂 **Запускаемый пример:** [`examples/basic/02_variables.lust`](https://github.com/lust-lang/lust/blob/perf/10x-jit-optimization-suite/examples/basic/02_variables.lust)  
+> 💻 *Файл в репозитории компилятора:* `examples/basic/02_variables.lust`
 
 ```lust
 local score: int = 10
@@ -126,6 +127,9 @@ Underscores may be used within the integer, fractional, or exponent parts follow
 ### Complete Executable Example
 
 Below is a complete, executable Lust script demonstrating all numeric literal variants, bit patterns, and assertions:
+
+> 📂 **Запускаемый пример:** [`examples/basic/20_numeric_literals.lust`](https://github.com/lust-lang/lust/blob/perf/10x-jit-optimization-suite/examples/basic/20_numeric_literals.lust)  
+> 💻 *Файл в репозитории компилятора:* `examples/basic/20_numeric_literals.lust`
 
 ```lust
 -- 1. Decimal Integers with digit separators and boundary constants
