@@ -355,3 +355,9 @@ suite "User Repository Tests" do
     end
 end
 ```
+
+---
+
+## Runnable Supervision & Structured Concurrency Example (`06_concurrency_and_supervision`)
+
+- `examples/effects/06_concurrency_and_supervision.lust` — runnable `suite`/`test` example exercising structured scopes (`test.scope_new`, `test.scope_begin_teardown`), interrupt masking (`test.fiber_enter_mask` / `test.fiber_exit_mask`), `Gate-NEG-02` joining invariant, and LIFO finalizer teardown (`lust test examples/effects/06_concurrency_and_supervision.lust`). See [Simulation Testing (DST)](./simulation-testing.md).

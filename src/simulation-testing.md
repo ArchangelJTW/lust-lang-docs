@@ -639,3 +639,14 @@ With Deterministic Simulation Testing, Lust bridges the gap between high-level s
 For detailed architecture specifications and reports, see:
 - Architecture & Roadmap: [`DST_ARCHITECTURE_AND_ROADMAP.md`](https://github.com/lust-lang/lust/blob/main/docs/DST_ARCHITECTURE_AND_ROADMAP.md)
 - Runtime Verification Report: [`LUST_RUNTIME_STABILITY_AND_DST_VERIFICATION_REPORT.md`](https://github.com/lust-lang/lust/blob/main/docs/LUST_RUNTIME_STABILITY_AND_DST_VERIFICATION_REPORT.md)
+
+---
+
+## 10. Runnable Wave 4 `.lust` DST Examples (`EX-D`)
+
+The following standalone `.lust` scripts complement the Rust host DST harnesses and execute deterministically under `lust run --backend mir`:
+- `examples/simulation/01_deterministic_scheduler.lust` — deterministic seed `42` trace parity vs divergent seed `43`.
+- `examples/simulation/02_fault_injection_vfs.lust` — deterministic VFS permission/read-only fault injection matrix.
+- `examples/simulation/03_replay_bundle_export.lust` — replay manifest, event log, and payload roundtrip verification.
+
+See also [Pure Core & Effects](./effects.md), [Embedding Lust](./embedding.md), and [CLI & Tooling](./tooling.md).
