@@ -72,8 +72,8 @@ A function's return specification (`ReturnSpec`) can specify:
 - Typed error branch preceded by `!` (`! ErrorType`)
 - Contextual service requirements preceded by `~` (`~ RequirementRow`)
 
-> 📂 **Запускаемый пример:** [`examples/effects/04_effects_syntax.lust`](https://github.com/lust-lang/lust/blob/perf/10x-jit-optimization-suite/examples/effects/04_effects_syntax.lust)  
-> 💻 *Файл в репозитории компилятора:* `examples/effects/04_effects_syntax.lust`
+> 📂 **Runnable example:** [`examples/effects/04_effects_syntax.lust`](https://github.com/ArchangelJTW/lust-lang/blob/master/examples/effects/04_effects_syntax.lust)\
+> 💻 *Compiler repository file:* `examples/effects/04_effects_syntax.lust`
 
 ```lust
 -- Declares a function returning string, potentially failing with HttpError,
@@ -255,8 +255,8 @@ Lust eliminates the traditional performance penalties of effect systems through 
 
 When an effect block is constructed and executed synchronously:
 
-> 📂 **Запускаемый пример:** [`examples/effects/01_basic_effects.rs`](https://github.com/lust-lang/lust/blob/perf/10x-jit-optimization-suite/examples/effects/01_basic_effects.rs)  
-> 💻 *Файл в репозитории компилятора:* `examples/effects/01_basic_effects.rs`
+> 📂 **Runnable example:** [`examples/effects/01_basic_effects.rs`](https://github.com/ArchangelJTW/lust-lang/blob/master/examples/effects/01_basic_effects.rs)\
+> 💻 *Compiler repository file:* `examples/effects/01_basic_effects.rs`
 
 ```lust
 local program = effect do
@@ -297,8 +297,8 @@ Lust guarantees semantic parity across all execution targets, including Cranelif
 
 Lust combines effect scopes with deterministic RAII-style cleanup:
 
-> 📂 **Запускаемый пример:** [`examples/effects/03_acquire_release_and_scopes.rs`](https://github.com/lust-lang/lust/blob/perf/10x-jit-optimization-suite/examples/effects/03_acquire_release_and_scopes.rs)  
-> 💻 *Файл в репозитории компилятора:* `examples/effects/03_acquire_release_and_scopes.rs`
+> 📂 **Runnable example:** [`examples/effects/03_acquire_release_and_scopes.rs`](https://github.com/ArchangelJTW/lust-lang/blob/master/examples/effects/03_acquire_release_and_scopes.rs)\
+> 💻 *Compiler repository file:* `examples/effects/03_acquire_release_and_scopes.rs`
 
 ```lust
 function process_transaction(db_url: string, payload: string): bool ! DbError ~ (Database + Logger)
@@ -325,8 +325,8 @@ end
 
 Every effect terminates in an `Exit<A, E>`:
 
-> 📂 **Запускаемый пример:** [`examples/effects/02_retry_and_repeat.rs`](https://github.com/lust-lang/lust/blob/perf/10x-jit-optimization-suite/examples/effects/02_retry_and_repeat.rs)  
-> 💻 *Файл в репозитории компилятора:* `examples/effects/02_retry_and_repeat.rs`
+> 📂 **Runnable example:** [`examples/effects/02_retry_and_repeat.rs`](https://github.com/ArchangelJTW/lust-lang/blob/master/examples/effects/02_retry_and_repeat.rs)\
+> 💻 *Compiler repository file:* `examples/effects/02_retry_and_repeat.rs`
 
 ```rust
 pub enum Exit<A, E = String> {
@@ -348,8 +348,8 @@ Unlike typed errors (`Cause::Fail`), terminal interrupts (`Cause::Interrupted`) 
 
 The standard testing framework (`@std/test`) allows seamless mocking of service capabilities:
 
-> 📂 **Запускаемый пример:** [`examples/effects/05_dependency_injection_mocking.rs`](https://github.com/lust-lang/lust/blob/perf/10x-jit-optimization-suite/examples/effects/05_dependency_injection_mocking.rs)  
-> 💻 *Файл в репозитории компилятора:* `examples/effects/05_dependency_injection_mocking.rs`
+> 📂 **Runnable example:** [`examples/effects/05_dependency_injection_mocking.rs`](https://github.com/ArchangelJTW/lust-lang/blob/master/examples/effects/05_dependency_injection_mocking.rs)\
+> 💻 *Compiler repository file:* `examples/effects/05_dependency_injection_mocking.rs`
 
 ```lust,ignore
 -- Service-injection mocking pattern with @std/test
@@ -364,7 +364,7 @@ service Database: MockDb
 suite "User Repository Tests" do
     test "loads user from mocked store" do
         local mock = MockDb { items = ["User1", "User2"] }
-        
+
         -- Run effect with mock database
         local result = handle load_user(0) with Database = mock
         assert_success(result, "User1")

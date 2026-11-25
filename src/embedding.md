@@ -39,8 +39,8 @@ The `embed` module is available under the default `std` feature. Features that m
 
 Use `EmbeddedProgram::builder()` to assemble and compile modules in memory:
 
-> 📂 **Запускаемый пример:** [`examples/embedding/standalone_vm.rs`](https://github.com/lust-lang/lust/blob/perf/10x-jit-optimization-suite/examples/embedding/standalone_vm.rs)  
-> 💻 *Файл в репозитории компилятора:* `examples/embedding/standalone_vm.rs`
+> 📂 **Runnable example:** [`examples/embedding/standalone_vm.rs`](https://github.com/ArchangelJTW/lust-lang/blob/master/examples/embedding/standalone_vm.rs)\
+> 💻 *Compiler repository file:* `examples/embedding/standalone_vm.rs`
 
 ```rust
 use lust::EmbeddedProgram;
@@ -401,15 +401,15 @@ For sandboxed WebAssembly deployments targeting WASI Preview 1 (`wasm32-wasip1`)
 
 For high-throughput asynchronous services, Lust VM instances can be embedded within Tokio worker tasks:
 
-> 📂 **Проект встраивания:** [`examples/tokio-concurrency/`](https://github.com/lust-lang/lust/tree/perf/10x-jit-optimization-suite/examples/tokio-concurrency/)  
-> 🛠️ *Команда сборки и запуска:* `cargo run --manifest-path examples/tokio-concurrency/Cargo.toml`
+> 📂 **Embedding project:** [`examples/tokio-concurrency/`](https://github.com/ArchangelJTW/lust-lang/tree/master/examples/tokio-concurrency/)\
+> 🛠️ *Build and run command:* `cargo run --manifest-path examples/tokio-concurrency/Cargo.toml`
 
 ### Automated Host Bindings with Bindgen
 
 To generate type-safe Rust bindings and stubs for complex Lust data structures:
 
-> 📂 **Проект встраивания:** [`examples/bindgen/`](https://github.com/lust-lang/lust/tree/perf/10x-jit-optimization-suite/examples/bindgen/)  
-> 🛠️ *Команда сборки и запуска:* `cargo run --manifest-path examples/bindgen/Cargo.toml`
+> 📂 **Embedding project:** [`examples/bindgen/`](https://github.com/ArchangelJTW/lust-lang/tree/master/examples/bindgen/)\
+> 🛠️ *Build and run command:* `cargo run --manifest-path examples/bindgen/Cargo.toml`
 
 ---
 
@@ -594,8 +594,8 @@ int main(void) {
 
 A complete example lives in `examples/c-ffi`:
 
-> 📂 **Проект встраивания:** [`examples/c-ffi/`](https://github.com/lust-lang/lust/tree/perf/10x-jit-optimization-suite/examples/c-ffi/)  
-> 🛠️ *Команда сборки и запуска:* `make -C examples/c-ffi test`
+> 📂 **Embedding project:** [`examples/c-ffi/`](https://github.com/ArchangelJTW/lust-lang/tree/master/examples/c-ffi/)\
+> 🛠️ *Build and run command:* `make -C examples/c-ffi test`
 
 ---
 

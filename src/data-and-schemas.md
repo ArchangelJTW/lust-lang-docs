@@ -42,8 +42,8 @@ Lust standardizes data exchange across five primary formats:
 
 The JSON module strictly enforces RFC 8259 compliance. Duplicate keys, trailing commas, unquoted control characters, and non-finite floats are strictly forbidden:
 
-> 📂 **Запускаемый пример:** [`examples/schemas/02_json_deserialization.rs`](https://github.com/lust-lang/lust/blob/perf/10x-jit-optimization-suite/examples/schemas/02_json_deserialization.rs)  
-> 💻 *Файл в репозитории компилятора:* `examples/schemas/02_json_deserialization.rs`
+> 📂 **Runnable example:** [`examples/schemas/02_json_deserialization.rs`](https://github.com/ArchangelJTW/lust-lang/blob/master/examples/schemas/02_json_deserialization.rs)\
+> 💻 *Compiler repository file:* `examples/schemas/02_json_deserialization.rs`
 
 ```lust
 use std.data.json
@@ -106,8 +106,8 @@ Key guarantees of the JSONL streaming engine:
 
 BSON preserves native binary types without textual conversion overhead:
 
-> 📂 **Запускаемый пример:** [`examples/schemas/03_messagepack_binary.rs`](https://github.com/lust-lang/lust/blob/perf/10x-jit-optimization-suite/examples/schemas/03_messagepack_binary.rs)  
-> 💻 *Файл в репозитории компилятора:* `examples/schemas/03_messagepack_binary.rs`
+> 📂 **Runnable example:** [`examples/schemas/03_messagepack_binary.rs`](https://github.com/ArchangelJTW/lust-lang/blob/master/examples/schemas/03_messagepack_binary.rs)\
+> 💻 *Compiler repository file:* `examples/schemas/03_messagepack_binary.rs`
 
 ```rust
 use lust::data::{bson, DataValue, Document, ExactNumber};
@@ -141,8 +141,8 @@ Lust provides a composable, fluent schema builder API rooted at the `s` factory.
 
 ### The `s` Builder API
 
-> 📂 **Запускаемый пример:** [`examples/schemas/01_schema_validation.rs`](https://github.com/lust-lang/lust/blob/perf/10x-jit-optimization-suite/examples/schemas/01_schema_validation.rs)  
-> 💻 *Файл в репозитории компилятора:* `examples/schemas/01_schema_validation.rs`
+> 📂 **Runnable example:** [`examples/schemas/01_schema_validation.rs`](https://github.com/ArchangelJTW/lust-lang/blob/master/examples/schemas/01_schema_validation.rs)\
+> 💻 *Compiler repository file:* `examples/schemas/01_schema_validation.rs`
 
 ```rust
 use lust::schema::s;
@@ -394,8 +394,8 @@ assert_eq!(sanitized, "order ### in queue 7");
 
 Combining data parsing, schema validation, and pipeline operators:
 
-> 📂 **Запускаемый пример:** [`examples/schemas/04_schema_dsl.lust`](https://github.com/lust-lang/lust/blob/perf/10x-jit-optimization-suite/examples/schemas/04_schema_dsl.lust)  
-> 💻 *Файл в репозитории компилятора:* `examples/schemas/04_schema_dsl.lust`
+> 📂 **Runnable example:** [`examples/schemas/04_schema_dsl.lust`](https://github.com/ArchangelJTW/lust-lang/blob/master/examples/schemas/04_schema_dsl.lust)\
+> 💻 *Compiler repository file:* `examples/schemas/04_schema_dsl.lust`
 
 ```lust
 use std.data.json

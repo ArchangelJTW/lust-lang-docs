@@ -8,8 +8,8 @@ Lust provides cooperative multitasking through the built-in `task` module. Tasks
 
 A task is created by passing a function to `task.create`:
 
-> 📂 **Запускаемый пример:** [`examples/advanced/07_tasks_cooperative.lust`](https://github.com/lust-lang/lust/blob/perf/10x-jit-optimization-suite/examples/advanced/07_tasks_cooperative.lust)  
-> 💻 *Файл в репозитории компилятора:* `examples/advanced/07_tasks_cooperative.lust`
+> 📂 **Runnable example:** [`examples/advanced/07_tasks_cooperative.lust`](https://github.com/ArchangelJTW/lust-lang/blob/master/examples/advanced/07_tasks_cooperative.lust)\
+> 💻 *Compiler repository file:* `examples/advanced/07_tasks_cooperative.lust`
 
 ```lust
 local ticker: Task = task.create(function(): string

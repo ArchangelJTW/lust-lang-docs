@@ -15,8 +15,8 @@ In contrast to testing solutions in dynamic languages (which often inject implic
 
 Basic unit tests are defined with the `test` construct:
 
-> 📂 **Запускаемый пример:** [`examples/testing/01_test_suite_basics.lust`](https://github.com/lust-lang/lust/blob/perf/10x-jit-optimization-suite/examples/testing/01_test_suite_basics.lust)  
-> 💻 *Файл в репозитории компилятора:* `examples/testing/01_test_suite_basics.lust`
+> 📂 **Runnable example:** [`examples/testing/01_test_suite_basics.lust`](https://github.com/ArchangelJTW/lust-lang/blob/master/examples/testing/01_test_suite_basics.lust)\
+> 💻 *Compiler repository file:* `examples/testing/01_test_suite_basics.lust`
 
 ```lust
 use std.test.{test, assert, assert_eq, assert_ne, assert_almost_eq}
@@ -64,8 +64,8 @@ end
 
 Organize related tests into hierarchical suites using `suite` (or its alias `describe`). Suites support nested blocks and setup/teardown lifecycle hooks:
 
-> 📂 **Запускаемый пример:** [`examples/testing/02_lifecycle_hooks.lust`](https://github.com/lust-lang/lust/blob/perf/10x-jit-optimization-suite/examples/testing/02_lifecycle_hooks.lust)  
-> 💻 *Файл в репозитории компилятора:* `examples/testing/02_lifecycle_hooks.lust`
+> 📂 **Runnable example:** [`examples/testing/02_lifecycle_hooks.lust`](https://github.com/ArchangelJTW/lust-lang/blob/master/examples/testing/02_lifecycle_hooks.lust)\
+> 💻 *Compiler repository file:* `examples/testing/02_lifecycle_hooks.lust`
 
 ```lust
 use std.test.{suite, describe, test, before_each, after_each, before_all, after_all, assert_eq, assert_almost_eq}
@@ -135,8 +135,8 @@ The testing framework provides pure synchronous assertions and effect-aware asse
 
 For code using Lust's effect system, assertions can inspect the final `Exit<A, E>` and `Cause<E>`:
 
-> 📂 **Запускаемый пример:** [`examples/effects/07_test_syntax_demo.lust`](https://github.com/lust-lang/lust/blob/perf/10x-jit-optimization-suite/examples/effects/07_test_syntax_demo.lust)  
-> 💻 *Файл в репозитории компилятора:* `examples/effects/07_test_syntax_demo.lust`
+> 📂 **Runnable example:** [`examples/effects/07_test_syntax_demo.lust`](https://github.com/ArchangelJTW/lust-lang/blob/master/examples/effects/07_test_syntax_demo.lust)\
+> 💻 *Compiler repository file:* `examples/effects/07_test_syntax_demo.lust`
 
 ```lust
 use std.test.{test, assert_success, assert_fails, assert_interrupted, assert_dies}

@@ -8,8 +8,8 @@ This chapter covers functions, multiple return values, branching conditions, loo
 
 Functions are defined with the `function` keyword and terminate with `end`. Parameter types and return types are annotated with `:`:
 
-> 📂 **Запускаемый пример:** [`examples/basic/03_functions.lust`](https://github.com/lust-lang/lust/blob/perf/10x-jit-optimization-suite/examples/basic/03_functions.lust)  
-> 💻 *Файл в репозитории компилятора:* `examples/basic/03_functions.lust`
+> 📂 **Runnable example:** [`examples/basic/03_functions.lust`](https://github.com/ArchangelJTW/lust-lang/blob/master/examples/basic/03_functions.lust)\
+> 💻 *Compiler repository file:* `examples/basic/03_functions.lust`
 
 ```lust
 function add(a: int, b: int): int
@@ -116,8 +116,8 @@ println("Category: " .. category) -- Outputs: Category: adult
 
 Lust provides three forms of loops: `while`, numeric `for`, and iterator `for-in`:
 
-> 📂 **Запускаемый пример:** [`examples/basic/12_loops.lust`](https://github.com/lust-lang/lust/blob/perf/10x-jit-optimization-suite/examples/basic/12_loops.lust)  
-> 💻 *Файл в репозитории компилятора:* `examples/basic/12_loops.lust`
+> 📂 **Runnable example:** [`examples/basic/12_loops.lust`](https://github.com/ArchangelJTW/lust-lang/blob/master/examples/basic/12_loops.lust)\
+> 💻 *Compiler repository file:* `examples/basic/12_loops.lust`
 
 ### While Loops
 
@@ -237,7 +237,7 @@ end
 
 ## The Pipeline Operator (`|>`)
 
-Lust includes a first-class pipeline operator **`|>`** that transforms nested function calls into clean, left-to-right readable chains. 
+Lust includes a first-class pipeline operator **`|>`** that transforms nested function calls into clean, left-to-right readable chains.
 
 Instead of deeply nested function invocations:
 

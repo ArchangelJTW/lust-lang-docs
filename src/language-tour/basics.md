@@ -6,8 +6,8 @@ This chapter introduces Lust's fundamental building blocks: declaring variables,
 
 ## Declaring Variables with `local`
 
-> 📂 **Запускаемый пример:** [`examples/basic/02_variables.lust`](https://github.com/lust-lang/lust/blob/perf/10x-jit-optimization-suite/examples/basic/02_variables.lust)  
-> 💻 *Файл в репозитории компилятора:* `examples/basic/02_variables.lust`
+> 📂 **Runnable example:** [`examples/basic/02_variables.lust`](https://github.com/ArchangelJTW/lust-lang/blob/master/examples/basic/02_variables.lust)\
+> 💻 *Compiler repository file:* `examples/basic/02_variables.lust`
 
 ```lust
 local score: int = 10
@@ -77,11 +77,11 @@ Both lowercase and uppercase radix prefixes (`0x` / `0X`, `0b` / `0B`, `0o` / `0
 
 In Lust, radix literals (`0x`, `0b`, `0o`) are interpreted as 64-bit unsigned register bit patterns (`0x0 ..= 0xFFFF_FFFF_FFFF_FFFF`). The compiler maps the raw bit pattern into Lust's signed 64-bit integer type (`int` / `i64`) using two's complement reinterpretation (`val as i64`):
 
-- **Upper positive boundary (`i64::MAX`)**:  
+- **Upper positive boundary (`i64::MAX`)**:\
   `0x7FFF_FFFF_FFFF_FFFF` = `9223372036854775807`
-- **Most Significant Bit (MSB) boundary (`i64::MIN`)**:  
+- **Most Significant Bit (MSB) boundary (`i64::MIN`)**:\
   `0x8000_0000_0000_0000` = `-9223372036854775808`
-- **All bits set (mask of all ones)**:  
+- **All bits set (mask of all ones)**:\
   `0xFFFF_FFFF_FFFF_FFFF` = `-1`
 
 This design provides clean, zero-overhead bit manipulation without requiring special unsigned primitive types:
@@ -128,8 +128,8 @@ Underscores may be used within the integer, fractional, or exponent parts follow
 
 Below is a complete, executable Lust script demonstrating all numeric literal variants, bit patterns, and assertions:
 
-> 📂 **Запускаемый пример:** [`examples/basic/20_numeric_literals.lust`](https://github.com/lust-lang/lust/blob/perf/10x-jit-optimization-suite/examples/basic/20_numeric_literals.lust)  
-> 💻 *Файл в репозитории компилятора:* `examples/basic/20_numeric_literals.lust`
+> 📂 **Runnable example:** [`examples/basic/20_numeric_literals.lust`](https://github.com/ArchangelJTW/lust-lang/blob/master/examples/basic/20_numeric_literals.lust)\
+> 💻 *Compiler repository file:* `examples/basic/20_numeric_literals.lust`
 
 ```lust
 -- 1. Decimal Integers with digit separators and boundary constants

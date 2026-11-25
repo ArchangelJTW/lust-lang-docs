@@ -73,8 +73,8 @@ println("Box contains: " .. int_box:get()) -- 100
 
 Traits define nominal contracts that specify required methods. A type conforms to a trait only through an explicit `impl Trait for Type` block:
 
-> 📂 **Запускаемый пример:** [`examples/traits/01_basic_trait.lust`](https://github.com/lust-lang/lust/blob/perf/10x-jit-optimization-suite/examples/traits/01_basic_trait.lust)  
-> 💻 *Файл в репозитории компилятора:* `examples/traits/01_basic_trait.lust`
+> 📂 **Runnable example:** [`examples/traits/01_basic_trait.lust`](https://github.com/ArchangelJTW/lust-lang/blob/master/examples/traits/01_basic_trait.lust)\
+> 💻 *Compiler repository file:* `examples/traits/01_basic_trait.lust`
 
 ```lust
 trait Drawable
@@ -107,8 +107,8 @@ end
 
 Constrain generic parameters to types that implement specific traits using `<Parameter: TraitName>`:
 
-> 📂 **Запускаемый пример:** [`examples/traits/02_trait_bounds.lust`](https://github.com/lust-lang/lust/blob/perf/10x-jit-optimization-suite/examples/traits/02_trait_bounds.lust)  
-> 💻 *Файл в репозитории компилятора:* `examples/traits/02_trait_bounds.lust`
+> 📂 **Runnable example:** [`examples/traits/02_trait_bounds.lust`](https://github.com/ArchangelJTW/lust-lang/blob/master/examples/traits/02_trait_bounds.lust)\
+> 💻 *Compiler repository file:* `examples/traits/02_trait_bounds.lust`
 
 ```lust
 function render<T: Drawable>(shape: T)

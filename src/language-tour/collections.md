@@ -10,8 +10,8 @@ Lust provides strongly typed collections (`Array<T>` and `Map<K, V>`) alongside 
 
 An `Array<T>` is an ordered, dynamically-sized list of homogeneous elements.
 
-> 📂 **Запускаемый пример:** [`examples/basic/08_arrays.lust`](https://github.com/lust-lang/lust/blob/perf/10x-jit-optimization-suite/examples/basic/08_arrays.lust)  
-> 💻 *Файл в репозитории компилятора:* `examples/basic/08_arrays.lust`
+> 📂 **Runnable example:** [`examples/basic/08_arrays.lust`](https://github.com/ArchangelJTW/lust-lang/blob/master/examples/basic/08_arrays.lust)\
+> 💻 *Compiler repository file:* `examples/basic/08_arrays.lust`
 
 ```lust
 local numbers: Array<int> = [10, 20, 30]
@@ -126,8 +126,8 @@ println("Resulting sum: " .. sum) -- (6 + 8 + 10 + 12 = 36)
 
 A `Map<K, V>` is a hash-based key-value dictionary with strongly typed keys and values.
 
-> 📂 **Запускаемый пример:** [`examples/basic/10_maps.lust`](https://github.com/lust-lang/lust/blob/perf/10x-jit-optimization-suite/examples/basic/10_maps.lust)  
-> 💻 *Файл в репозитории компилятора:* `examples/basic/10_maps.lust`
+> 📂 **Runnable example:** [`examples/basic/10_maps.lust`](https://github.com/ArchangelJTW/lust-lang/blob/master/examples/basic/10_maps.lust)\
+> 💻 *Compiler repository file:* `examples/basic/10_maps.lust`
 
 ```lust
 local scores: Map<string, int> = {

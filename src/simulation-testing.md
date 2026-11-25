@@ -278,8 +278,8 @@ pub struct FiberContinuation {
 
 ### 4.2 `PreemptiveExplorationScheduler`
 
-> 📂 **Запускаемый пример:** [`examples/simulation/01_deterministic_scheduler.rs`](https://github.com/lust-lang/lust/blob/perf/10x-jit-optimization-suite/examples/simulation/01_deterministic_scheduler.rs)  
-> 💻 *Файл в репозитории компилятора:* `examples/simulation/01_deterministic_scheduler.rs`
+> 📂 **Runnable example:** [`examples/simulation/01_deterministic_scheduler.rs`](https://github.com/ArchangelJTW/lust-lang/blob/master/examples/simulation/01_deterministic_scheduler.rs)\
+> 💻 *Compiler repository file:* `examples/simulation/01_deterministic_scheduler.rs`
 
 The exploration scheduler orchestrates multi-fiber workloads:
 - **Ready Queue Shuffle:** Before selecting the next task, the ready queue is deterministically shuffled using Fisher-Yates driven by `StdRng` / `Pcg64`.
@@ -307,8 +307,8 @@ shared_array[0] = count
 
 Testing is vacuous without rigorous oracles. Lust implements a dual-clause invariant engine providing both **Safety** ("bad things never happen") and **Liveness** ("good things eventually happen"):
 
-> 📂 **Запускаемый пример:** [`examples/simulation/02_fault_injection_vfs.rs`](https://github.com/lust-lang/lust/blob/perf/10x-jit-optimization-suite/examples/simulation/02_fault_injection_vfs.rs)  
-> 💻 *Файл в репозитории компилятора:* `examples/simulation/02_fault_injection_vfs.rs`
+> 📂 **Runnable example:** [`examples/simulation/02_fault_injection_vfs.rs`](https://github.com/ArchangelJTW/lust-lang/blob/master/examples/simulation/02_fault_injection_vfs.rs)\
+> 💻 *Compiler repository file:* `examples/simulation/02_fault_injection_vfs.rs`
 
 ```
 +------------------------------------------------------------------------------------+
@@ -505,16 +505,16 @@ use std.io
 function process_work_order(order_id: int): string
     -- 1. Deterministic file access via VFS
     local file_path = "/workspace/orders/" .. tostring(order_id) .. ".json"
-    
+
     local read_res = io.read_file(file_path)
     if read_res is Err(_) then
         return "OrderNotFound"
     end
     local content = read_res:unwrap()
-    
+
     -- 2. Virtual sleep: in simulation, advances virtual clock instantaneously!
     os.sleep(5.0) -- 5 seconds
-    
+
     -- 3. Write processed result
     io.write_file("/workspace/results/" .. tostring(order_id) .. ".done", "PROCESSED: " .. content)
     return "Success"
@@ -529,8 +529,8 @@ end
 
 Here is how a Rust application sets up an end-to-end simulation harness with fault injection, step limiting, and invariant monitoring:
 
-> 📂 **Запускаемый пример:** [`examples/simulation/03_replay_bundle_export.rs`](https://github.com/lust-lang/lust/blob/perf/10x-jit-optimization-suite/examples/simulation/03_replay_bundle_export.rs)  
-> 💻 *Файл в репозитории компилятора:* `examples/simulation/03_replay_bundle_export.rs`
+> 📂 **Runnable example:** [`examples/simulation/03_replay_bundle_export.rs`](https://github.com/ArchangelJTW/lust-lang/blob/master/examples/simulation/03_replay_bundle_export.rs)\
+> 💻 *Compiler repository file:* `examples/simulation/03_replay_bundle_export.rs`
 
 ```rust
 use std::io::ErrorKind;
@@ -597,11 +597,11 @@ fn run_simulation_campaign_seed(seed: u64) -> Result<(), String> {
     // 6. Execute discrete steps
     while !scheduler.is_quiescent() {
         let gas_before = scheduler.vm.gas_used();
-        
+
         match scheduler.step_one() {
             Ok(Some((task_handle, state))) => {
                 let gas_after = scheduler.vm.gas_used();
-                
+
                 // Verify safety invariant INV-BUDGET-01
                 if gas_after > gas_before {
                     if let Err(err) = gas_oracle.verify_step_progress(gas_after, 1) {
@@ -637,8 +637,8 @@ With Deterministic Simulation Testing, Lust bridges the gap between high-level s
 - **Autonomous Debugging:** Replay Bundles turn elusive production bugs into single-command offline repros.
 
 For detailed architecture specifications and reports, see:
-- Architecture & Roadmap: [`DST_ARCHITECTURE_AND_ROADMAP.md`](https://github.com/lust-lang/lust/blob/main/docs/DST_ARCHITECTURE_AND_ROADMAP.md)
-- Runtime Verification Report: [`LUST_RUNTIME_STABILITY_AND_DST_VERIFICATION_REPORT.md`](https://github.com/lust-lang/lust/blob/main/docs/LUST_RUNTIME_STABILITY_AND_DST_VERIFICATION_REPORT.md)
+- Architecture & Roadmap: [`DST_ARCHITECTURE_AND_ROADMAP.md`](https://github.com/ArchangelJTW/lust-lang/blob/master/docs/DST_ARCHITECTURE_AND_ROADMAP.md)
+- Runtime Verification Report: [`LUST_RUNTIME_STABILITY_AND_DST_VERIFICATION_REPORT.md`](https://github.com/ArchangelJTW/lust-lang/blob/master/docs/LUST_RUNTIME_STABILITY_AND_DST_VERIFICATION_REPORT.md)
 
 ---
 

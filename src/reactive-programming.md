@@ -1,7 +1,7 @@
 # Reactive Programming (Rx & Observables) in Lust
 
 > [!NOTE] Design Specification / RFC
-> Данная глава описывает архитектурную спецификацию реактивного программирования и Observables в Lust.
+> This chapter describes the architectural specification for reactive programming and Observables in Lust.
 
 Lust provides a first-class Reactive Streams (Rx) subsystem designed for high-performance, asynchronous event streams, deterministic simulation, and real-time data processing.
 
@@ -41,8 +41,8 @@ In Lust, an `Observable<T, E>` is a **cold, lazy blueprint** for a stream:
 
 Constructing an `Observable` does not perform any computation, start timers, or allocate worker tasks. Execution begins only when an observer subscribes to the blueprint via `subscribe()`:
 
-> 📂 **Запускаемый пример:** [`examples/rx/01_observables_basics.lust`](https://github.com/lust-lang/lust/blob/perf/10x-jit-optimization-suite/examples/rx/01_observables_basics.lust)  
-> 💻 *Файл в репозитории компилятора:* `examples/rx/01_observables_basics.lust`
+> 📂 **Runnable example:** [`examples/rx/01_observables_basics.lust`](https://github.com/ArchangelJTW/lust-lang/blob/master/examples/rx/01_observables_basics.lust)\
+> 💻 *Compiler repository file:* `examples/rx/01_observables_basics.lust`
 
 ```rust
 use lust::rx::{Observable, Observer, BufferOptions, RxScheduler, ExitStatus};
@@ -112,8 +112,8 @@ Observers often need to cancel themselves from inside `on_next` (e.g. upon seein
 
 Operators transform, filter, or control reactive streams. Because Observables are blueprints, chaining operators builds a composite pipeline without starting execution prematurely.
 
-> 📂 **Запускаемый пример:** [`examples/rx/02_operators_filter_map.lust`](https://github.com/lust-lang/lust/blob/perf/10x-jit-optimization-suite/examples/rx/02_operators_filter_map.lust)  
-> 💻 *Файл в репозитории компилятора:* `examples/rx/02_operators_filter_map.lust`
+> 📂 **Runnable example:** [`examples/rx/02_operators_filter_map.lust`](https://github.com/ArchangelJTW/lust-lang/blob/master/examples/rx/02_operators_filter_map.lust)\
+> 💻 *Compiler repository file:* `examples/rx/02_operators_filter_map.lust`
 
 ```mermaid
 flowchart LR
@@ -187,8 +187,8 @@ The `BoundedQueue<T>` manages items waiting between producers and consumers. Mem
 1. **Item Count:** `max_items` and `low_items`.
 2. **Byte Footprint:** `max_bytes` and `low_bytes` measured via the `MeasurableItem` trait:
 
-> 📂 **Запускаемый пример:** [`examples/rx/03_backpressure_buffers.lust`](https://github.com/lust-lang/lust/blob/perf/10x-jit-optimization-suite/examples/rx/03_backpressure_buffers.lust)  
-> 💻 *Файл в репозитории компилятора:* `examples/rx/03_backpressure_buffers.lust`
+> 📂 **Runnable example:** [`examples/rx/03_backpressure_buffers.lust`](https://github.com/ArchangelJTW/lust-lang/blob/master/examples/rx/03_backpressure_buffers.lust)\
+> 💻 *Compiler repository file:* `examples/rx/03_backpressure_buffers.lust`
 
 ```rust
 pub trait MeasurableItem {
