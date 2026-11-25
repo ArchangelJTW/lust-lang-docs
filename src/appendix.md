@@ -70,6 +70,16 @@ while
 
 `len`, `is_empty`, `get`, `first`, `last`, `push`, `pop`, `insert`, `remove`, `clear`, `slice`, `concat`, `sort`, `reverse`, `contains`, `map`, `filter`, `reduce`, `iter`
 
+- `array.concat<T>(arr: Array<T> [, sep: string]): string` &mdash; Joins each element's display representation into a single `string` using the optional `sep` string separator (defaults to `""`, the empty string). It returns a `string`, not a new `Array`.
+
+```lust
+use std::array
+
+local words = ["lust", "is", "fast"]
+local joined: string = array.concat(words, ", ") -- "lust, is, fast"
+local compact: string = array.concat(words)      -- "lustisfast"
+```
+
 ### `map` Module
 
 `len`, `is_empty`, `get`, `set`, `has`, `delete`, `clear`, `keys`, `values`, `iter`
