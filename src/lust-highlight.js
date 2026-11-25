@@ -59,7 +59,6 @@
       variants: [
         hljs.QUOTE_STRING_MODE,
         hljs.APOS_STRING_MODE,
-        { begin: "\\[\\[", end: "\\]\\]" },
       ],
     };
 
@@ -111,10 +110,12 @@
       contains: [hljs.UNDERSCORE_TITLE_MODE],
     };
 
+    var HASH_COMMENT = hljs.COMMENT("#", "$");
+
     var OPERATORS = {
       className: "operator",
       begin:
-        /(\/\/=|\^\^=|<<=|>>=|\|>|->|=>|::|\/\/|\^\^|<<|>>|\+=|-=|\*=|\/=|%=|\^=|&=|\|=|==|!=|~=|<=|>=|\.\.|[+\-*/%^=<>&|~!?#])/,
+        /(\/\/=|\^\^=|<<=|>>=|\|>|->|=>|::|\/\/|\^\^|<<|>>|\+=|-=|\*=|\/=|%=|\^=|&=|\|=|==|!=|~=|<=|>=|\.\.|[+\-*/%^=<>&|~!?])/,
     };
 
     var PUNCTUATION = {
@@ -136,6 +137,7 @@
         BLOCK_COMMENT,
         DOC_COMMENT,
         LINE_COMMENT,
+        HASH_COMMENT,
         REGEX_LITERAL,
         STRINGS,
         ATTRIBUTE_OR_MODULE_PATH,
