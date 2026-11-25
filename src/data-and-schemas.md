@@ -259,6 +259,54 @@ Materialization guarantees:
 - **Extra Fields in Strict Layouts:** Returns `MaterializeError::ExtraFieldInStrictLayout`.
 - **Target ABI Awareness:** Field alignment and pointer widths adapt to the target architecture (x86_64, aarch64, or 32-bit targets like rv32).
 
+### `ContiguousStruct`, C11 Layout Parity & Zero-DOM AOT Decoders (`lust::w17_layout`)
+
+For high-throughput binary and JSON ingestion without intermediate DOM trees or hash-map allocations, Lust builds directly on **`LogicalLayoutV1`** and **`ContiguousStruct`** (`src/data/materialize.rs`, verified by **`Gate-SCHEMA-09`** and **`Gate-SCHEMA-13`** in **`lust::w17_layout`**):
+
+- **Contiguous Memory Layout (`ContiguousStruct`):** Stores fields in an `AlignedStorage` byte buffer matching the target ABI's C11 struct offsets and alignment, with bitmask tracking for initialized and null slots (`is_initialized`, `is_null`, `cleanup_partial`) and typed unaligned-safe accessors (`read_i64_at`, `read_u64_at`, `read_f64_at`, `read_bool_at`, `read_str_at`, `read_bytes_at`, `read_nested_at`).
+- **Direct JSON Decoding (`decode_json_into_contiguous`, `decode_json_with_plan`):** Parses JSON bytes straight into a `ContiguousStruct` using a precomputed `StructBindingPlan` and `WireAliasMap`, paired with `ModelContract` record-level validation and `FfiBoundaryRuntime` watchdog containment (`lust::w17_layout`).
+- **C11 Layout Parity Verification (`lust::w17_layout::c_abi`):** Compares `LogicalLayoutV1` byte sizes and field offsets against real C11 `clang`/`cc` sanitizer fixtures (`compare_layout_with_c_entry`, `build_c_fixture_with_sanitizers`) and Zig layout probes (`verify_zig_layout_probe`).
+- **Rust AOT `#[repr(C)]` Zero-DOM Decoders:** When compiling schemas with `lust build --backend rust`, emitted structs carry `#[repr(C)]` layouts and generate two direct decoders backed by `lust-aot-rt`:
+  - `decode_binary(raw: &[u8], ctx: &mut lust_aot_rt::AotCtx)` / `decode_binary_at(raw, base_offset, ctx)` — Zero-lookup, unaligned-safe binary materialization directly from byte slices.
+  - `decode_json(s: &str, ctx: &mut lust_aot_rt::AotCtx)` / `decode_json_cursor(cur: &mut lust_aot_rt::schema::JsonCursor<'_>, ctx)` — Single-pass, zero-DOM, zero-hash-lookup JSON decoding directly into the `#[repr(C)]` struct.
+
+### Borrowed Script Views & Zero-Allocation Scalar Reads
+
+Scripts can inspect and update structured data in place without cloning containers via borrowed views (`&T`, `&mut T`) and the `view` namespace:
+
+```lust
+struct FixedBox
+    value: int
+    label: string
+end
+
+function read_box_ref(b: &FixedBox): int
+    return view.read(b.value)
+end
+
+function bump_box_mut(b: &mut FixedBox): int
+    b.value = view.read(b.value) + 1
+    return view.read(b.value)
+end
+
+function main(): int
+    local box = FixedBox { value = 10, label = "sensor" }
+    local current = 0
+    local snapshot = FixedBox { value = 0, label = "" }
+
+    -- Lexical scope ends the shared borrow before taking `&mut box`:
+    if true then
+        local r: &FixedBox = view.borrow(box)
+        current = read_box_ref(r)
+        -- Deeply clone into an independent owned value when escaping a view scope:
+        snapshot = view.materialize(r)
+    end
+    return current + bump_box_mut(&mut box) + snapshot.value
+end
+```
+
+On the Rust embedding side, execute scripts that call `view.*` / `&` / `&mut` through `LifetimeVm::compile_script(...)` (or an `EmbeddedProgram` configured with `declare_view_externs` and `install_view_runtime`, since the `view` runtime bridge is not yet wired into standalone `lust run` startup). `GenStructHandle::prepare_scalar_field("field")` produces a **`PreparedScalarHandle`** (`lust::w17_lifetime`) that resolves field metadata once and performs **zero-allocation scalar reads** (`prepared.read_i64()?`) while still validating VM generation and owner liveness on every access. See [Borrowed Views & Lifetime / Generation Safety](./embedding.md#borrowed-views--lifetime--generation-safety-lustw17_lifetime).
+
 ---
 
 ## Bounded Regex (`@std/regex`)

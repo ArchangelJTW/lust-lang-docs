@@ -1,9 +1,6 @@
 # Pure Core & Effects Architecture in Lust
 
-> [!NOTE] Design Specification / RFC
-> Данная глава описывает архитектурную спецификацию и дизайн системы алгебраических эффектов Lust.
-
-Lust features a state-of-the-art **Pure Core & Typed Algebraic Effects** system. It provides static tracking of side effects, zero-allocation dependency injection, capability-based security boundaries, and predictable resource finalization across both the Bytecode VM and the high-performance Cranelift JIT / Zig AOT engines.
+Lust features a **Pure Core & Typed Algebraic Effects** system providing static tracking of side effects, zero-allocation dependency injection, algebraic effect handlers (`handle ... with` and `resume(val)`), capability-based security boundaries, and predictable resource finalization across the Bytecode VM, Cranelift JIT/AOT, `#![no_std]` Rust AOT (`lust-aot-rt`), and Zig AOT engines.
 
 ---
 
@@ -135,28 +132,46 @@ CompileError: Unsatisfied requirement: 'FileSystem' in call to 'read_config'
 
 Requirements declared in `~ (Req1 + Req2)` represent unsatisfied effect dependencies. Before an effect blueprint is executed, those requirements must be handled or provided.
 
-### 3.1 Handling Effects (`handle ... with ...`)
+### 3.1 Algebraic Effect Handlers (`handle { ... } with { ... }` & `resume(val)`)
 
-Lust provides effect handlers to supply concrete implementations or intercept operations:
+Lust supports algebraic effect handlers in both the Bytecode VM (`Compiler::compile_module` / `VM::call`) and the Rust AOT (`AotCompiler::compile_source_rust` / `lust-aot-rt`) compiler. Code inside a `handle { ... } with { ... }` expression performs operations via `perform("OpName", [args...])`, and matching handler arms resume the delimited continuation with `resume(val)`:
+
+> **CLI TypeChecker note:** Full type inference for untyped handler arm parameters (such as `Step(x)` and `AskInt(v)` below) is still pending in `TypeChecker`. These handlers currently execute via the lower-level VM/AOT compiler APIs (`Compiler::compile_module` / `AotCompiler::compile_source_rust`, as exercised in `tests/ng_w17_handlers.rs`, `tests/ng_w13_1a_aot_services_tail_handlers.rs`, and `tests/ng_w13_1b_aot_async_nontail_handlers.rs`); invoking `lust run` on untyped arm arithmetic currently reports an unresolved parameter type `_`.
 
 ```lust,ignore
--- RFC Proposal Syntax: Algebraic Effect Handlers (see chapter RFC banner)
--- Define individual effect operations
-effect ReadFile(path: string): string ! IoError
-effect WriteFile(path: string, content: string): bool ! IoError
-
--- Function requiring ReadFile capability
-function load_user_profile(user_id: string): string ! IoError ~ ReadFile
-    return ReadFile("/etc/users/" .. user_id .. ".json")?
+-- Tail-resumptive handler: resumes directly in tail position
+function run_tail_handler(): int
+    return handle {
+        let a: int = perform("Step", [4]);
+        let b: int = perform("Step", [6]);
+        a + b
+    } with {
+        Step(x) => resume(x * 10)
+    }
 end
 
--- Providing a handler for ReadFile
-function run_with_mock(): string ! IoError
-    return handle load_user_profile("alice") with
-        case ReadFile(path) => '{"name": "Alice", "role": "admin"}'
-    end
+-- One-shot non-tail handler: executes work both before AND after resume(val)
+function run_nontail_handler(): int
+    return handle {
+        println("body_pre");
+        let x: int = perform("AskInt", [10]);
+        println("body_post:" .. tostring(x));
+        x * 2
+    } with {
+        AskInt(v) => {
+            println("handler_pre:" .. tostring(v));
+            let r: int = resume(v + 5);
+            println("handler_post:" .. tostring(r));
+            r + 100
+        }
+    }
 end
 ```
+
+Handler execution semantics across engines:
+- **Tail-Resumptive Fast Path (`lust_aot_rt::handle_tail_resumptive_typed`):** When every arm invokes `resume(...)` in tail position (or aborts without resuming), the handler executes directly on the stack with zero continuation heap allocation.
+- **One-Shot Non-Tail Continuations (`lust_aot_rt::handle_non_tail_oneshot`):** When a handler arm performs work after `resume(val)` (capturing the body's result `r` and transforming it), the Bytecode VM suspends/resumes frames while the Rust AOT compiler lowers the handled body into a **CPS state machine** (`src/aot/compiler.rs`), including `while` loops containing handled `perform` calls (lowered to recursive `__cps_loop_step_*` step functions) and helper callees. Multi-shot `resume` is statically rejected to preserve deterministic resource cleanup.
+- **Nested & Shadowing Handlers:** Inner `handle` blocks shadow outer arms for the same operation while transparently forwarding unhandled operations to enclosing handlers.
 
 ### 3.2 Zero-Heap Context Projection (`StackContextProjection`)
 
@@ -263,15 +278,16 @@ Effect blocks can capture variables from their outer scope. To avoid closure hea
   `Unsupported capture type: only read-only integers are supported`.
 - As a result, constructing an effect block requires **0 heap allocations** and operates purely on registers and the stack.
 
-### 5.3 Parity Across VM, Cranelift JIT, and Zig AOT
+### 5.3 Parity Across VM, Cranelift JIT/AOT, Rust AOT, and Zig AOT
 
-Lust guarantees 100% semantic and performance parity across all execution targets:
+Lust guarantees semantic parity across all execution targets, including Cranelift JIT deoptimization handoff back to the interpreter via **`VM::resume_from_deopt`** (which reconstructs the target call frame and live registers from `take_deopt_payload()`, including validated empty-stack root-frame entry when deoptimizing directly from a top-level JIT entry):
 
-| Runtime Profile | Effect Call Overhead | Memory Allocation | Interruption Propagation |
+| Runtime Profile | Effect & Handler Support | Memory Allocation | Interruption Propagation |
 | :--- | :--- | :--- | :--- |
-| **Bytecode VM** | ~6.7 ns / call | 0 bytes heap | Deterministic instruction counter |
-| **Cranelift JIT** | **0.37 ns / call** | 0 bytes heap | Hardware safepoint polling |
-| **Zig AOT** | **0.34 ns / call** | 0 bytes heap | Direct C-ABI register pass |
+| **Bytecode VM** | Full (`handle ... with`, tail & one-shot non-tail `resume`) | 0 bytes heap (tail path) | Deterministic instruction counter & `resume_from_deopt` |
+| **Cranelift JIT / Object AOT** | Pure core, services, OSR & lazy deopt to VM | 0 bytes heap | Hardware safepoint polling & validated `resume_from_deopt` |
+| **Rust AOT (`lust-aot-rt`)** | Full (tail fast path + CPS state machine for non-tail, loops & callees, `AotScope`) | Zero-dep `#![no_std]`, `LustBudgetAlloc` | `Result<_, AotError>` + `core::mem::DropGuard` LIFO cleanup (even under `panic=abort`) |
+| **Zig AOT** | Pure core, services, `StackContextProjection` | 0 bytes heap | Direct C-ABI register pass |
 
 ---
 
@@ -336,7 +352,7 @@ The standard testing framework (`@std/test`) allows seamless mocking of service 
 > 💻 *Файл в репозитории компилятора:* `examples/effects/05_dependency_injection_mocking.rs`
 
 ```lust,ignore
--- RFC Proposal Syntax: Algebraic Effect Handlers (see chapter RFC banner)
+-- Service-injection mocking pattern with @std/test
 use @std/test.{suite, test, assert_eq, assert_success}
 
 struct MockDb

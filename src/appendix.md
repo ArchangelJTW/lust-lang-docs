@@ -22,8 +22,9 @@ This appendix collects reference tables, comparison cheat sheets, and the standa
 | **String Concat** | `..` | `..` (auto-converts types implementing `ToString`) |
 | **Inequality** | `~=` | Both `!=` and `~=` supported |
 | **Imports** | Dynamic `require("mod")` | Static `use path as alias` or `use path.{item}` |
-| **Execution Engines** | VM / LuaJIT | Multi-tier: Bytecode VM, Cranelift JIT, and Zig 0.17.1 AOT |
-| **Multitasking** | `coroutine.create / resume` | `task.create / resume / yield` with diagnostics |
+| **Execution Engines** | VM / LuaJIT | Multi-tier: Bytecode VM (`--jit=off`), Cranelift JIT, Cranelift Object AOT (`cranelift-aot`), `#![no_std]` Rust AOT (`lust-aot-rt`), and Zig AOT |
+| **Multitasking & Effects** | `coroutine.create / resume` | `task.create / resume / yield` with diagnostics, plus algebraic effect handlers (`handle ... with`, `perform`, `resume`) |
+| **Borrowed Views** | Shared table references | Compile-time checked `&T` / `&mut T` views (`view.borrow`, `view.borrow_mut`, `view.read`, `view.materialize`) |
 
 ---
 
@@ -55,6 +56,7 @@ while
 | `is` | Pattern | Type testing and enum variant binding |
 | `as` | Casting | Fallible downcast returning `Option<T>` |
 | `\|` | Type | Union type constructor (`string \| int`) |
+| `&`, `&mut` | Borrow | Shared and mutable borrowed views (`&expr`, `&mut expr`, `&T`, `&mut T`) |
 | `:` | Annotation / Call | Type annotation (`x: int`) or method invocation (`obj:method()`) |
 | `.` | Access | Struct field access (`pt.x`) or module access (`array.len()`) |
 

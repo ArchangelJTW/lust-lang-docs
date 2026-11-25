@@ -1,6 +1,6 @@
 # Welcome to Lust
 
-Lust is a strongly typed, Lua-inspired scripting language implemented in Rust. It combines Lua's approachable syntax and expressive scripting feel with Rust-grade static safety, an ergonomic embedding API, and a high-performance trace-based JIT compiler.
+Lust is a strongly typed, Lua-inspired scripting language implemented in Rust. It combines Lua's approachable syntax and expressive scripting feel with Rust-grade static safety, an ergonomic embedding API, and a multi-tier compilation pipeline spanning a portable Bytecode VM, Cranelift JIT, Cranelift Object AOT, and `#![no_std]` Rust AOT.
 
 Many scripting languages suffer from silent bugs due to pervasive dynamic typing, unexpected `nil`/`null`/`undefined` errors, or unchecked dictionary lookups. Lust addresses these challenges directly:
 
@@ -20,10 +20,11 @@ Many scripting languages suffer from silent bugs due to pervasive dynamic typing
 | **Unified `is` Operator** | Check types, narrow union types, and destructure enum variants cleanly in conditionals. |
 | **Safe `as` Casting** | Fallible downcasting from `unknown` returns `Option<T>` without runtime crashes. |
 | **Typed Collections Architecture** | High-performance unboxed `Array<T>` and `Map<K, V>` collections managed via dedicated `array` and `map` standard modules. |
-| **Multi-Tier Execution Pipeline** | Seamless execution across portable Bytecode VM, Cranelift JIT, and Direct Zig 0.17.1 AOT compilation (`.dylib`, `.a`, `--emit-h`). |
-| **Deterministic Memory** | Reference counting frees resources immediately; fallback cycle collector cleans up graphs; supports `--no-gc` zero-overhead mode. |
+| **Multi-Tier Execution Pipeline** | Seamless execution across the portable Bytecode VM (`--jit=off`), Cranelift JIT (`--backend cranelift`; legacy Dynasm retired), Cranelift Object AOT (`--backend cranelift-aot`, opt-in `--features cranelift-aot`), `#![no_std]` Rust AOT (`--backend rust` / `lust-aot-rt`), and Zig AOT (`--backend zig`). |
+| **Algebraic Effects & Borrowed Views** | Static effect tracking with tail-resumptive and one-shot non-tail `handle ... with` handlers, plus borrow-checked `&T`/`&mut T` script views and generation-validated host handles. |
+| **Deterministic Memory & Simulation** | Budgeted allocators (`LustBudgetAlloc`, `StaticSlabAllocator`), deterministic simulation testing (DST) through bare-metal ARM Cortex-M4 and RISC-V 32 targets, and `--no-gc` zero-overhead mode. |
 | **Cooperative Multitasking** | Built-in `task` module provides coroutine scheduling with structured diagnostics. |
-| **First-Class Embedding** | Rich Rust embedding bindings (`EmbeddedProgram`), C FFI (`lust_ffi.h`), and native extension loading. |
+| **First-Class Embedding & Isolation** | Rich Rust embedding bindings (`EmbeddedProgram`, `LifetimeVm`), C FFI (`lust_ffi.h`), Node.js addons (`lust-napi`, `lust-napi-rs`), WASI P1/P2 (`lust-wasi-runner`), and an OS-level multi-tenant sandbox (`lust::sandbox`). |
 
 ---
 

@@ -642,7 +642,34 @@ For detailed architecture specifications and reports, see:
 
 ---
 
-## 10. Runnable Wave 4 `.lust` DST Examples (`EX-D`)
+## 10. Tier-3 Embedded `#![no_std]` DST (`DST-T3`)
+
+Beyond host-side simulation, Lust ships a zero-OS-dependency **`#![no_std] + alloc`** deterministic simulation core (`src/no_std/trace.rs`, re-exported under `lust::no_std`) together with budgeted embedded allocators (`src/alloc_budget.rs` and `lust-aot-rt`), allowing bare-metal firmware and cross-compiled Rust AOT artifacts to produce and replay bit-identical traces without host clocks, filesystems, or threads.
+
+### 10.1 Core `no_std` Primitives
+
+| Component | Location | Role |
+| --- | --- | --- |
+| `DeterministicScheduler` | `src/no_std/trace.rs` | Pure `core + alloc` task scheduler driven by `SplitMix64` (zero host entropy), executing `SimTaskSpec` workloads and recording `TraceV1`. |
+| `CanonicalTraceCodec` | `src/no_std/trace.rs` | Deterministic little-endian binary codec (`SCHEMA_VERSION_V1 = 1`, `CANONICAL_ENCODING_ID = "lust-dst-v1-le"`) for cross-architecture trace serialization and decoding. |
+| `DeterministicScheduler::replay_verify` | `src/no_std/trace.rs` | Strict replay verifier that consumes recorded `SchedulingChoice` decisions without re-rolling the PRNG, returning `ReplayMismatch` on any header, logical-time, actor, or outcome divergence. |
+| `StaticSlabAllocator<N>` | `src/alloc_budget.rs` & `lust-aot-rt` | Fixed-size `UnsafeCell<[u8; N]>` bump slab allocator for bare-metal targets (emitted automatically by `lust build --backend rust --no-std` as `StaticSlabAllocator<65536>`). |
+| `LustBudgetAlloc` | `src/alloc_budget.rs` & `lust-aot-rt` | `Cell<usize>`-backed budgeted `Allocator` enforcing hard memory ceilings and returning `BudgetAllocError` / `AotError::OutOfMemory`. |
+| `AotError::OutOfGas` | `crates/lust-aot-rt` | Deterministic gas-exhaustion error enforced identically across host and bare-metal AOT builds. |
+
+### 10.2 Live Bare-Metal QEMU Verification (ARM Cortex-M4 & RISC-V 32)
+
+The embedded Rust AOT + `DST-T3` stack is compiled offline with `rust-lld` and verified live inside real hardware emulators:
+
+- **ARM Cortex-M4 (`thumbv7em-none-eabihf` via `qemu-system-arm`):** Integration suite `tests/ng_w18_dst_t3_qemu.rs` (fixture `tests/fixtures/w18_dst_t3_arm`) boots a `#![no_std]` Cortex-M4 (`lm3s6965evb`) ELF firmware running Lust Rust AOT functions, verifying:
+  1. Bit-exact `TraceV1` execution and `CanonicalTraceCodec` round-trip (`replay_verify`),
+  2. `StaticSlabAllocator` / `LustBudgetAlloc` bounded allocation behavior, and
+  3. Deterministic `AotError::OutOfGas` exhaustion enforcement.
+- **RISC-V 32 (`riscv32imafc-unknown-none-elf` via `qemu-system-riscv32`):** Integration suite `tests/ng_w18_rv32_qemu.rs` (fixture `tests/fixtures/w18_rv32_qemu`) compiles and executes the same Rust AOT + `DST-T3` suite on a 32-bit RISC-V bare-metal target, verifying cross-run determinism across independent `qemu-system-riscv32` invocations and `AotError::OutOfGas` enforcement.
+
+---
+
+## 11. Runnable Wave 4 `.lust` DST Examples (`EX-D`)
 
 The following standalone `.lust` scripts complement the Rust host DST harnesses and execute deterministically under `lust run --backend mir`:
 - `examples/simulation/01_deterministic_scheduler.lust` — deterministic seed `42` trace parity vs divergent seed `43`.
