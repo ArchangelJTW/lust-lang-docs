@@ -453,7 +453,7 @@ Lust can load standalone Rust crates compiled to shared libraries (`cdylib`) and
 crate-type = ["cdylib"]
 
 [dependencies]
-lust = { version = "3.5.1", package = "lust-rs", features = ["packages"] }
+lust = { version = "3.5.9", package = "lust-rs", features = ["packages"] }
 ```
 
 Extensions are normally separate crates (`[workspace]` at the bottom of their manifest) so the host project stays clean.
