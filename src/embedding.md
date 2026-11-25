@@ -21,8 +21,16 @@ The `embed` module is available under the default `std` feature. Features that m
 
 | Feature | Default | Purpose |
 | --- | --- | --- |
-| `std` | yes | Required for the embedding API, JIT, and the typed conversion layer. |
+| `std` | yes | Required for the embedding API, Cranelift JIT, `w17_lifetime`, `w17_layout`, `sandbox`, and typed conversion layer. |
 | `packages` | yes | Pulls in `libloading`/`dirs`/`object`/`serde_json` for extension crates, Lua 5.1 libraries, and package resolution. |
+| `bindgen` | yes | Compile-time `@bindgen` Rust host binding generation (`lust::bindgen`). |
+| `net-services` | yes | Built-in `hyper` + `tokio` loopback HTTP/1.1 service (`HttpService`) and `rusqlite` SQLite integration. |
+| `cli-mimalloc` | yes | Global `mimalloc` allocator for the `lust` CLI binary. |
+| `cranelift-aot` | no | Opt-in Cranelift Object AOT backend (`--backend cranelift-aot`, `cranelift-object` across `aarch64`, `x86_64`, `riscv64`, `s390x`). |
+| `svc-reqwest` | no | Enables the optional `reqwest` dependency for the standalone capability-checked adapter source (`src/stdlib/services/reqwest_adapter.rs`, not yet re-exported from `lust::stdlib::services`). |
+| `svc-sqlx` | no | Enables the optional `sqlx` dependency for the standalone capability-checked SQLite adapter source (`src/stdlib/services/sqlx_adapter.rs`, not yet re-exported from `lust::stdlib::services`). |
+| `telemetry-exporters` | no | Enables upstream `metrics`, `opentelemetry`, `opentelemetry_sdk`, and `prometheus` dependencies in `lust-rs`. |
+| `wasi` / `wasi-p2` | no | WASI capability/adapter types on `std` builds (WASI guest execution uses `lust-aot-rt` + `lust-wasi-runner`). |
 | `libloading` | no | Dynamic loading of native extensions (implied by `packages`). |
 | `dirs` | no | Platform package-cache directories (implied by `packages`). |
 
@@ -30,6 +38,9 @@ The `embed` module is available under the default `std` feature. Features that m
 ### Basic Example: Compiling and Calling Scripts
 
 Use `EmbeddedProgram::builder()` to assemble and compile modules in memory:
+
+> 📂 **Runnable example:** [`examples/embedding/standalone_vm.rs`](https://github.com/ArchangelJTW/lust-lang/blob/master/examples/embedding/standalone_vm.rs)\
+> 💻 *Compiler repository file:* `examples/embedding/standalone_vm.rs`
 
 ```rust
 use lust::EmbeddedProgram;
@@ -341,13 +352,156 @@ println!("Recursive calls:      {}", stats.recursive_calls);
 
 `VM::jit_stats()` exposes the same `JitStats`. Loading a replacement function table invalidates traces, profiles, retries, and counters.
 
-### WebAssembly
+### Borrowed Views & Lifetime / Generation Safety (`lust::w17_lifetime`)
 
-On `wasm32` the crate exposes a minimal `wasm-bindgen` surface instead of the full host API: `lust::wasm::run_lust(source: &str) -> Result<String, JsValue>`. It compiles an in-memory `main` module, executes its top level, and returns everything the script printed (`print`/`println` are redirected into the returned string and mirrored to `console.log`). There is no per-function call surface, native registration, or async support in this mode; wrap `EmbeddedProgram` yourself if you need more.
+Lust enforces two complementary safety layers for zero-copy views across script code and Rust hosts:
+
+1. **Static Script Borrow Checking (`src/typechecker/lifetime.rs`):**
+   Scripts can take shared (`&expr`) and mutable (`&mut expr`) references and interact with them through the `view` runtime namespace (`view.borrow`, `view.borrow_mut`, `view.read`, `view.materialize`), installed on an `EmbeddedProgram` via `declare_view_externs` and `install_view_runtime`. Compile-time diagnostics (`E4G001`–`E4G006`) reject escaping borrows, closure captures of borrowed views, borrows crossing suspension/task boundaries, and owner mutations conflicting with active borrows.
+2. **Runtime Weak-VM & Generation Validation (`lust::w17_lifetime`):**
+   Host handles created through `LifetimeVm` carry both a VM generation counter and an `OwnerId` lease so stale handles after VM teardown, owner destruction, or tenant switching fail closed with `LifecycleError` instead of reading freed or cross-tenant state:
+
+```rust
+use lust::w17_lifetime::{
+    GenStructHandle, LifetimeVm, OwnedTransferPayload, PreparedScalarHandle,
+    materialize_struct_for_transfer,
+};
+use lust::struct_field;
+
+let mut vm = LifetimeVm::compile_script(r#"
+    struct Record
+        score: int
+    end
+"#)?;
+
+let handle: GenStructHandle = vm.create_struct(
+    "main.Record",
+    [struct_field("score", 42_i64)],
+)?;
+
+// Zero-allocation prepared scalar reads (validates generation + owner lease on each read)
+let prepared: PreparedScalarHandle = handle.prepare_scalar_field("score")?;
+assert_eq!(prepared.read_i64()?, 42);
+
+// Deeply materialize into a Send + 'static payload before crossing thread boundaries
+let transfer: OwnedTransferPayload = materialize_struct_for_transfer(prepared.handle())?;
+std::thread::spawn(move || {
+    let _snapshot = transfer.value();
+}).join().unwrap();
+```
+
+> [!IMPORTANT]
+> **`!Send` VM & Views:** `VM`, `EmbeddedProgram`, `LifetimeVm`, and all borrowed handle/view types (`GenStructHandle`, `GenArrayHandle`, `GenMapHandle`, `ScopedViewGuard`, `PreparedScalarHandle`) are strictly **`!Send`**. They must stay pinned to the OS thread that created them. To send data to another worker thread, explicitly deep-materialize it into an `OwnedTransferPayload` (via `materialize_struct_for_transfer`, `materialize_array_for_transfer`, `materialize_map_for_transfer`, or `deep_materialize_to_data_value`) and optionally supervise the worker with `TransferTaskHandle`.
+
+### WebAssembly & WASI
+
+For sandboxed WebAssembly deployments targeting WASI Preview 1 (`wasm32-wasip1`) or WASI Preview 2 (`wasm32-wasip2`), compile scripts with `lust build --backend rust --target wasm32-wasip1|wasm32-wasip2` (backed by the `#![no_std]` `lust-aot-rt` runtime) and execute them through `lust-wasi-runner`. See [WebAssembly & WASI](./tooling.md#webassembly--wasi-preview-1--preview-2) for full CLI flags and capability options.
+
+### Async & Tokio Concurrency
+
+For high-throughput asynchronous services, Lust VM instances can be embedded within Tokio worker tasks:
+
+> 📂 **Embedding project:** [`examples/tokio-concurrency/`](https://github.com/ArchangelJTW/lust-lang/tree/master/examples/tokio-concurrency/)\
+> 🛠️ *Build and run command:* `cargo run --manifest-path examples/tokio-concurrency/Cargo.toml`
+
+### Automated Host Bindings with Bindgen
+
+To generate type-safe Rust bindings and stubs for complex Lust data structures:
+
+> 📂 **Embedding project:** [`examples/bindgen/`](https://github.com/ArchangelJTW/lust-lang/tree/master/examples/bindgen/)\
+> 🛠️ *Build and run command:* `cargo run --manifest-path examples/bindgen/Cargo.toml`
 
 ---
 
-## 2. Embedding in C (FFI)
+## 2. Node.js Bindings (`lust-napi` & `lust-napi-rs`)
+
+Because the Lust VM is `!Send`, both workspace Node.js addon crates isolate `EmbeddedProgram` / `VM` instances onto dedicated Rust actor thread(s) and communicate with the Node.js event loop over typed channels:
+
+- **`crates/lust-napi`** — Standard C Node-API v8 `cdylib` addon using raw N-API bindings (`napi_raw.rs`) and a multi-worker `VmActorPool` (`eval_on_worker`, `shutdown`).
+- **`crates/lust-napi-rs`** — Ergonomic `napi` v2 (`napi-derive`) addon executing Lust programs on a dedicated `!Send` VM actor thread (`lust-napi-rs-vm`) and exporting:
+  - `evalLust(source: string): string` — Synchronous evaluation of `main.main` on the actor thread.
+  - `evalLustAsync(source: string): Promise<string>` — Async Promise wrapper over the same actor thread.
+  - `shutdown(): void` — Cleanly signals the VM actor thread to stop.
+
+```js
+const { evalLust, evalLustAsync, shutdown } = require('./lust_napi_rs.node');
+
+const syncResult = evalLust('function main(): int return 40 + 2 end');
+const asyncResult = await evalLustAsync('function main(): int return 21 * 2 end');
+shutdown();
+```
+
+---
+
+## 3. Telemetry Exporters (`crates/lust-telemetry-*`)
+
+The workspace includes four modular telemetry sink crates for exporting VM, JIT, effect, and user metrics/spans:
+
+| Crate | Default Mode | Opt-In Upstream Feature | Primary Types |
+| --- | --- | --- | --- |
+| `crates/lust-telemetry-metrics` | Zero external dependencies | `--features upstream` (`metrics` crate) | `MetricsSink`, `ScopedMetricsSink`, `UpstreamMetricsSink`, `InMemoryMetricsRecorder` |
+| `crates/lust-telemetry-otel` | Zero external dependencies (OTLP JSON) | `--features upstream` (`opentelemetry` + `opentelemetry_sdk`) | `OtelSink`, `ScopedOtelSink`, `UpstreamOtelSink`, `SharedManualReader` |
+| `crates/lust-telemetry-prometheus` | Zero external dependencies (OpenMetrics / Prometheus text) | `--features upstream` (`prometheus` crate) | `PrometheusSink`, `ScopedPrometheusSink`, `UpstreamPrometheusSink` |
+| `crates/lust-telemetry-tracing` | `tracing-crate` enabled by default (`tracing` + `tracing-subscriber`) | `--no-default-features` for zero-dep sink | `TracingSink`, `ScopedTracingSink` |
+
+All three metric/OTLP crates compile with **zero external dependencies by default** (offering in-memory snapshots, cardinality limits, OpenMetrics/Prometheus text scraping via `render_openmetrics()` / `scrape()`, and OTLP JSON via `export_all_json()`), and bridge directly into the upstream Rust ecosystem when built with `--features upstream`.
+
+---
+
+## 4. Service Adapters (`net-services`, `svc-reqwest`, `svc-sqlx`)
+
+Lust provides capability-checked host service adapters that enforce `LustConfig::capability_mask()` before opening network sockets or database files:
+
+- **Built-in (`--features net-services`, enabled by default):**
+  - `lust::stdlib::services::HttpService` & `LoopbackHttpServer` — Built on `hyper` + `tokio` for HTTP/1.1 client/server operations.
+  - Built-in SQLite connection registry backed by `rusqlite`.
+- **Opt-in external adapter sources (`--features svc-reqwest,svc-sqlx`):**
+  - **`ReqwestAdapter`** (`src/stdlib/services/reqwest_adapter.rs`, gated behind `#[cfg(feature = "svc-reqwest")]`) — Bounded `reqwest` HTTP client (`ReqwestAdapter::get(config, url, timeout, cancel)`) verifying `check_net_capability` before client construction and honoring `CancelToken` and a 30 s maximum timeout cap.
+  - **`SqlxAdapter`** (`src/stdlib/services/sqlx_adapter.rs`, gated behind `#[cfg(feature = "svc-sqlx")]`) — Async `sqlx` SQLite pool adapter (`SqlxAdapter::connect`, `SqlxAdapter::execute`, `SqlxAdapter::transaction`) requiring `allow_fs` for non-`:memory:` URLs, parameterized queries, and automatic rollback-on-error transactions.
+  - *Crate export note:* Both `reqwest_adapter.rs` and `sqlx_adapter.rs` are currently standalone opt-in adapter modules included via `#[path = ...]` in integration tests (`tests/ng_w17_services.rs`) rather than re-exported from `lust::stdlib::services`; `services.backend_status` continues to report the built-in `hyper` / `rusqlite` backends as the default crate exports.
+
+---
+
+## 5. Multi-Tenant OS Sandbox (`lust::sandbox`)
+
+For executing untrusted scripts or AOT binaries across tenants, `lust::sandbox` provides a fail-closed OS process supervisor (`run_sandboxed(&policy) -> Result<SandboxOutcome, SandboxError>`) configured with `SandboxPolicy`, `SandboxLimits`, and `IsolationRequirements`:
+
+```rust
+use std::time::Duration;
+use lust::sandbox::{IsolationRequirements, SandboxLimits, SandboxPolicy, run_sandboxed};
+
+let mut policy = SandboxPolicy::new("/path/to/lust_worker");
+policy.limits = SandboxLimits {
+    wall_timeout: Duration::from_secs(2),
+    max_stdout_bytes: 64 * 1024,
+    max_stderr_bytes: 64 * 1024,
+    cpu_seconds: Some(2),
+    nofile_limit: Some(64),
+    fsize_bytes: Some(1024 * 1024),
+    address_space_bytes: Some(256 * 1024 * 1024),
+    data_bytes: None,
+};
+policy.isolation = IsolationRequirements {
+    require_linux_cgroups_v2: cfg!(target_os = "linux"),
+    require_seccomp: cfg!(target_os = "linux"),
+    require_net_namespace: cfg!(target_os = "linux"),
+};
+
+let outcome = run_sandboxed(&policy)?;
+```
+
+Platform enforcement guarantees (never silently downgraded):
+
+- **Darwin / POSIX baseline (`src/sandbox/darwin.rs`, `src/sandbox/supervisor.rs`):** Process-group isolation (`setpgid(0, 0)`), `setrlimit` caps, file-descriptor sanitization, explicit allowlisted environment (`allowed_env`), private temporary working directory, byte-capped stdout/stderr draining, and monotonic `killpg(SIGKILL)` watchdog termination.
+- **Linux `S-SANDBOX` (`src/sandbox/linux.rs`):**
+  - **`cgroups v2`**: Per-run cgroup configuring `memory.max`, `cpu.max`, and `pids.max`, and terminating the entire process tree — including descendants that call `setsid()` to escape the process group — via `cgroup.kill` (with `SIGKILL` fallback over `cgroup.procs` on older kernels).
+  - **`seccomp-bpf`**: Precomputed `SockFilter` BPF program installed in `pre_exec` with **zero heap allocations** after `fork()`, blocking dangerous syscalls (`ptrace`, `kexec_load`, `mount`, `bpf`, `userfaultfd`, module syscalls, and `AF_INET`/`AF_INET6` sockets when network isolation is enabled).
+  - **Network namespaces (`CLONE_NEWNET`)**: Probed before launch via a dedicated `fork()` probe (`probe_net_namespace`) so unprivileged environments without `CAP_SYS_ADMIN`/userns fail closed with `SandboxError::UnsupportedIsolation`.
+- **Fail-Closed Cross-OS Contract:** Requesting `require_linux_cgroups_v2`, `require_seccomp`, or `require_net_namespace` on non-Linux hosts returns `SandboxError::UnsupportedIsolation` instead of silently running unsandboxed.
+
+---
+
+## 6. Embedding in C (FFI)
 
 Lust exports a C ABI declared in `include/lust_ffi.h`. Build the shared library, then compile and link your C program:
 
@@ -438,11 +592,14 @@ int main(void) {
 - Lifecycle order: `lust_builder_free(builder)` after `lust_builder_compile(...)` (compile consumes the in-memory modules), and `lust_program_free(program)` last.
 - `lust_program_run_entry(program)` executes the entry script's top level; call it before reading globals declared by that script.
 
-A complete example lives in `examples/c-ffi`.
+A complete example lives in `examples/c-ffi`:
+
+> 📂 **Embedding project:** [`examples/c-ffi/`](https://github.com/ArchangelJTW/lust-lang/tree/master/examples/c-ffi/)\
+> 🛠️ *Build and run command:* `make -C examples/c-ffi test`
 
 ---
 
-## 3. Native Rust Extensions
+## 7. Native Rust Extensions
 
 Lust can load standalone Rust crates compiled to shared libraries (`cdylib`) and expose their types and functions to scripts.
 
@@ -564,7 +721,7 @@ A dependency can also ship hand-written stubs in an `externs/` directory inside 
 
 ---
 
-## 4. Lua 5.1 C Libraries
+## 8. Lua 5.1 C Libraries
 
 Lust can load standard Lua 5.1 C API dynamic libraries (such as `luasocket`) and generate type-safe Lust extern declarations for them.
 

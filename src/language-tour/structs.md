@@ -8,6 +8,9 @@ Structs allow you to define custom records with named, typed fields. You can att
 
 Structs are defined with the `struct` keyword:
 
+> 📂 **Runnable example:** [`examples/basic/04_structs.lust`](https://github.com/ArchangelJTW/lust-lang/blob/master/examples/basic/04_structs.lust)\
+> 💻 *Compiler repository file:* `examples/basic/04_structs.lust`
+
 ```lust
 struct Point
     x: int
@@ -80,6 +83,9 @@ local zero = Point.origin()
 Lust's runtime uses deterministic reference counting. When building graphs, trees, or bidirectional relationships (such as a DOM node or scenegraph where parents point to children and children point back to parents), strong references would form a cycle and prevent memory from being freed immediately.
 
 To solve this, Lust introduces **`ref` fields**:
+
+> 📂 **Runnable example:** [`examples/advanced/08_ref_structs.lust`](https://github.com/ArchangelJTW/lust-lang/blob/master/examples/advanced/08_ref_structs.lust)\
+> 💻 *Compiler repository file:* `examples/advanced/08_ref_structs.lust`
 
 ```lust
 struct Node

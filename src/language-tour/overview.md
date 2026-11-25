@@ -84,6 +84,6 @@ Step through the language fundamentals in the following order:
 5. **[Enums, Option & Result](./enums.md)** &mdash; Modeling variants, representing optionality with `Option<T>`, and managing errors with `Result<T, E>`.
 6. **[Pattern Matching & Types](./type-system.md)** &mdash; Deep dive into `is`, fallible `as` casting, union types, and `unknown`.
 7. **[Generics & Traits](./generics-and-traits.md)** &mdash; Reusable generic definitions, trait contracts, trait bounds, and automatic stringification with `ToString`.
-8. **[Modules & Organization](./modules.md)** &mdash; Code organization with `pub` and `use`.
+8. **[Modules & Organization](./modules.md)** &mdash; Code organization with `export` and `use`.
 9. **[I/O & System Services](./io-and-os.md)** &mdash; File operations and system utilities with the `io` and `os` modules.
 10. **[Tasks & Concurrency](./tasks.md)** &mdash; Cooperative coroutine multitasking with the `task` module.

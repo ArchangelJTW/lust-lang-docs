@@ -8,6 +8,9 @@ In Lust, there are no `nil`, `null`, or `undefined` values. Instead, missing dat
 
 Enums define a type that can take one of several variants. Variants can be simple unit tags or carry typed data:
 
+> 📂 **Runnable example:** [`examples/basic/05_enums.lust`](https://github.com/ArchangelJTW/lust-lang/blob/master/examples/basic/05_enums.lust)\
+> 💻 *Compiler repository file:* `examples/basic/05_enums.lust`
+
 ```lust
 enum Status
     Pending,
@@ -56,6 +59,9 @@ Notice that when matching `s is Complete(code)`, Lust introduces `code` as an in
 When an operation might produce a value or nothing, use the built-in `Option<T>` enum. It has two variants:
 - `Option.Some(value)` (or bare `Some(value)`)
 - `Option.None` (or bare `None`)
+
+> 📂 **Runnable example:** [`examples/basic/06_option.lust`](https://github.com/ArchangelJTW/lust-lang/blob/master/examples/basic/06_option.lust)\
+> 💻 *Compiler repository file:* `examples/basic/06_option.lust`
 
 ```lust
 function find_even(n: int): Option<int>
@@ -109,6 +115,9 @@ For operations that can succeed or fail with an error, Lust provides `Result<T, 
 - `Result.Ok(value)` (or bare `Ok(value)`)
 - `Result.Err(error)` (or bare `Err(error)`)
 
+> 📂 **Runnable example:** [`examples/basic/07_result.lust`](https://github.com/ArchangelJTW/lust-lang/blob/master/examples/basic/07_result.lust)\
+> 💻 *Compiler repository file:* `examples/basic/07_result.lust`
+
 ```lust
 function divide(a: int, b: int): Result<int, string>
     if b == 0 then
@@ -122,6 +131,8 @@ local outcome2 = divide(10, 0)
 ```
 
 ### Pattern Matching on `Result`
+
+When matching `outcome is Err(err)`, the compiler binds `err` strictly to the error type parameter `E` (unlike `Ok(val)`, which binds `val` to `T`).
 
 ```lust
 if outcome1 is Ok(val) then
@@ -137,24 +148,70 @@ elseif outcome2 is Err(msg) then
 end
 ```
 
-### Result Helper Methods
+#### Nested Pattern Matching
+
+Lust supports nested pattern matching on sum types. You can destructure nested enums directly in a single `is` expression without intermediate variables:
+
+```lust
+local query_result: Result<Option<string>, int> = Result.Ok(Option.Some("admin"))
+
+if query_result is Ok(Some(name)) then
+    println("Found user: " .. name)
+elseif query_result is Ok(None) then
+    println("Query succeeded but no user exists")
+elseif query_result is Err(code) then
+    println("Query failed with error code: " .. code)
+end
+
+-- Matching nested errors:
+local r: Result<string, Option<int>> = Result.Err(Option.Some(404))
+if r is Err(Some(code)) then
+    println("Failed with HTTP code: " .. code)
+end
+```
+
+### Sum Type Methods & Dual Invocation Syntax
+
+Both `Option<T>` and `Result<T, E>` provide built-in helper methods. Lust supports both colon method invocation (`value:method()`) and standard dot member invocation (`value.method()`):
 
 | Method | Return Type | Description |
 |---|---|---|
-| `res:is_ok()` | `bool` | Returns `true` if the result is `Ok`. |
-| `res:is_err()` | `bool` | Returns `true` if the result is `Err`. |
-| `res:unwrap()` | `T` | Returns the successful value or panics if `Err`. |
-| `res:unwrap_err()` | `E` | Returns the error value or panics if `Ok`. |
+| `res:is_ok()` / `res.is_ok()` | `bool` | Returns `true` if the result is `Ok`. |
+| `res:is_err()` / `res.is_err()` | `bool` | Returns `true` if the result is `Err`. |
+| `res:unwrap()` / `res.unwrap()` | `T` | Returns the successful value or panics if `Err`. |
 
 ```lust
+-- Using helper method
 if outcome1:is_ok() then
     println("Value: " .. outcome1:unwrap())
 end
 
-if outcome2:is_err() then
-    println("Failed as expected")
+-- Safely extracting error details via pattern matching
+if outcome2 is Err(err) then
+    println("Error: " .. err)
 end
 ```
+
+---
+
+## Propagating Option and Result with `?`
+
+Rather than manually matching every `Option` or `Result` with `if x is Ok(...)`, Lust supports the postfix `?` (try-unwrap) operator:
+
+```lust
+function compute_ratio(a: int, b: int): Result<int, string>
+    local valid_a = divide(a, 2)?      -- Early returns Err if divide fails
+    local valid_b = divide(b, 2)?      -- Early returns Err if divide fails
+    return Result.Ok(valid_a + valid_b)
+end
+
+function get_first_character(words: Array<string>): Option<string>
+    local first_word = array.first(words)? -- Early returns None if empty
+    return Option.Some(string.slice(first_word, 0, 1))
+end
+```
+
+The try operator works uniformly across the Bytecode VM, Cranelift JIT, and Zig AOT backends.
 
 ---
 

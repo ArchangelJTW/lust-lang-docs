@@ -44,6 +44,9 @@ export PATH="$PWD:$PATH"
 
 Create a new file named `hello.lust`:
 
+> 📂 **Runnable example:** [`examples/basic/01_hello.lust`](https://github.com/ArchangelJTW/lust-lang/blob/master/examples/basic/01_hello.lust)\
+> 💻 *Compiler repository file:* `examples/basic/01_hello.lust`
+
 ```lust
 -- hello.lust
 println("Hello from Lust!")
@@ -58,6 +61,13 @@ Run your program with the `lust` CLI:
 
 ```bash
 lust hello.lust
+
+# Or explicitly choose an execution backend:
+lust hello.lust --jit=off                # Bytecode VM (JIT disabled)
+lust run hello.lust --backend vm         # Bytecode VM
+lust run hello.lust --backend cranelift  # Cranelift JIT (Dynasm retired)
+lust run hello.lust --backend rust       # Rust AOT (#![no_std] lust-aot-rt)
+lust run hello.lust --backend zig        # Zig AOT Native
 ```
 
 **Output:**
@@ -65,6 +75,19 @@ lust hello.lust
 ```text
 Hello from Lust!
 Welcome to typed scripting in 2026!
+```
+
+You can also compile scripts ahead of time into native binaries, object files, or shared libraries:
+
+```bash
+# Rust AOT native binary (backed by #![no_std] lust-aot-rt)
+lust build hello.lust --backend rust -o hello_bin
+
+# Cranelift Object AOT (requires building lust with --features cranelift-aot)
+lust build hello.lust --backend cranelift-aot -o hello_clif
+
+# Zig AOT C-shared library
+lust build hello.lust --backend zig --cdylib -o libhello.dylib
 ```
 
 ---

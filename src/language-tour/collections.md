@@ -10,6 +10,9 @@ Lust provides strongly typed collections (`Array<T>` and `Map<K, V>`) alongside 
 
 An `Array<T>` is an ordered, dynamically-sized list of homogeneous elements.
 
+> 📂 **Runnable example:** [`examples/basic/08_arrays.lust`](https://github.com/ArchangelJTW/lust-lang/blob/master/examples/basic/08_arrays.lust)\
+> 💻 *Compiler repository file:* `examples/basic/08_arrays.lust`
+
 ```lust
 local numbers: Array<int> = [10, 20, 30]
 local names = ["Alice", "Bob", "Charlie"] -- Inferred as Array<string>
@@ -64,8 +67,9 @@ The `array` module provides operations for querying and mutating arrays:
 | `array.pop(arr)` | `(Array<T>) -> Option<T>` | Removes and returns the last element. |
 | `array.insert(arr, idx, item)` | `(Array<T>, int, T) -> ()` | Inserts an element at the specified index. |
 | `array.remove(arr, idx)` | `(Array<T>, int) -> Option<T>` | Removes the element at the index. |
+| `array.get(arr, idx)` | `(Array<T>, int) -> Option<T>` | Returns the element at the index, or `None` if out of bounds. |
 | `array.slice(arr, start, end)` | `(Array<T>, int, int) -> Array<T>` | Returns a sub-array from `start` to `end` (exclusive). |
-| `array.concat(a, b)` | `(Array<T>, Array<T>) -> Array<T>` | Combines two arrays into a new array. |
+| `array.concat(arr, sep?)` | `(Array<T>, string?) -> string` | Concatenates array elements into a string with an optional separator (VM bytecode runtime; not lowered in Zig AOT). |
 | `array.contains(arr, item)` | `(Array<T>, T) -> bool` | Checks if the item exists in the array. |
 | `array.reverse(arr)` | `(Array<T>) -> ()` | Reverses the array elements in place. |
 | `array.sort(arr)` | `(Array<T>) -> ()` | Sorts the array elements in place. |
@@ -86,6 +90,9 @@ end
 
 local sub = array.slice(items, 0, 2)    -- Elements at 0 and 1: [1, 2]
 println("Slice length: " .. array.len(sub)) -- 2
+
+local joined = array.concat(items, ", ") -- "1, 2, 3"
+println("Joined: " .. joined)
 ```
 
 ### Functional Transformations
@@ -118,6 +125,9 @@ println("Resulting sum: " .. sum) -- (6 + 8 + 10 + 12 = 36)
 ## Maps (`Map<K, V>`)
 
 A `Map<K, V>` is a hash-based key-value dictionary with strongly typed keys and values.
+
+> 📂 **Runnable example:** [`examples/basic/10_maps.lust`](https://github.com/ArchangelJTW/lust-lang/blob/master/examples/basic/10_maps.lust)\
+> 💻 *Compiler repository file:* `examples/basic/10_maps.lust`
 
 ```lust
 local scores: Map<string, int> = {
@@ -161,6 +171,53 @@ println("Has Germany: " .. tostring(map.has(capitals, "Germany"))) -- false
 
 ---
 
+## Common Collection Workflows
+
+In Lust, `Array<T>` and `Map<K, V>` provide specialized, zero-overhead storage without runtime performance penalties. Rather than relying on a single dynamic table type, Lust provides dedicated, statically checked `array` and `map` modules:
+
+### Working with Arrays
+
+```lust
+local scores: Array<int> = [90, 85, 95]
+array.push(scores, 100)
+array.sort(scores)
+println("Highest: " .. scores[3]:unwrap()) -- 100
+println("Joined: " .. array.concat(scores, ", ")) -- "85, 90, 95, 100"
+```
+
+### Working with Maps
+
+```lust
+local config: Map<string, string> = { env = "production", region = "eu-west" }
+map.set(config, "version", "3.5.8")
+println("Entries: " .. tostring(map.len(config)))
+
+local maybe_env = map.get(config, "env")
+if maybe_env is Some(v) then
+    println("Environment: " .. v)
+end
+```
+
+---
+
+## 0-Based Iteration with `ipairs(arr)`
+
+Lust provides `ipairs` for traversing arrays with index-value pairs. Unlike Lua's 1-based convention, **Lust native arrays use 0-based indexing**:
+
+```lust
+local colors: Array<string> = ["red", "green", "blue"]
+
+for i, color in ipairs(colors) do
+    -- i takes values 0, 1, 2
+    println("Index " .. i .. " => " .. color)
+    assert(colors[i]:unwrap() == color)
+end
+```
+
+*(Note: When interacting with dynamic `LuaTable` instances via FFI bridge, `ipairs` respects Lua's 1-based convention).*
+
+---
+
 ## Strings (`string` Module)
 
 Strings are UTF-8 text values. Manipulate them via the `string` module:
@@ -176,14 +233,20 @@ println("Lower: " .. string.lower(trimmed))
 println("Starts with 'Hello': " .. tostring(string.starts_with(trimmed, "Hello")))
 println("Contains 'Lust': " .. tostring(string.contains(trimmed, "Lust")))
 
--- Substring using 1-based indexing (Lua style)
+-- 0-Based Slices and Searches (Native Lust):
+local native_slice = string.slice(trimmed, 0, 5) -- "Hello" [start, end)
+println("0-based slice: " .. native_slice)
+
+local idx = string.index_of(trimmed, "Lust") -- Option<int> => Some(7)
+if idx is Some(pos) then
+    println("Found 'Lust' at index " .. pos)
+end
+
+-- 1-Based Substring (Lua Compatibility):
 println("Sub (1, 5): " .. string.sub(trimmed, 1, 5)) -- Hello
 
--- Replace
+-- Replace & Split
 local replaced = string.replace(trimmed, "World", "Developers")
-println(replaced) -- Hello, Lust Developers!
-
--- Split into Array<string>
 local words = string.split(trimmed, " ")
 println("Word count: " .. array.len(words))
 ```
@@ -205,6 +268,11 @@ println("floor: " .. math.floor(val))   -- -5
 println("ceil: " .. math.ceil(val))     -- -4
 println("round: " .. math.round(val))   -- -5
 println("clamp: " .. math.clamp(12, 0, 10)) -- 10
+
+-- Floored Modulo:
+-- math.mod(a, b) guarantees: a == (a // b) * b + math.mod(a, b)
+local m = math.mod(-5, 2)               -- 1 (whereas -5 % 2 == -1)
+println("Floored mod: " .. m)
 ```
 
 ---

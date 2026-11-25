@@ -121,6 +121,54 @@ end
 
 ---
 
+## Sum Type Matching & Method Dispatch
+
+Lust's typechecker provides complete static safety when destructuring and inspecting generic sum types (`Option<T>` and `Result<T, E>`):
+
+### Precise `Result::Err` Generic Type Binding
+
+When pattern matching `Result<T, E>` with `is Err(err)`, the compiler binds `err` strictly to the secondary error type parameter `E`, while `is Ok(val)` binds `val` to `T`. This ensures accurate type inference in downstream operations:
+
+```lust
+local outcome: Result<string, int> = Result.Err(404)
+
+if outcome is Err(code) then
+    -- 'code' is statically known to be an int (not string)
+    local doubled_code: int = code * 2
+    println("HTTP error doubled: " .. doubled_code)
+end
+```
+
+### Deep Destructuring of Nested Variants
+
+Pattern matching can traverse multiple layers of enum variants in a single expression:
+
+```lust
+local nested: Result<Option<int>, Option<string>> = Result.Err(Option.Some("timeout"))
+
+if nested is Err(Some(msg)) then
+    println("Captured nested error string: " .. msg)
+elseif nested is Ok(Some(n)) then
+    println("Captured nested success integer: " .. n)
+end
+```
+
+### Direct Method Dispatch on Sum Types
+
+In addition to Lua-style colon invocation (`opt:is_some()`), sum types support standard dot method dispatch (`opt.is_some()`, `res.unwrap()`, `res.is_err()`):
+
+```lust
+local res: Result<int, string> = Result.Ok(42)
+
+-- Dot syntax for predicate checks and unwrapping
+if res.is_ok() and not res.is_err() then
+    local value: int = res.unwrap()
+    println("Unwrapped: " .. value)
+end
+```
+
+---
+
 ## Next Steps
 
 Now learn how to write reusable, generic code and specify dynamic contracts in [Generics & Traits](./generics-and-traits.md).
